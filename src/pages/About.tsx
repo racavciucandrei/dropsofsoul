@@ -19,11 +19,11 @@ const About = () => {
               </div>
               
               <h1 className="text-4xl md:text-5xl font-bold">
-                Crafting Exceptional <br />Cocktail Ingredients
+                Crafting Premium <br />Cocktail Ingredients
               </h1>
               
               <p className="text-lg text-muted-foreground">
-                At Bitters & Bliss, we're dedicated to the art of cocktail craftsmanship, creating premium bitters, cordials, and shrubs that transform ordinary drinks into extraordinary experiences.
+                At Drops of Soul, we're dedicated to the art of flavor creation, producing exceptional bitters, cordials, and shrubs that transform ordinary drinks into extraordinary experiences.
               </p>
             </div>
             
@@ -104,21 +104,21 @@ const About = () => {
                 
                 <div className="space-y-4">
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">2015 - The Beginning</h3>
+                    <h3 className="font-semibold mb-1">The Beginning</h3>
                     <p className="text-muted-foreground text-sm">
-                      Bitters & Bliss began in a small kitchen in Portland, where our founder started experimenting with botanical infusions and traditional recipes.
+                      Drops of Soul began in a small kitchen, where our founder started experimenting with botanical infusions and traditional recipes.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">2017 - First Workshop</h3>
+                    <h3 className="font-semibold mb-1">First Workshop</h3>
                     <p className="text-muted-foreground text-sm">
-                      After growing popularity at local farmers' markets, we opened our first workshop and began supplying local bars and restaurants.
+                      After growing popularity at local markets, we opened our first workshop and began supplying local bars and restaurants.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">2019 - Online Expansion</h3>
+                    <h3 className="font-semibold mb-1">Online Expansion</h3>
                     <p className="text-muted-foreground text-sm">
                       We launched our online store, allowing cocktail enthusiasts across the country to experience our handcrafted products.
                     </p>

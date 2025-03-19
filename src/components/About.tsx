@@ -17,7 +17,7 @@ const About = () => {
             <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
               <img 
                 src="/assets/about.jpg" 
-                alt="Our mountain workshop" 
+                alt="Our workshop" 
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-primary/10" />
@@ -33,32 +33,32 @@ const About = () => {
             </div>
             
             <h2 className="text-3xl md:text-4xl font-bold">
-              From Mountain Springs, <br />To Your Glass
+              From Natural Ingredients, <br />To Your Glass
             </h2>
             
             <div className="space-y-4 text-muted-foreground">
               <p>
-                At Mountain Elixirs, we believe that the purest ingredients come from nature's most pristine environments. Our journey began in a small cabin nestled in the mountains, where we discovered that the local botanicals created flavors unlike anything else.
+                At Drops of Soul, we believe that the purest ingredients create the most soulful drinking experiences. Our journey began with a passion for crafting unique flavors that elevate cocktails and beverages.
               </p>
               <p>
-                Each of our products is handcrafted in small batches using spring water, wild-harvested mountain herbs, and organic botanicals. We take pride in our sustainable practices and our commitment to preserving the natural beauty that inspires our craft.
+                Each of our products is handcrafted in small batches using carefully selected ingredients. We take pride in our artisanal practices and our commitment to quality that inspires our craft.
               </p>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
               <div className="p-4 bg-white rounded-lg shadow-sm text-center">
                 <span className="block text-3xl font-serif font-bold text-primary">30+</span>
-                <span className="text-sm text-muted-foreground">Alpine Flavors</span>
+                <span className="text-sm text-muted-foreground">Unique Flavors</span>
               </div>
               
               <div className="p-4 bg-white rounded-lg shadow-sm text-center">
                 <span className="block text-3xl font-serif font-bold text-primary">100%</span>
-                <span className="text-sm text-muted-foreground">Mountain Spring Water</span>
+                <span className="text-sm text-muted-foreground">Natural Ingredients</span>
               </div>
               
               <div className="p-4 bg-white rounded-lg shadow-sm text-center">
-                <span className="block text-3xl font-serif font-bold text-primary">7500+</span>
-                <span className="text-sm text-muted-foreground">Feet Elevation</span>
+                <span className="block text-3xl font-serif font-bold text-primary">3</span>
+                <span className="text-sm text-muted-foreground">Product Categories</span>
               </div>
             </div>
             
@@ -67,7 +67,7 @@ const About = () => {
               className="mt-4 group"
             >
               <Link to="/about">
-                Discover Our Mountain Story
+                Discover Our Story
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>

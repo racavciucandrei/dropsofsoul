@@ -10,35 +10,35 @@ import { ShoppingCart, Heart } from 'lucide-react';
 const products = [
   {
     id: 1,
-    name: 'Alpine Aromatic Bitters',
+    name: 'Aromatic Cocktail Bitters',
     category: 'Bitters',
     price: 18.95,
     image: '/assets/product-1.jpg',
-    slug: 'alpine-aromatic-bitters',
+    slug: 'aromatic-cocktail-bitters',
   },
   {
     id: 2,
-    name: 'Wild Elderflower Cordial',
+    name: 'Elderflower Cordial',
     category: 'Cordials',
     price: 22.50,
     image: '/assets/product-2.jpg',
-    slug: 'wild-elderflower-cordial',
+    slug: 'elderflower-cordial',
   },
   {
     id: 3,
-    name: 'Mountain Blackberry Shrub',
+    name: 'Blackberry Shrub',
     category: 'Shrubs',
     price: 24.95,
     image: '/assets/product-3.jpg',
-    slug: 'mountain-blackberry-shrub',
+    slug: 'blackberry-shrub',
   },
   {
     id: 4,
-    name: 'Spruce Orange Bitters',
+    name: 'Orange Bitters',
     category: 'Bitters',
     price: 19.95,
     image: '/assets/product-4.jpg',
-    slug: 'spruce-orange-bitters',
+    slug: 'orange-bitters',
   },
 ];
 
@@ -140,13 +140,13 @@ const FeaturedProducts = () => {
       <div className="container-custom">
         <div className="text-center mb-12">
           <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
-            Mountain Collection
+            Artisanal Collection
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Our Most Popular Products
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover our handcrafted selection of premium cocktail ingredients, made with care using traditional methods and the finest botanicals from mountain regions.
+            Discover our handcrafted selection of premium cocktail ingredients, made with care using traditional methods and the finest natural ingredients for that perfect soul in every drop.
           </p>
         </div>
         

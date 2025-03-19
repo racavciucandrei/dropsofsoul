@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -18,7 +17,6 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -28,7 +26,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   
-  // Close mobile menu when changing routes
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
@@ -43,15 +40,13 @@ const Navbar = () => {
       )}
     >
       <div className="container-custom flex items-center justify-between">
-        {/* Logo */}
         <Link 
           to="/" 
           className="relative z-10 font-serif text-2xl font-bold tracking-tight"
         >
-          Mountain Elixirs
+          Drops of Soul
         </Link>
         
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           {navLinks.map((link) => (
             <Link
@@ -69,7 +64,6 @@ const Navbar = () => {
           ))}
         </nav>
         
-        {/* Cart and Mobile Menu Buttons */}
         <div className="flex items-center space-x-4">
           <Button 
             variant="ghost" 
@@ -98,7 +92,6 @@ const Navbar = () => {
           </Button>
         </div>
         
-        {/* Mobile Navigation */}
         <div 
           className={cn(
             "fixed inset-0 bg-background/95 backdrop-blur-sm z-40 transition-transform duration-300 md:hidden",
