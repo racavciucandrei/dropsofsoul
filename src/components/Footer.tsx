@@ -15,7 +15,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link to="/" className="font-serif text-xl font-bold tracking-tight">
-              Mountain Elixirs
+              Drops of Soul
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
               Handcrafted cocktail ingredients from the mountains to your glass.
@@ -144,7 +144,7 @@ const Footer = () => {
         
         <div className="border-t mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-xs text-muted-foreground">
-            © {currentYear} Mountain Elixirs. All rights reserved.
+            © {currentYear} Drops of Soul. All rights reserved.
           </p>
           
           <div className="flex space-x-4 mt-4 sm:mt-0">
