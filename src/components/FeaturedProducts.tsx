@@ -6,39 +6,39 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Heart } from 'lucide-react';
 
-// Sample product data
+// Custom product data with new names
 const products = [
   {
     id: 1,
-    name: 'Aromatic Bitters',
+    name: 'Alpine Aromatic Bitters',
     category: 'Bitters',
     price: 18.95,
     image: '/assets/product-1.jpg',
-    slug: 'aromatic-bitters',
+    slug: 'alpine-aromatic-bitters',
   },
   {
     id: 2,
-    name: 'Elderflower Cordial',
+    name: 'Wild Elderflower Cordial',
     category: 'Cordials',
     price: 22.50,
     image: '/assets/product-2.jpg',
-    slug: 'elderflower-cordial',
+    slug: 'wild-elderflower-cordial',
   },
   {
     id: 3,
-    name: 'Blackberry Shrub',
+    name: 'Mountain Blackberry Shrub',
     category: 'Shrubs',
     price: 24.95,
     image: '/assets/product-3.jpg',
-    slug: 'blackberry-shrub',
+    slug: 'mountain-blackberry-shrub',
   },
   {
     id: 4,
-    name: 'Orange Bitters',
+    name: 'Spruce Orange Bitters',
     category: 'Bitters',
     price: 19.95,
     image: '/assets/product-4.jpg',
-    slug: 'orange-bitters',
+    slug: 'spruce-orange-bitters',
   },
 ];
 
@@ -140,13 +140,13 @@ const FeaturedProducts = () => {
       <div className="container-custom">
         <div className="text-center mb-12">
           <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
-            Featured Collection
+            Mountain Collection
           </span>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Our Most Popular Products
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Discover our handcrafted selection of premium cocktail ingredients, made with care using traditional methods and the finest botanicals.
+            Discover our handcrafted selection of premium cocktail ingredients, made with care using traditional methods and the finest botanicals from mountain regions.
           </p>
         </div>
         

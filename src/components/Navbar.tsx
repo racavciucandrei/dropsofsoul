@@ -48,7 +48,7 @@ const Navbar = () => {
           to="/" 
           className="relative z-10 font-serif text-2xl font-bold tracking-tight"
         >
-          Bitters & Bliss
+          Mountain Elixirs
         </Link>
         
         {/* Desktop Navigation */}

@@ -15,10 +15,10 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link to="/" className="font-serif text-xl font-bold tracking-tight">
-              Bitters & Bliss
+              Mountain Elixirs
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              Handcrafted cocktail ingredients for the discerning mixologist.
+              Handcrafted cocktail ingredients from the mountains to your glass.
             </p>
             <div className="flex space-x-4 mt-6">
               <Button
@@ -127,7 +127,7 @@ const Footer = () => {
           <div>
             <h3 className="font-medium mb-4">Subscribe</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Join our newsletter for exclusive offers and cocktail recipes.
+              Join our newsletter for exclusive offers and mountain-inspired cocktail recipes.
             </p>
             <div className="flex space-x-2">
               <Input 
@@ -144,7 +144,7 @@ const Footer = () => {
         
         <div className="border-t mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-xs text-muted-foreground">
-            © {currentYear} Bitters & Bliss. All rights reserved.
+            © {currentYear} Mountain Elixirs. All rights reserved.
           </p>
           
           <div className="flex space-x-4 mt-4 sm:mt-0">
