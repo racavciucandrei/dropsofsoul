@@ -41,8 +41,8 @@ const LightSwitch = () => {
     // Increment toggle count
     setToggleCount(prev => prev + 1);
     
-    // Check if the user is toggling too much (more than 5 times in a short period)
-    if (toggleCount >= 5 && !warningShown) {
+    // Check if the user is toggling too much (more than 2 times in a short period)
+    if (toggleCount >= 2 && !warningShown) {
       // Play warning using Speech Synthesis
       const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       utterance.rate = 1.0;
