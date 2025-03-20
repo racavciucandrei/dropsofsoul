@@ -10,50 +10,31 @@ const LightSwitch = () => {
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const audioInitializedRef = useRef(false);
   const lastToggleTimeRef = useRef(0);
+  const switchButtonRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
+    console.log("LightSwitch component mounted");
+    
     // Initialize audio immediately
     if (!audioInitializedRef.current) {
+      console.log("Initializing audio from LightSwitch component");
       initAudio();
       audioInitializedRef.current = true;
+      
+      // Try to play a silent sound to unblock audio
+      try {
+        const temp = new Audio('/click.mp3');
+        temp.volume = 0;
+        temp.play().then(() => {
+          console.log("Silent audio played successfully");
+          temp.pause();
+        }).catch(e => console.log("Silent audio play failed:", e));
+      } catch (e) {
+        console.error("Error creating silent audio:", e);
+      }
     }
     
-    // Force audio initialization for mobile devices
-    const forceInit = () => {
-      try {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        if (AudioContextClass) {
-          const audioContext = new AudioContextClass();
-          audioContext.resume().then(() => {
-            console.log("Audio context initialized and resumed by user interaction");
-            // Trigger a silent sound to unblock audio on iOS
-            const oscillator = audioContext.createOscillator();
-            oscillator.connect(audioContext.destination);
-            oscillator.start(0);
-            oscillator.stop(0.001);
-            
-            // Try playing the sound directly
-            playAudio('/click.mp3');
-          }).catch(e => console.error("Failed to resume audio context:", e));
-        }
-      } catch (e) {
-        console.error("Error during audio initialization:", e);
-      }
-      
-      document.removeEventListener('click', forceInit);
-      document.removeEventListener('touchstart', forceInit);
-    };
-    
-    document.addEventListener('click', forceInit, { once: true });
-    document.addEventListener('touchstart', forceInit, { once: true });
-    
-    return () => {
-      document.removeEventListener('click', forceInit);
-      document.removeEventListener('touchstart', forceInit);
-    };
-  }, []);
-  
-  useEffect(() => {
+    // Load stored toggle state
     const storedCount = localStorage.getItem('toggleCount');
     const storedPattern = localStorage.getItem('togglePattern');
     
@@ -64,6 +45,24 @@ const LightSwitch = () => {
     if (storedPattern) {
       setTogglePattern(JSON.parse(storedPattern));
     }
+    
+    // Create a forced click sound when the component loads
+    setTimeout(() => {
+      console.log("Playing initial sound to ensure audio is working");
+      playAudio('/click.mp3');
+    }, 1000);
+    
+    // Additional event listener for audio unblocking
+    const unblockAudio = () => {
+      console.log("Unblocking audio from user interaction in LightSwitch");
+      playAudio('/click.mp3');
+      document.removeEventListener('click', unblockAudio);
+    };
+    document.addEventListener('click', unblockAudio, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', unblockAudio);
+    };
   }, []);
   
   useEffect(() => {
@@ -97,20 +96,42 @@ const LightSwitch = () => {
   };
 
   const handleToggle = () => {
+    // Animation effect on the switch
+    if (switchButtonRef.current) {
+      switchButtonRef.current.classList.add('animate-pulse');
+      setTimeout(() => {
+        if (switchButtonRef.current) {
+          switchButtonRef.current.classList.remove('animate-pulse');
+        }
+      }, 300);
+    }
+    
     // Prevent rapid clicks to avoid audio glitches
     const now = Date.now();
     if (now - lastToggleTimeRef.current < 300) {
+      console.log("Ignoring rapid click");
       return;
     }
     lastToggleTimeRef.current = now;
     
-    // Play sound directly here before toggling the light state
+    // Use multiple audio playback strategies for maximum compatibility
+    console.log("Toggle button clicked in LightSwitch component");
+    
+    // Strategy 1: Play sound via our utility
     playAudio('/click.mp3');
-    console.log("Toggle button clicked, playing sound directly");
+    
+    // Strategy 2: Direct HTML5 Audio play
+    try {
+      const clickSound = new Audio('/click.mp3');
+      clickSound.play().catch(e => console.error("Direct click sound failed:", e));
+    } catch (e) {
+      console.error("Error creating click sound:", e);
+    }
     
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
+    // Call the context's toggle function
     toggleLight();
     
     const newPattern = [...togglePattern, !isLightOn];
@@ -164,6 +185,7 @@ const LightSwitch = () => {
       <div 
         className="cursor-pointer flex flex-col items-center"
         onClick={handleToggle}
+        ref={switchButtonRef}
       >
         <div className="w-8 h-14 bg-amber-200 border-2 border-amber-800 rounded-md shadow-md flex flex-col items-center justify-center relative">
           <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-300 rounded-md opacity-50"></div>
