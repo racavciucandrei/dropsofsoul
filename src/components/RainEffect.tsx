@@ -7,6 +7,7 @@ interface Droplet {
   size: number;
   speed: number;
   opacity: number;
+  length: number; // Add length property for teardrop shape
 }
 
 const RainEffect = () => {
@@ -36,12 +37,14 @@ const RainEffect = () => {
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
+        const size = Math.random() * 2 + 1; // Random size between 1-3px
         newDroplets.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1, // Start above the viewport
-          size: Math.random() * 3 + 1, // Random size between 1-4px
-          speed: Math.random() * 2 + 1, // Random speed
-          opacity: Math.random() * 0.5 + 0.3, // Random opacity
+          size: size,
+          speed: Math.random() * 3 + 2, // Random speed between 2-5
+          opacity: Math.random() * 0.4 + 0.2, // Random opacity
+          length: size * (Math.random() * 3 + 3), // Length of teardrop proportional to size
         });
       }
 
@@ -50,18 +53,42 @@ const RainEffect = () => {
 
     createDroplets();
 
+    // Draw teardrop shape
+    const drawTeardrop = (x: number, y: number, size: number, length: number, opacity: number) => {
+      ctx.beginPath();
+      
+      // Draw teardrop shape
+      ctx.moveTo(x, y);
+      
+      // Draw the rounded top of the teardrop
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      
+      // Draw the tapered tail
+      ctx.moveTo(x, y);
+      ctx.lineTo(x - size/2, y + length);
+      ctx.lineTo(x + size/2, y + length);
+      ctx.lineTo(x, y);
+      
+      // Fill with semi-transparent blue-white color
+      ctx.fillStyle = `rgba(220, 240, 255, ${opacity})`;
+      ctx.fill();
+    };
+
     // Animation function
     const draw = () => {
-      // Clear canvas with a transparent fill to create trail effect
+      // Clear canvas with a transparent fill
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw and update droplets
-      droplets.current.forEach((droplet, index) => {
-        // Draw droplet
-        ctx.beginPath();
-        ctx.arc(droplet.x, droplet.y, droplet.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200, 200, 220, ${droplet.opacity})`;
-        ctx.fill();
+      droplets.current.forEach((droplet) => {
+        // Draw droplet as teardrop
+        drawTeardrop(
+          droplet.x, 
+          droplet.y, 
+          droplet.size, 
+          droplet.length, 
+          droplet.opacity
+        );
 
         // Update position
         droplet.y += droplet.speed;
