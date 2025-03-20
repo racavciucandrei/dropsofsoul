@@ -36,21 +36,26 @@ const RainEffect = () => {
 
     // Create initial droplets
     const createDroplets = () => {
-      const dropletCount = Math.floor(window.innerWidth / 12); // More droplets for denser rain
+      // Reduce droplet count for slower, more sparse rain
+      const dropletCount = Math.floor(window.innerWidth / 20); 
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
-        const size = Math.random() * 1.5 + 0.8; // Smaller raindrops (0.8-2.3px)
+        // Increase size range for larger raindrops (1.2-3.0px)
+        const size = Math.random() * 1.8 + 1.2; 
         newDroplets.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1, // Start above the viewport
           size: size,
-          speed: Math.random() * 5 + 7, // Faster speed between 7-12
-          opacity: Math.random() * 0.4 + 0.3, // Slightly more opacity
-          length: size * (Math.random() * 7 + 5), // Longer teardrop shape
+          // Slower speed between 4-8
+          speed: Math.random() * 4 + 4, 
+          opacity: Math.random() * 0.4 + 0.3, // Keep same opacity
+          // Longer teardrop shape based on larger size
+          length: size * (Math.random() * 8 + 6), 
           sway: 0,
           swayDirection: Math.random() > 0.5 ? 1 : -1,
-          swaySpeed: Math.random() * 0.05 + 0.01,
+          // Reduce sway speed for gentler movement
+          swaySpeed: Math.random() * 0.03 + 0.005, 
         });
       }
 
@@ -141,7 +146,7 @@ const RainEffect = () => {
           droplet.y = Math.random() * -50 - 10; // Randomize starting position above screen
           droplet.x = Math.random() * canvas.width;
           // Randomize speed slightly on reset for more natural variation
-          droplet.speed = Math.random() * 5 + 7;
+          droplet.speed = Math.random() * 4 + 4;
         }
       });
 
