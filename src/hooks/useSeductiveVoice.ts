@@ -11,31 +11,31 @@ export const useSeductiveVoice = () => {
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance();
       
-      // Marilyn Monroe-inspired voice settings
-      utterance.rate = 0.6;     // Very slow, breathy pace
-      utterance.pitch = 1.4;    // Higher pitched, feminine voice
+      // Cartoon character voice settings
+      utterance.rate = 1.2;     // Faster, more animated pace
+      utterance.pitch = 1.7;    // Higher pitched for cartoon effect
       utterance.volume = 1.0;   // Full volume
       
-      // Add breathy pauses and Marilyn's characteristic drawl
-      utterance.text = "Ohhh... hey there... don't play... with that switch... sugar";
+      // Funny cartoon character line
+      utterance.text = "Woah woah woah! Hey buddy! That switch isn't a toy, ya know!";
       
       const voices = window.speechSynthesis.getVoices();
       
-      // Find a feminine voice for Marilyn-like effect
-      const femaleVoice = voices.find(voice => 
-        voice.name.includes('Female') || 
+      // Try to find a voice that might work well for cartoon character
+      const cartoonishVoice = voices.find(voice => 
         voice.name.includes('Samantha') ||
-        voice.name.includes('Victoria') ||
         voice.name.includes('Karen') ||
-        voice.name.includes('Moira') ||
-        voice.name.includes('Tessa')
+        voice.name.includes('Daniel') ||
+        voice.name.includes('Fred') ||
+        voice.name.includes('Google US English') ||
+        voice.name.includes('Microsoft Zira')
       );
       
-      if (femaleVoice) {
-        utterance.voice = femaleVoice;
-        console.log("Using Marilyn-inspired voice:", femaleVoice.name);
+      if (cartoonishVoice) {
+        utterance.voice = cartoonishVoice;
+        console.log("Using cartoon-like voice:", cartoonishVoice.name);
       } else {
-        console.log("No female voice found, using default with Marilyn-inspired adjustments");
+        console.log("No suitable voice found, using default with cartoon adjustments");
       }
       
       window.speechSynthesis.speak(utterance);
