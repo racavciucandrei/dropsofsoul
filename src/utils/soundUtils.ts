@@ -1,64 +1,140 @@
+// Enhanced audio utilities with multiple fallback mechanisms for cross-browser support
 
-// Improved utility for playing audio files with better browser support
-let audioContext: AudioContext | null = null;
+// Keep track of whether audio has been initialized
+let audioInitialized = false;
 
-// Initialize audio context on first user interaction
-const initAudioContext = () => {
-  if (!audioContext) {
-    try {
-      audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      console.log("AudioContext initialized successfully");
-    } catch (error) {
-      console.error("Failed to create AudioContext:", error);
-    }
+// Create a single audio element that can be reused
+const getAudioElement = (src: string): HTMLAudioElement => {
+  const existingAudio = document.getElementById('global-audio-element') as HTMLAudioElement;
+  if (existingAudio) {
+    existingAudio.src = src;
+    return existingAudio;
   }
-  return audioContext;
+  
+  const audio = document.createElement('audio');
+  audio.id = 'global-audio-element';
+  audio.style.display = 'none';
+  document.body.appendChild(audio);
+  audio.src = src;
+  return audio;
 };
 
-// Play sound from file using both Audio API and AudioContext for better support
-export const playAudio = (audioPath: string) => {
-  // Try the standard Audio API first
+// Initialize audio on first user interaction
+export const initAudio = (): void => {
+  if (audioInitialized) return;
+  
   try {
-    const audio = new Audio(audioPath);
+    // Create and play a silent sound to unlock audio
+    const audio = getAudioElement('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAACAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAQKAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==');
+    audio.volume = 0;
+    audio.muted = true;
     
-    // Add event listeners for debugging
-    audio.addEventListener('play', () => console.log('Audio started playing'));
-    audio.addEventListener('error', (e) => console.error('Audio element error:', e));
-    
-    // Use promise to handle autoplay restrictions
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => console.log("Audio playback started successfully"))
-        .catch(error => {
-          console.error("Standard Audio API failed:", error);
-          
-          // Fallback to AudioContext if standard Audio API fails
-          const ctx = initAudioContext();
-          if (!ctx) return;
-          
-          fetch(audioPath)
-            .then(response => response.arrayBuffer())
-            .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
-            .then(audioBuffer => {
-              const source = ctx.createBufferSource();
-              source.buffer = audioBuffer;
-              source.connect(ctx.destination);
-              source.start(0);
-              console.log("Fallback AudioContext playback started");
-            })
-            .catch(error => console.error("AudioContext fallback failed:", error));
+        .then(() => {
+          console.log("Audio system initialized successfully");
+          audioInitialized = true;
+        })
+        .catch(err => {
+          console.warn("Silent audio initialization failed:", err);
         });
     }
   } catch (error) {
-    console.error("Failed to create audio element:", error);
+    console.warn("Error initializing audio:", error);
+  }
+};
+
+// Play sound with multiple fallback mechanisms
+export const playAudio = (audioPath: string): void => {
+  console.log(`Attempting to play sound: ${audioPath}`);
+  
+  // Method 1: Use pre-existing audio element if available
+  const existingAudio = document.getElementById('clickSound') as HTMLAudioElement;
+  if (existingAudio) {
+    try {
+      existingAudio.currentTime = 0;
+      existingAudio.volume = 1.0;
+      existingAudio.muted = false;
+      const promise = existingAudio.play();
+      if (promise !== undefined) {
+        promise.catch(error => {
+          console.warn("Existing audio element failed:", error);
+          tryAlternativeMethods(audioPath);
+        });
+      }
+      return;
+    } catch (error) {
+      console.warn("Error with existing audio element:", error);
+    }
+  }
+  
+  tryAlternativeMethods(audioPath);
+};
+
+// Try alternative methods for playing sound
+const tryAlternativeMethods = (audioPath: string): void => {
+  // Method 2: Create a new Audio object
+  try {
+    const audio = new Audio(audioPath);
+    audio.volume = 1.0;
+    const promise = audio.play();
+    if (promise !== undefined) {
+      promise
+        .then(() => console.log("New Audio object played successfully"))
+        .catch(error => {
+          console.warn("New Audio object failed:", error);
+          useWebAudioAPI(audioPath);
+        });
+    }
+  } catch (error) {
+    console.warn("Error creating new Audio object:", error);
+    useWebAudioAPI(audioPath);
+  }
+};
+
+// Use Web Audio API as a final fallback
+const useWebAudioAPI = (audioPath: string): void => {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) {
+      console.error("Web Audio API not supported in this browser");
+      return;
+    }
+    
+    const audioContext = new AudioContext();
+    
+    // Create a short clicking sound programmatically as a last resort
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.type = 'square';
+    oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(40, audioContext.currentTime + 0.1);
+    
+    gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.1);
+    
+    console.log("Played synthesized click using Web Audio API");
+  } catch (error) {
+    console.error("Web Audio API failed:", error);
   }
 };
 
 // Function to preload audio file for better performance
-export const preloadAudio = (audioPath: string) => {
+export const preloadAudio = (audioPath: string): HTMLAudioElement => {
   const audio = new Audio();
   audio.src = audioPath;
   audio.preload = 'auto';
+  
+  // Try to load it
+  audio.load();
+  
   return audio;
 };

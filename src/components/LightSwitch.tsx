@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { useToast } from '@/hooks/use-toast';
-import { playAudio, preloadAudio } from '@/utils/soundUtils';
+import { playAudio, preloadAudio, initAudio } from '@/utils/soundUtils';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -11,32 +11,63 @@ const LightSwitch = () => {
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioInitializedRef = useRef(false);
   
-  // Preload audio on component mount
+  // Initialize audio system on component mount
   useEffect(() => {
+    // Create a hidden audio element specifically for the switch sound
+    const audio = document.createElement('audio');
+    audio.id = 'clickSound';
+    audio.src = '/click.mp3';
+    audio.preload = 'auto';
+    audio.style.display = 'none';
+    document.body.appendChild(audio);
+    
+    // Preload the audio
     audioRef.current = preloadAudio('/click.mp3');
     
-    // Initialize audio on first load with a silent sound
-    const initAudio = () => {
-      const context = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const emptyBuffer = context.createBuffer(1, 1, 22050);
-      const source = context.createBufferSource();
-      source.buffer = emptyBuffer;
-      source.connect(context.destination);
-      source.start(0);
+    // Initialize audio system on first user interaction
+    const initAudioSystem = () => {
+      if (audioInitializedRef.current) return;
+      
+      initAudio();
+      audioInitializedRef.current = true;
+      
+      // Try to play a silent sound to unlock audio
+      const silentPlay = () => {
+        const audio = audioRef.current;
+        if (audio) {
+          audio.volume = 0;
+          audio.muted = true;
+          audio.play().catch(() => {
+            // Ignore errors here, this is just to unlock audio
+          });
+        }
+      };
+      
+      silentPlay();
       
       // Remove event listeners after initialization
-      document.removeEventListener('click', initAudio);
-      document.removeEventListener('touchstart', initAudio);
+      document.removeEventListener('click', initAudioSystem);
+      document.removeEventListener('touchstart', initAudioSystem);
+      document.removeEventListener('keydown', initAudioSystem);
     };
     
     // Add event listeners for user interaction to initialize audio
-    document.addEventListener('click', initAudio);
-    document.addEventListener('touchstart', initAudio);
+    document.addEventListener('click', initAudioSystem);
+    document.addEventListener('touchstart', initAudioSystem);
+    document.addEventListener('keydown', initAudioSystem);
     
     return () => {
-      document.removeEventListener('click', initAudio);
-      document.removeEventListener('touchstart', initAudio);
+      document.removeEventListener('click', initAudioSystem);
+      document.removeEventListener('touchstart', initAudioSystem);
+      document.removeEventListener('keydown', initAudioSystem);
+      
+      // Clean up the audio element
+      const audioElement = document.getElementById('clickSound');
+      if (audioElement) {
+        document.body.removeChild(audioElement);
+      }
     };
   }, []);
   
@@ -91,6 +122,12 @@ const LightSwitch = () => {
 
   // Handle switch toggle with count tracking
   const handleToggle = () => {
+    // Ensure audio is initialized
+    if (!audioInitializedRef.current) {
+      initAudio();
+      audioInitializedRef.current = true;
+    }
+    
     // Play the vintage mechanical switch sound
     playAudio('/click.mp3');
     console.log("Attempting to play switch sound");
@@ -165,9 +202,6 @@ const LightSwitch = () => {
           <p className="text-lg font-medium">Now you can see inside the soul</p>
         </div>
       )}
-      
-      {/* Hidden audio element for better browser support */}
-      <audio id="clickSound" src="/click.mp3" preload="auto" style={{ display: 'none' }} />
     </div>
   );
 };
