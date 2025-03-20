@@ -10,18 +10,6 @@ const LightSwitch = () => {
   const [warningShown, setWarningShown] = useState(false);
   const { toast } = useToast();
   
-  // Reset toggle count after a period of inactivity (10 seconds)
-  useEffect(() => {
-    if (toggleCount > 0) {
-      const timer = setTimeout(() => {
-        setToggleCount(0);
-        setWarningShown(false);
-      }, 10000); // 10 seconds
-      
-      return () => clearTimeout(timer);
-    }
-  }, [toggleCount]);
-  
   // Show message when lights are turned on and hide after delay
   useEffect(() => {
     if (isLightOn) {
