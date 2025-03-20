@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 
 interface Droplet {
@@ -7,6 +8,9 @@ interface Droplet {
   speed: number;
   opacity: number;
   length: number;
+  sway: number; // Add subtle horizontal movement
+  swayDirection: number; // Control sway direction
+  swaySpeed: number; // Control sway speed
 }
 
 const RainEffect = () => {
@@ -30,20 +34,23 @@ const RainEffect = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Create initial droplets - moderate density
+    // Create initial droplets
     const createDroplets = () => {
-      const dropletCount = Math.floor(window.innerWidth / 15); // Increased density from 25 to 15
+      const dropletCount = Math.floor(window.innerWidth / 12); // More droplets for denser rain
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
-        const size = Math.random() * 1 + 0.5; // Keep the same size
+        const size = Math.random() * 1.5 + 0.8; // Smaller raindrops (0.8-2.3px)
         newDroplets.push({
           x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height * -1,
+          y: Math.random() * canvas.height * -1, // Start above the viewport
           size: size,
-          speed: Math.random() * 4 + 3,
-          opacity: Math.random() * 0.3 + 0.1,
-          length: size * (Math.random() * 3 + 3),
+          speed: Math.random() * 5 + 7, // Faster speed between 7-12
+          opacity: Math.random() * 0.4 + 0.3, // Slightly more opacity
+          length: size * (Math.random() * 7 + 5), // Longer teardrop shape
+          sway: 0,
+          swayDirection: Math.random() > 0.5 ? 1 : -1,
+          swaySpeed: Math.random() * 0.05 + 0.01,
         });
       }
 
@@ -52,34 +59,74 @@ const RainEffect = () => {
 
     createDroplets();
 
-    // Draw simple raindrop
-    const drawRaindrop = (
-      x: number, 
-      y: number, 
-      size: number, 
-      length: number, 
-      opacity: number,
-    ) => {
-      // Draw a simple line for raindrop
+    // Draw realistic teardrop shape
+    const drawTeardrop = (x: number, y: number, size: number, length: number, opacity: number) => {
       ctx.beginPath();
-      ctx.moveTo(x, y);
-      ctx.lineTo(x, y + length);
-      ctx.strokeStyle = `rgba(184, 212, 242, ${opacity})`;
-      ctx.lineWidth = size;
-      ctx.lineCap = 'round';
-      ctx.stroke();
+      
+      // Start at the bottom of the teardrop for better drawing
+      ctx.moveTo(x, y + length);
+      
+      // Draw left side curved path
+      ctx.quadraticCurveTo(
+        x - size/2, y + length * 0.7, 
+        x - size, y + length * 0.4
+      );
+      
+      // Draw top rounded part
+      ctx.quadraticCurveTo(
+        x - size, y, 
+        x, y - size/2
+      );
+      
+      // Draw right side curved path
+      ctx.quadraticCurveTo(
+        x + size, y, 
+        x + size, y + length * 0.4
+      );
+      
+      // Close the path back to the starting point
+      ctx.quadraticCurveTo(
+        x + size/2, y + length * 0.7, 
+        x, y + length
+      );
+      
+      // Create gradient for more realistic water appearance
+      const gradient = ctx.createLinearGradient(x, y - size/2, x, y + length);
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity * 0.9})`);
+      gradient.addColorStop(0.5, `rgba(210, 235, 255, ${opacity})`);
+      gradient.addColorStop(1, `rgba(200, 230, 255, ${opacity * 0.7})`);
+      
+      ctx.fillStyle = gradient;
+      ctx.fill();
+      
+      // Add highlight (small white dot at top left)
+      ctx.beginPath();
+      ctx.arc(x - size/3, y, size/4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.8})`;
+      ctx.fill();
     };
 
     // Animation function
     const draw = () => {
-      // Clear canvas completely for cleaner look
+      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Optional: add slight blur for more realistic effect
+      // ctx.filter = 'blur(0.3px)';
       
       // Draw and update droplets
       droplets.current.forEach((droplet) => {
-        // Draw the raindrop
-        drawRaindrop(
-          droplet.x, 
+        // Apply slight horizontal sway
+        droplet.sway += droplet.swaySpeed * droplet.swayDirection;
+        
+        // Limit sway amount and change direction when limit reached
+        if (Math.abs(droplet.sway) > 1.5) {
+          droplet.swayDirection *= -1;
+        }
+        
+        // Draw droplet as teardrop
+        drawTeardrop(
+          droplet.x + droplet.sway, 
           droplet.y, 
           droplet.size, 
           droplet.length, 
@@ -91,8 +138,10 @@ const RainEffect = () => {
 
         // Reset if off screen
         if (droplet.y > canvas.height) {
-          droplet.y = Math.random() * -100 - 10; // Start higher above screen
+          droplet.y = Math.random() * -50 - 10; // Randomize starting position above screen
           droplet.x = Math.random() * canvas.width;
+          // Randomize speed slightly on reset for more natural variation
+          droplet.speed = Math.random() * 5 + 7;
         }
       });
 
