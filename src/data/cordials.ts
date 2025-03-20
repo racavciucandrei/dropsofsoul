@@ -13,7 +13,7 @@ export const cordials: Product[] = [
     description: 'Our Elderflower Cordial captures the delicate floral sweetness of elderflower blossoms. This versatile cordial can be mixed with sparkling water, added to cocktails, or used in desserts for a subtle floral complexity.',
     details: {
       ingredients: 'Water, cane sugar, elderflower extract, citric acid, natural flavors.',
-      size: '250ml (8.4 fl oz)',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
       usage: '15-30ml per drink',
     },
     related: [10, 11, 12],
@@ -30,7 +30,7 @@ export const cordials: Product[] = [
     description: 'Our Ginger Cordial balances the warmth and spice of fresh ginger with subtle sweetness. This cordial adds a spicy kick to Moscow Mules, can be mixed with hot water for a warming drink, or adds complexity to many cocktails.',
     details: {
       ingredients: 'Water, cane sugar, fresh ginger extract, lemon, natural flavors.',
-      size: '250ml (8.4 fl oz)',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
       usage: '15-30ml per drink',
     },
     related: [9, 11, 14],
@@ -47,7 +47,7 @@ export const cordials: Product[] = [
     description: 'Our Lavender Cordial features the elegant floral notes of lavender balanced with a touch of citrus. This cordial pairs beautifully with gin, vodka, or simply mixed with sparkling water for a refreshing non-alcoholic drink.',
     details: {
       ingredients: 'Water, cane sugar, lavender extract, lemon, natural flavors.',
-      size: '250ml (8.4 fl oz)',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
       usage: '15-30ml per drink',
     },
     related: [9, 12, 13],
@@ -64,7 +64,7 @@ export const cordials: Product[] = [
     description: 'Our Rose Cordial captures the delicate essence of rose petals with subtle sweetness. This elegant cordial adds a floral dimension to cocktails, can be mixed with champagne, or diluted with water for a refreshing drink.',
     details: {
       ingredients: 'Water, cane sugar, rose extract, lemon, natural flavors.',
-      size: '250ml (8.4 fl oz)',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
       usage: '15-30ml per drink',
     },
     related: [9, 11, 13],
@@ -81,7 +81,7 @@ export const cordials: Product[] = [
     description: 'Our Hibiscus Cordial features the vibrant, tart flavor of hibiscus flowers with subtle sweetness. This bright red cordial adds striking color and flavor to cocktails, can be mixed with sparkling water, or used in desserts.',
     details: {
       ingredients: 'Water, cane sugar, hibiscus extract, natural flavors.',
-      size: '250ml (8.4 fl oz)',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
       usage: '15-30ml per drink',
     },
     related: [12, 9, 15],
@@ -98,7 +98,7 @@ export const cordials: Product[] = [
     description: 'This elegant cordial blends the tartness of ripe, succulent raspberries with the floral sweetness of lychee. By preserving the natural characteristics of the fruits through a precise, gentle extraction process, we achieve a well-rounded and smooth flavor. Ideal for both cocktails and mocktails, its balanced taste captures the essence of fresh fruit and lasting finish in every drop.',
     details: {
       ingredients: 'Water, cane sugar, raspberry extract, lychee extract, citric acid, natural flavors.',
-      size: '250ml (8.4 fl oz)',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
       usage: '15-30ml per drink',
       flavorProfile: 'A perfect balance of tart raspberry and delicate floral lychee sweetness, creating a sophisticated, fruit-forward profile.'
     },
