@@ -1,4 +1,3 @@
-
 // Product data types
 export interface ProductDetails {
   ingredients: string;
@@ -362,7 +361,7 @@ export const allProducts: Product[] = [
     reviews: 37,
   },
   
-  // Adding new Hibiscus & Cardamom Bitters
+  // Hibiscus & Cardamom Bitters
   {
     id: 18,
     name: 'Hibiscus & Cardamom Bitters',
@@ -397,5 +396,40 @@ export const allProducts: Product[] = [
     related: [1, 2, 11],
     rating: 4.8,
     reviews: 15,
+  },
+  
+  // Adding new Coffee & Grapefruit Bitters
+  {
+    id: 19,
+    name: 'Coffee & Grapefruit Bitters',
+    category: 'bitters',
+    price: 26.00,
+    images: ['/assets/product-4.jpg', '/assets/product-4-alt.jpg', '/assets/product-4-detail.jpg'],
+    slug: 'coffee-grapefruit-bitters',
+    description: 'Inspired by the contrast of the bold mornings and refreshing afternoons, this bitters combines the deep, roasted aroma of coffee with the vibrant zest of grapefruit. It reflects the balance between richness and brightness-a perfect companion for cocktails seeking complexity, bringing depth and character to every creations. Handcrafted in small batches to awaken your cocktails.',
+    details: {
+      ingredients: 'Water, alcohol (45% ABV), coffee beans, grapefruit peel, selected spices, natural botanicals.',
+      size: '150ml (5.1 fl oz)',
+      usage: '2-3 dashes per cocktail',
+      flavorProfile: 'Bold and rich, balancing the roasted bitterness of coffee with the bright, zesty notes of grapefruit.'
+    },
+    signatureCocktail: {
+      name: 'Citrus Roast Negroni',
+      description: 'The Citrus Roast Negroni celebrates the art of infusion with its bold, layered profile. Notes of roasted coffee complement the bittersweet complexity of Campari, while the grapefruit peel adds a refreshing aromatic brightness. Perfect for lovers of bold, innovative twists on the classics.',
+      ingredients: [
+        '3cl coffee-infused Campari',
+        '3cl sweet vermouth',
+        '3cl grapefruit infused gin',
+        '3 dashes Coffee & Grapefruit Bitters'
+      ],
+      garnish: [
+        'Grapefruit twist',
+        '3 Coffee Beans'
+      ],
+      imagePath: '/lovable-uploads/f5280f26-197f-4528-baa5-0e3d04fe30f5.png'
+    },
+    related: [1, 7, 18],
+    rating: 4.7,
+    reviews: 12,
   },
 ];
