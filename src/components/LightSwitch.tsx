@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { useToast } from '@/hooks/use-toast';
-import { playAudio } from '@/utils/soundUtils';
+import { playAudio, preloadAudio } from '@/utils/soundUtils';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -10,6 +10,35 @@ const LightSwitch = () => {
   const [toggleCount, setToggleCount] = useState(0);
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Preload audio on component mount
+  useEffect(() => {
+    audioRef.current = preloadAudio('/click.mp3');
+    
+    // Initialize audio on first load with a silent sound
+    const initAudio = () => {
+      const context = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const emptyBuffer = context.createBuffer(1, 1, 22050);
+      const source = context.createBufferSource();
+      source.buffer = emptyBuffer;
+      source.connect(context.destination);
+      source.start(0);
+      
+      // Remove event listeners after initialization
+      document.removeEventListener('click', initAudio);
+      document.removeEventListener('touchstart', initAudio);
+    };
+    
+    // Add event listeners for user interaction to initialize audio
+    document.addEventListener('click', initAudio);
+    document.addEventListener('touchstart', initAudio);
+    
+    return () => {
+      document.removeEventListener('click', initAudio);
+      document.removeEventListener('touchstart', initAudio);
+    };
+  }, []);
   
   // Store toggle count in localStorage to persist across renders
   useEffect(() => {
@@ -64,6 +93,7 @@ const LightSwitch = () => {
   const handleToggle = () => {
     // Play the vintage mechanical switch sound
     playAudio('/click.mp3');
+    console.log("Attempting to play switch sound");
     
     // First increment toggle count
     const newCount = toggleCount + 1;
@@ -135,6 +165,9 @@ const LightSwitch = () => {
           <p className="text-lg font-medium">Now you can see inside the soul</p>
         </div>
       )}
+      
+      {/* Hidden audio element for better browser support */}
+      <audio id="clickSound" src="/click.mp3" preload="auto" style={{ display: 'none' }} />
     </div>
   );
 };
