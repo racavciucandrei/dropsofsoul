@@ -31,20 +31,20 @@ const RainEffect = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Create initial droplets
+    // Create initial droplets - fewer for subtlety
     const createDroplets = () => {
-      const dropletCount = Math.floor(window.innerWidth / 12);
+      const dropletCount = Math.floor(window.innerWidth / 25); // Reduced density
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
-        const size = Math.random() * 1.5 + 0.5;
+        const size = Math.random() * 1 + 0.5; // Slightly smaller
         newDroplets.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1, // Start above the viewport
           size: size,
-          speed: Math.random() * 5 + 3,
-          opacity: Math.random() * 0.4 + 0.1,
-          length: size * (Math.random() * 4 + 3),
+          speed: Math.random() * 4 + 3, // Slightly slower
+          opacity: Math.random() * 0.3 + 0.1, // More transparent
+          length: size * (Math.random() * 3 + 3), // Shorter
         });
       }
 
@@ -53,7 +53,7 @@ const RainEffect = () => {
 
     createDroplets();
 
-    // Draw realistic raindrop
+    // Draw simple raindrop
     const drawRaindrop = (
       x: number, 
       y: number, 
@@ -61,7 +61,7 @@ const RainEffect = () => {
       length: number, 
       opacity: number,
     ) => {
-      // Draw line for raindrop
+      // Draw a simple line for raindrop
       ctx.beginPath();
       ctx.moveTo(x, y);
       ctx.lineTo(x, y + length);
@@ -73,9 +73,8 @@ const RainEffect = () => {
 
     // Animation function
     const draw = () => {
-      // Clear canvas with slight fade effect for trails
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas completely for cleaner look
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Draw and update droplets
       droplets.current.forEach((droplet) => {
@@ -93,7 +92,7 @@ const RainEffect = () => {
 
         // Reset if off screen
         if (droplet.y > canvas.height) {
-          droplet.y = Math.random() * -50 - 10; // Randomize starting position above screen
+          droplet.y = Math.random() * -100 - 10; // Start higher above screen
           droplet.x = Math.random() * canvas.width;
         }
       });
