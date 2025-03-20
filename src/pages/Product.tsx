@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [cocktailImageLoaded, setCocktailImageLoaded] = useState(false);
   
   // Find product by slug
   const product = allProducts.find(p => p.slug === slug) || allProducts[0]; // Fallback to first product if not found
@@ -273,15 +275,23 @@ const Product = () => {
                       </div>
                       
                       <div className="md:w-1/2">
-                        <div className="aspect-square rounded-lg overflow-hidden bg-muted">
+                        <div className={cn(
+                          "aspect-square rounded-lg overflow-hidden bg-muted",
+                          cocktailImageLoaded ? "" : "shimmer"
+                        )}>
                           <img 
-                            src={product.signatureCocktail.imagePath || "/placeholder.svg"} 
+                            src={product.signatureCocktail.imagePath} 
                             alt={`${product.signatureCocktail.name} Cocktail`}
-                            className="w-full h-full object-cover"
+                            className={cn(
+                              "w-full h-full object-cover transition-opacity duration-500",
+                              cocktailImageLoaded ? "opacity-100" : "opacity-0"
+                            )}
+                            onLoad={() => setCocktailImageLoaded(true)}
                             onError={(e) => {
+                              console.error("Failed to load cocktail image:", product.signatureCocktail.imagePath);
                               const target = e.target as HTMLImageElement;
                               target.src = "/placeholder.svg";
-                              target.onerror = null;
+                              setCocktailImageLoaded(true);
                             }}
                           />
                         </div>
