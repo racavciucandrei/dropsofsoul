@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { useToast } from '@/hooks/use-toast';
+import { playAudio } from '@/utils/soundUtils';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -9,193 +10,6 @@ const LightSwitch = () => {
   const [toggleCount, setToggleCount] = useState(0);
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
-  
-  // Create audio context for generating click sound programmatically
-  const [audioContext] = useState(() => {
-    try {
-      // Create audio context for browsers that support it
-      return new (window.AudioContext || (window as any).webkitAudioContext)();
-    } catch (e) {
-      console.error("Web Audio API not supported:", e);
-      return null;
-    }
-  });
-  
-  // Function to play a more realistic vintage mechanical light switch sound
-  const playClickSound = () => {
-    if (!audioContext) return;
-    
-    try {
-      // Create oscillators for different components of the sound
-      const mainClickOsc = audioContext.createOscillator();
-      const mechanicalOsc = audioContext.createOscillator();
-      const springOsc = audioContext.createOscillator();
-      
-      // Create gain nodes for each component
-      const mainClickGain = audioContext.createGain();
-      const mechanicalGain = audioContext.createGain();
-      const springGain = audioContext.createGain();
-      
-      // Create a noise source for the vintage mechanical sounds
-      const noiseBuffer = createNoiseBuffer(audioContext);
-      const noiseSource = audioContext.createBufferSource();
-      noiseSource.buffer = noiseBuffer;
-      const noiseGain = audioContext.createGain();
-      
-      // A second noise source for the "spring back" effect
-      const springNoiseBuffer = createSpringNoiseBuffer(audioContext);
-      const springNoiseSource = audioContext.createBufferSource();
-      springNoiseSource.buffer = springNoiseBuffer;
-      const springNoiseGain = audioContext.createGain();
-      
-      // Create a filter for the mechanical sound
-      const mechanicalFilter = audioContext.createBiquadFilter();
-      mechanicalFilter.type = 'lowpass';
-      mechanicalFilter.frequency.value = 600;
-      mechanicalFilter.Q.value = 2;
-      
-      // Configure main click (initial impact)
-      mainClickOsc.type = 'triangle';
-      mainClickOsc.frequency.setValueAtTime(250, audioContext.currentTime);
-      mainClickOsc.frequency.exponentialRampToValueAtTime(80, audioContext.currentTime + 0.08);
-      
-      // Configure mechanical thunk (deeper sound component)
-      mechanicalOsc.type = 'sine';
-      mechanicalOsc.frequency.setValueAtTime(80, audioContext.currentTime);
-      mechanicalOsc.frequency.linearRampToValueAtTime(30, audioContext.currentTime + 0.25);
-      
-      // Configure spring oscillator (higher-pitched component for spring mechanism)
-      springOsc.type = 'triangle';
-      springOsc.frequency.setValueAtTime(600, audioContext.currentTime + 0.02);
-      springOsc.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.1);
-      
-      // Configure the gain envelopes for more realistic attack/decay
-      
-      // Main click envelope (sharp attack, medium decay)
-      mainClickGain.gain.setValueAtTime(0, audioContext.currentTime);
-      mainClickGain.gain.linearRampToValueAtTime(0.7, audioContext.currentTime + 0.005);
-      mainClickGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.12);
-      
-      // Mechanical component envelope (slower attack, longer decay)
-      mechanicalGain.gain.setValueAtTime(0, audioContext.currentTime);
-      mechanicalGain.gain.linearRampToValueAtTime(0.5, audioContext.currentTime + 0.01);
-      mechanicalGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.3);
-      
-      // Spring component envelope (delayed start, medium length)
-      springGain.gain.setValueAtTime(0, audioContext.currentTime);
-      springGain.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.02);
-      springGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.15);
-      
-      // Noise gain for mechanical friction
-      noiseGain.gain.setValueAtTime(0, audioContext.currentTime);
-      noiseGain.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.008);
-      noiseGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.2);
-      
-      // Spring noise gain (delayed start to match spring action)
-      springNoiseGain.gain.setValueAtTime(0, audioContext.currentTime);
-      springNoiseGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.025);
-      springNoiseGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.15);
-      
-      // Connect all nodes through the filter for the mechanical components
-      mechanicalOsc.connect(mechanicalGain);
-      mechanicalGain.connect(mechanicalFilter);
-      mechanicalFilter.connect(audioContext.destination);
-      
-      // Connect other nodes directly
-      mainClickOsc.connect(mainClickGain);
-      mainClickGain.connect(audioContext.destination);
-      
-      springOsc.connect(springGain);
-      springGain.connect(audioContext.destination);
-      
-      noiseSource.connect(noiseGain);
-      noiseGain.connect(audioContext.destination);
-      
-      springNoiseSource.connect(springNoiseGain);
-      springNoiseGain.connect(audioContext.destination);
-      
-      // Start and stop all sound sources with appropriate timing
-      const now = audioContext.currentTime;
-      
-      mainClickOsc.start(now);
-      mechanicalOsc.start(now);
-      springOsc.start(now + 0.02); // Slightly delayed for realism
-      noiseSource.start(now);
-      springNoiseSource.start(now + 0.02); // Match spring timing
-      
-      mainClickOsc.stop(now + 0.15);
-      mechanicalOsc.stop(now + 0.35);
-      springOsc.stop(now + 0.2);
-      noiseSource.stop(now + 0.25);
-      springNoiseSource.stop(now + 0.2);
-      
-      // Add a slight delay then a secondary smaller click for the mechanical "settle" sound
-      const settleOsc = audioContext.createOscillator();
-      const settleGain = audioContext.createGain();
-      
-      settleOsc.type = 'triangle';
-      settleOsc.frequency.value = 180;
-      
-      settleGain.gain.setValueAtTime(0, audioContext.currentTime + 0.15);
-      settleGain.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.155);
-      settleGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.2);
-      
-      settleOsc.connect(settleGain);
-      settleGain.connect(audioContext.destination);
-      
-      settleOsc.start(now + 0.15);
-      settleOsc.stop(now + 0.25);
-      
-    } catch (err) {
-      console.error("Error playing sound:", err);
-    }
-  };
-  
-  // Helper function to create a noise buffer for mechanical sound
-  const createNoiseBuffer = (context: AudioContext) => {
-    const bufferSize = context.sampleRate * 0.25; // 250ms of noise
-    const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
-    const data = buffer.getChannelData(0);
-    
-    // Fill the buffer with filtered random noise to simulate vintage mechanical friction
-    for (let i = 0; i < bufferSize; i++) {
-      // More concentrated noise at the beginning, more decay
-      const decay = Math.max(0, 1 - (i / bufferSize) * 5);
-      
-      // Add some periodic "catches" to simulate mechanical imperfections
-      const mechanicalCatches = (i % 80 < 10) ? 0.2 : 0;
-      
-      data[i] = ((Math.random() * 2 - 1) * decay * 0.7) + (mechanicalCatches * decay);
-    }
-    
-    return buffer;
-  };
-  
-  // Helper function to create a spring noise buffer
-  const createSpringNoiseBuffer = (context: AudioContext) => {
-    const bufferSize = context.sampleRate * 0.15; // 150ms of noise
-    const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
-    const data = buffer.getChannelData(0);
-    
-    // Create a "springy" noise with more oscillatory behavior
-    for (let i = 0; i < bufferSize; i++) {
-      const position = i / bufferSize;
-      
-      // Exponential decay for the spring sound
-      const decay = Math.exp(-position * 15);
-      
-      // Add spring oscillations that gradually slow down
-      const oscillationFreq = 0.1 - (position * 0.05);
-      const springiness = Math.sin(i * oscillationFreq) * decay * 0.3;
-      
-      // Add some randomness for realism
-      const noise = (Math.random() * 2 - 1) * 0.2 * decay;
-      
-      data[i] = springiness + noise;
-    }
-    
-    return buffer;
-  };
   
   // Store toggle count in localStorage to persist across renders
   useEffect(() => {
@@ -249,7 +63,7 @@ const LightSwitch = () => {
   // Handle switch toggle with count tracking
   const handleToggle = () => {
     // Play the vintage mechanical switch sound
-    playClickSound();
+    playAudio('/click.mp3');
     
     // First increment toggle count
     const newCount = toggleCount + 1;
