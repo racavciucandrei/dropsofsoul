@@ -21,9 +21,13 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     if (isLightOn) {
       document.documentElement.classList.remove("lights-off");
       document.body.classList.remove("lights-off");
+      
+      // Add animation classes for content reveal
+      document.documentElement.classList.add("content-reveal");
     } else {
       document.documentElement.classList.add("lights-off");
       document.body.classList.add("lights-off");
+      document.documentElement.classList.remove("content-reveal");
     }
   }, [isLightOn]);
 

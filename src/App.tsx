@@ -21,6 +21,31 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <LightProvider>
+        <style>
+          {`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            
+            .animate-fade-in {
+              animation: fadeIn 0.8s ease-in-out forwards;
+            }
+            
+            @keyframes slideIn {
+              from { transform: translateY(20px); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+            
+            .animate-slide-in {
+              animation: slideIn 0.8s ease-out forwards;
+            }
+            
+            .content-reveal .reveal-item {
+              animation: fadeIn 1.5s ease forwards;
+            }
+          `}
+        </style>
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -37,7 +62,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
-          <Footer className="hide-in-dark" />
+          <Footer />
         </BrowserRouter>
       </LightProvider>
     </TooltipProvider>
