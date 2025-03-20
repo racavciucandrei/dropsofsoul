@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 
 const About = () => {
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen pt-24 content-visibility hide-in-dark">
       {/* Hero Section */}
       <section className="relative py-20 bg-muted/30">
         <div className="container-custom">

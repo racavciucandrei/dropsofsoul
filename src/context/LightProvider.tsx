@@ -9,7 +9,7 @@ type LightContextType = {
 const LightContext = createContext<LightContextType | undefined>(undefined);
 
 export const LightProvider = ({ children }: { children: React.ReactNode }) => {
-  // Start with lights off
+  // Start with lights off by default
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {
@@ -18,8 +18,20 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Apply light effect to the entire page
   useEffect(() => {
-    document.documentElement.classList.toggle("lights-off", !isLightOn);
+    if (isLightOn) {
+      document.documentElement.classList.remove("lights-off");
+      document.body.classList.remove("lights-off");
+    } else {
+      document.documentElement.classList.add("lights-off");
+      document.body.classList.add("lights-off");
+    }
   }, [isLightOn]);
+
+  // Initial setup - make sure lights are off on first load
+  useEffect(() => {
+    document.documentElement.classList.add("lights-off");
+    document.body.classList.add("lights-off");
+  }, []);
 
   return (
     <LightContext.Provider value={{ isLightOn, toggleLight }}>

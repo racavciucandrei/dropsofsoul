@@ -31,7 +31,7 @@ const Index = () => {
     <div className="min-h-screen">
       <Hero />
       
-      <section className="py-20">
+      <section className="py-20 content-visibility hide-in-dark">
         <div className="container-custom">
           <div className="text-center mb-16">
             <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
@@ -60,9 +60,10 @@ const Index = () => {
         </div>
       </section>
       
-      <FeaturedProducts />
-      
-      <About />
+      <div className="content-visibility hide-in-dark">
+        <FeaturedProducts />
+        <About />
+      </div>
     </div>
   );
 };

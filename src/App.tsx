@@ -27,7 +27,7 @@ const App = () => (
           <RainEffect />
           <Navbar />
           <LightSwitch />
-          <main className="transition-opacity duration-500">
+          <main className="transition-all duration-500">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<Products />} />
@@ -37,7 +37,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
-          <Footer />
+          <Footer className="hide-in-dark" />
         </BrowserRouter>
       </LightProvider>
     </TooltipProvider>

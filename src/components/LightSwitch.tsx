@@ -1,67 +1,36 @@
 
-import React, { useState } from "react";
-import { useLight } from "@/context/LightProvider";
-import { cn } from "@/lib/utils";
-import { useToast } from "@/components/ui/use-toast";
+import React from 'react';
+import { useLight } from '@/context/LightProvider';
+import { Switch } from '@/components/ui/switch';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
-  const { toast } = useToast();
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const handleToggleLight = () => {
-    setIsAnimating(true);
+  
+  const handlePullString = () => {
+    const pullString = document.querySelector('.pull-string');
+    if (pullString) {
+      pullString.classList.add('pull-string-animate');
+      setTimeout(() => {
+        pullString.classList.remove('pull-string-animate');
+      }, 500);
+    }
     toggleLight();
-    
-    toast({
-      title: isLightOn ? "Lights turned off" : "Lights turned on",
-      description: isLightOn 
-        ? "The room is now dark." 
-        : "Now you can see inside the soul.",
-      duration: 3000,
-    });
-    
-    setTimeout(() => setIsAnimating(false), 500);
   };
 
   return (
-    <div className="fixed top-20 right-6 z-[60] flex flex-col items-center">
-      {/* Light bulb with glow effect */}
-      <div className={cn(
-        "w-8 h-8 rounded-full mb-1 transition-all duration-300",
-        isLightOn 
-          ? "bg-amber-400 shadow-[0_0_15px_5px_rgba(251,191,36,0.7)]" 
-          : "bg-gray-400"
-      )} />
-      
-      {/* Pull string */}
+    <div className="fixed right-6 top-24 z-50 flex flex-col items-center">
       <div 
-        className="cursor-pointer flex flex-col items-center" 
-        onClick={handleToggleLight}
-        aria-label={isLightOn ? "Turn light off" : "Turn light on"}
+        className="cursor-pointer flex flex-col items-center"
+        onClick={handlePullString}
       >
-        <div className="w-1 h-24 bg-gray-300 rounded-full relative">
-          {/* String texture lines */}
-          <div className="absolute inset-0 flex flex-col justify-around items-center opacity-30">
-            {[...Array(8)].map((_, i) => (
-              <div key={i} className="w-full h-px bg-gray-600" />
-            ))}
-          </div>
+        <div className="pull-string w-1 h-10 bg-amber-600 rounded-full mb-1"></div>
+        <div className="w-6 h-6 rounded-full bg-amber-400 border-2 border-amber-600 flex items-center justify-center text-amber-900 text-xs font-bold">
+          {isLightOn ? "ON" : "OFF"}
         </div>
-        
-        {/* Pull handle */}
-        <div className={cn(
-          "w-4 h-8 bg-gray-300 border border-gray-400 rounded-md transition-all",
-          isLightOn ? "bg-amber-200" : "",
-          isAnimating ? "pull-string-animate" : ""
-        )}>
-          <div className="w-full h-1 bg-gray-400 mt-1" />
-          <div className="w-full h-1 bg-gray-400 mt-1" />
-        </div>
-        
-        {/* Accessibility hint */}
-        <span className="sr-only">
-          {isLightOn ? "Turn off the light" : "Pull to turn on the light"}
+      </div>
+      <div className="mt-2 text-xs font-medium">
+        <span className={isLightOn ? "opacity-100" : "opacity-50"}>
+          {isLightOn ? "Lights On" : "Lights Off"}
         </span>
       </div>
     </div>
