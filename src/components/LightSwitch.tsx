@@ -21,34 +21,87 @@ const LightSwitch = () => {
     }
   });
   
-  // Function to play a click sound using the Web Audio API
+  // Function to play a more realistic old mechanical switch sound
   const playClickSound = () => {
     if (!audioContext) return;
     
     try {
-      // Create an oscillator for a short click sound
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      // Create the main click components
+      const clickOscillator = audioContext.createOscillator();
+      const clickGain = audioContext.createGain();
       
-      // Configure the oscillator
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(500, audioContext.currentTime); // Higher frequency for a "click"
+      // Create a mechanical "thunk" component
+      const thunkOscillator = audioContext.createOscillator();
+      const thunkGain = audioContext.createGain();
       
-      // Configure the gain node for a quick attack and decay
-      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
-      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.08);
+      // Create a noise component for the mechanical sound
+      const noiseBuffer = createNoiseBuffer(audioContext);
+      const noiseSource = audioContext.createBufferSource();
+      noiseSource.buffer = noiseBuffer;
+      const noiseGain = audioContext.createGain();
       
-      // Connect the nodes
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      // Configure the click oscillator (higher-pitched component)
+      clickOscillator.type = 'triangle';
+      clickOscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      clickOscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.05);
       
-      // Start and stop the oscillator
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.1);
+      // Configure the thunk oscillator (lower mechanical component)
+      thunkOscillator.type = 'sine';
+      thunkOscillator.frequency.setValueAtTime(120, audioContext.currentTime);
+      thunkOscillator.frequency.exponentialRampToValueAtTime(40, audioContext.currentTime + 0.15);
+      
+      // Configure the gain nodes for the click
+      clickGain.gain.setValueAtTime(0, audioContext.currentTime);
+      clickGain.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.005);
+      clickGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.12);
+      
+      // Configure the gain for the thunk
+      thunkGain.gain.setValueAtTime(0, audioContext.currentTime);
+      thunkGain.gain.linearRampToValueAtTime(0.4, audioContext.currentTime + 0.01);
+      thunkGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.2);
+      
+      // Configure the noise gain
+      noiseGain.gain.setValueAtTime(0, audioContext.currentTime);
+      noiseGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.005);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.1);
+      
+      // Connect all nodes
+      clickOscillator.connect(clickGain);
+      thunkOscillator.connect(thunkGain);
+      noiseSource.connect(noiseGain);
+      
+      clickGain.connect(audioContext.destination);
+      thunkGain.connect(audioContext.destination);
+      noiseGain.connect(audioContext.destination);
+      
+      // Start and stop the oscillators
+      const now = audioContext.currentTime;
+      clickOscillator.start(now);
+      thunkOscillator.start(now);
+      noiseSource.start(now);
+      
+      clickOscillator.stop(now + 0.15);
+      thunkOscillator.stop(now + 0.25);
+      noiseSource.stop(now + 0.15);
     } catch (err) {
       console.error("Error playing sound:", err);
     }
+  };
+  
+  // Helper function to create a noise buffer for mechanical sound
+  const createNoiseBuffer = (context: AudioContext) => {
+    const bufferSize = context.sampleRate * 0.15; // 150ms of noise
+    const buffer = context.createBuffer(1, bufferSize, context.sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    // Fill the buffer with random noise to simulate mechanical friction
+    for (let i = 0; i < bufferSize; i++) {
+      // More concentrated noise at the beginning
+      const decay = Math.max(0, 1 - (i / bufferSize) * 3);
+      data[i] = (Math.random() * 2 - 1) * decay * 0.5;
+    }
+    
+    return buffer;
   };
   
   // Store toggle count in localStorage to persist across renders
@@ -102,7 +155,7 @@ const LightSwitch = () => {
 
   // Handle switch toggle with count tracking
   const handleToggle = () => {
-    // Play the click sound
+    // Play the more realistic switch sound
     playClickSound();
     
     // First increment toggle count
