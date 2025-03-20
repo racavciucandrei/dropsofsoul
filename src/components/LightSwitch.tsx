@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { playAudio } from '@/utils/soundUtils';
@@ -23,8 +22,8 @@ const LightSwitch = () => {
   // Initialize audio and manage effects
   useLightSwitchEffects();
   
-  // Custom hook for voice feedback
-  const { playSeductiveWarning, voicePlayedRef } = useSeductiveVoice();
+  // Keep the reference but we won't actually use the voice functionality
+  const { voicePlayedRef } = useSeductiveVoice();
 
   const isOnOffOnOffOnPattern = (pattern: boolean[]) => {
     if (pattern.length < 5) return false;
@@ -77,10 +76,8 @@ const LightSwitch = () => {
     // Call the context's toggle function
     toggleLight();
     
-    // Check for special pattern and play voice warning if needed
-    if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern) && !voicePlayedRef.current) {
-      playSeductiveWarning();
-    }
+    // We're keeping the pattern detection code but not doing anything with it
+    // This makes it easier to add something different in the future if desired
   };
 
   return (
