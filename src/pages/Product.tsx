@@ -14,15 +14,32 @@ const allProducts = [
     id: 1,
     name: 'Tepache Bitters',
     category: 'bitters',
-    price: 18.95,
+    price: 26.00, // Updated price to 26 euro
     images: ['/assets/product-1.jpg', '/assets/product-1-alt.jpg', '/assets/product-1-detail.jpg'],
     slug: 'tepache-bitters',
     description: 'Rooted in the rich traditions of Mexico, this bitters captures the soul of tepache, celebrating the fermented pineapple drink. The dried sweetness of pineapple peel blends harmoniously with earthy and spiced flavours, creating a vibrant, bold elixir. Handcrafted for adventurous bartenders, it brings a funky twist to cocktails, with the wild flavours of traditional Mexican fermentation in every drop.',
     details: {
       ingredients: 'Water, alcohol (45% ABV), pineapple peel, selected spices, natural botanicals.',
-      size: '100ml (3.4 fl oz)',
+      size: '150ml (5.1 fl oz)', // Updated size to 150ml
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'A tangy, sweet, and spicy blend inspired by the vibrant, fermented essence of tepache. The focus is on pineapple peel, spices, and a touch of funk.'
+    },
+    signatureCocktail: {
+      name: 'Tepache Dream',
+      description: 'A vibrant and tropical cocktail that marries the deep smokiness of aged tequila and mezcal with the refreshing, tangy sweetness of pineapple and lime. Infused with Tepache Bitters, it carries a nuanced, savoury complexity that evokes the spirit of pineapple fermentation. The carbonized pineapple juice adds an effervescent touch, while the garnishes — a pineapple frond, dried lime wheel, and dried pineapple — create a stunning visual display. This drink is an immersive experience that balances boldness and refreshment, perfect for showcasing the unique character of Tepache Bitters.',
+      ingredients: [
+        '4cl Aged Tequila',
+        '1cl Mezcal',
+        '3cl Pineapple & Lime Cordial',
+        '1cl Fresh lime juice',
+        '3 dashes Tepache Bitters',
+        'Pineapple Juice (cleared) (see technique below)'
+      ],
+      garnish: [
+        'Pineapple Frond',
+        'Dried Lime Wheel',
+        'Half of a Dried Pineapple Wheel'
+      ]
     },
     related: [2, 3, 4],
     rating: 4.8,
@@ -482,10 +499,11 @@ const Product = () => {
             
             {/* Product Information Tabs */}
             <Tabs defaultValue="details" className="mt-8">
-              <TabsList className="grid w-full grid-cols-3">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="details">Details</TabsTrigger>
                 <TabsTrigger value="ingredients">Ingredients</TabsTrigger>
                 <TabsTrigger value="usage">How to Use</TabsTrigger>
+                <TabsTrigger value="cocktail">Signature Cocktail</TabsTrigger>
               </TabsList>
               
               <TabsContent value="details" className="mt-4 space-y-4">
@@ -524,6 +542,36 @@ const Product = () => {
                   </p>
                 </div>
               </TabsContent>
+              
+              {/* New Signature Cocktail Tab */}
+              {product.signatureCocktail && (
+                <TabsContent value="cocktail" className="mt-4">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-medium text-lg">{product.signatureCocktail.name}</h3>
+                      <p className="text-muted-foreground text-sm mt-1">{product.signatureCocktail.description}</p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium text-sm">Ingredients:</h4>
+                      <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
+                        {product.signatureCocktail.ingredients.map((ingredient, index) => (
+                          <li key={index}>{ingredient}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium text-sm">Garnish:</h4>
+                      <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
+                        {product.signatureCocktail.garnish.map((item, index) => (
+                          <li key={index}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </TabsContent>
+              )}
             </Tabs>
           </div>
         </div>
