@@ -389,10 +389,7 @@ export const allProducts: Product[] = [
         'Jasmine Air Foam',
         '2 puffs Absinthe'
       ],
-      garnish: [
-        'Edible flower',
-        'Sprig of fresh cardamom leaf'
-      ],
+      garnish: [],
       imagePath: '/placeholder.svg'
     },
     related: [1, 2, 11],
