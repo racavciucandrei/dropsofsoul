@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,9 +9,7 @@ import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Updated product data
 const allProducts = [
-  // Bitters (7 types)
   {
     id: 1,
     name: 'Tepache Bitters',
@@ -24,6 +21,15 @@ const allProducts = [
   },
   {
     id: 2,
+    name: 'Roasted Corn & Smoked Chili Bitters',
+    category: 'bitters',
+    price: 26.00,
+    image: '/assets/product-4.jpg',
+    slug: 'roasted-corn-smoked-chili-bitters',
+    bestseller: true,
+  },
+  {
+    id: 3,
     name: 'Orange Bitters',
     category: 'bitters',
     price: 19.95,
@@ -32,7 +38,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 3,
+    id: 4,
     name: 'Cherry Bitters',
     category: 'bitters',
     price: 18.50,
@@ -41,7 +47,7 @@ const allProducts = [
     bestseller: true,
   },
   {
-    id: 4,
+    id: 5,
     name: 'Chocolate Bitters',
     category: 'bitters',
     price: 20.95,
@@ -50,7 +56,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 5,
+    id: 6,
     name: 'Lavender Bitters',
     category: 'bitters',
     price: 21.50,
@@ -59,7 +65,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 6,
+    id: 7,
     name: 'Grapefruit Bitters',
     category: 'bitters',
     price: 19.95,
@@ -68,7 +74,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 7,
+    id: 8,
     name: 'Spiced Bitters',
     category: 'bitters',
     price: 22.95,
@@ -77,9 +83,8 @@ const allProducts = [
     bestseller: true,
   },
   
-  // Cordials (5 types)
   {
-    id: 8,
+    id: 9,
     name: 'Elderflower Cordial',
     category: 'cordials',
     price: 22.50,
@@ -88,7 +93,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 9,
+    id: 10,
     name: 'Ginger Cordial',
     category: 'cordials',
     price: 21.95,
@@ -97,7 +102,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 10,
+    id: 11,
     name: 'Lavender Cordial',
     category: 'cordials',
     price: 24.95,
@@ -106,7 +111,7 @@ const allProducts = [
     bestseller: true,
   },
   {
-    id: 11,
+    id: 12,
     name: 'Rose Cordial',
     category: 'cordials',
     price: 23.95,
@@ -115,7 +120,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 12,
+    id: 13,
     name: 'Hibiscus Cordial',
     category: 'cordials',
     price: 25.95,
@@ -124,9 +129,8 @@ const allProducts = [
     bestseller: true,
   },
   
-  // Shrubs (4 types)
   {
-    id: 13,
+    id: 14,
     name: 'Blackberry Shrub',
     category: 'shrubs',
     price: 24.95,
@@ -135,7 +139,7 @@ const allProducts = [
     bestseller: true,
   },
   {
-    id: 14,
+    id: 15,
     name: 'Raspberry Shrub',
     category: 'shrubs',
     price: 23.50,
@@ -144,7 +148,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 15,
+    id: 16,
     name: 'Peach Shrub',
     category: 'shrubs',
     price: 22.95,
@@ -153,7 +157,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 16,
+    id: 17,
     name: 'Strawberry Basil Shrub',
     category: 'shrubs',
     price: 25.50,
@@ -181,7 +185,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     >
       <Link to={`/product/${product.slug}`}>
         <div className="aspect-square relative overflow-hidden rounded-xl mb-4">
-          {/* Product Image */}
           <div 
             className={cn(
               "absolute inset-0 bg-muted product-image",
@@ -199,7 +202,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             />
           </div>
           
-          {/* Hover Action Buttons */}
           <div 
             className={cn(
               "absolute inset-0 bg-black/5 flex items-center justify-center gap-2 transition-opacity duration-300",
@@ -212,7 +214,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               className="rounded-full bg-white shadow-md hover:bg-primary hover:text-white"
               onClick={(e) => {
                 e.preventDefault();
-                // Add to cart logic here
               }}
             >
               <ShoppingCart className="h-4 w-4" />
@@ -225,7 +226,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               className="rounded-full bg-white shadow-md hover:bg-accent hover:text-white"
               onClick={(e) => {
                 e.preventDefault();
-                // Add to wishlist logic here
               }}
             >
               <Heart className="h-4 w-4" />
@@ -233,7 +233,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </Button>
           </div>
           
-          {/* Tags */}
           <div className="absolute top-2 left-2 flex flex-col gap-2">
             <span className="px-2 py-1 text-xs font-medium bg-background/80 backdrop-blur-sm rounded-full">
               {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
@@ -267,19 +266,15 @@ const Products = () => {
   const [priceRange, setPriceRange] = useState([0, 50]);
   const [sortOption, setSortOption] = useState("featured");
   
-  // Filter products based on category, search, and price
   const filteredProducts = allProducts.filter((product) => {
-    // Filter by category if specified
     if (category && product.category !== category) {
       return false;
     }
     
-    // Filter by search term
     if (searchTerm && !product.name.toLowerCase().includes(searchTerm.toLowerCase())) {
       return false;
     }
     
-    // Filter by price range
     if (product.price < priceRange[0] || product.price > priceRange[1]) {
       return false;
     }
@@ -287,7 +282,6 @@ const Products = () => {
     return true;
   });
   
-  // Sort products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortOption) {
       case "price-asc":
@@ -299,18 +293,15 @@ const Products = () => {
       case "name-desc":
         return b.name.localeCompare(a.name);
       default:
-        // 'featured' - bestsellers first
         return b.bestseller === a.bestseller ? 0 : b.bestseller ? 1 : -1;
     }
   });
   
-  // Get title based on category
   const getTitle = () => {
     if (!category) return "All Products";
     return category.charAt(0).toUpperCase() + category.slice(1);
   };
   
-  // Get description based on category
   const getDescription = () => {
     switch (category) {
       case "bitters":
@@ -326,7 +317,6 @@ const Products = () => {
   
   return (
     <div className="min-h-screen pt-24">
-      {/* Header */}
       <div className="bg-muted/30 py-12">
         <div className="container-custom">
           <h1 className="text-3xl md:text-4xl font-bold">{getTitle()}</h1>
@@ -336,10 +326,8 @@ const Products = () => {
         </div>
       </div>
       
-      {/* Content */}
       <div className="container-custom py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Filters */}
           <div className="lg:col-span-1 space-y-8">
             <div>
               <h3 className="font-medium mb-4">Search</h3>
@@ -405,7 +393,6 @@ const Products = () => {
             </div>
           </div>
           
-          {/* Product Grid */}
           <div className="lg:col-span-3">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <p className="text-muted-foreground">

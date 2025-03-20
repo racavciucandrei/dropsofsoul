@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 
 // Comprehensive product data
 const allProducts = [
-  // Bitters (7 types)
+  // Bitters (8 types now)
   {
     id: 1,
     name: 'Tepache Bitters',
@@ -46,6 +46,40 @@ const allProducts = [
   },
   {
     id: 2,
+    name: 'Roasted Corn & Smoked Chili Bitters',
+    category: 'bitters',
+    price: 26.00,
+    images: ['/assets/product-4.jpg', '/assets/product-4-alt.jpg', '/assets/product-4-detail.jpg'],
+    slug: 'roasted-corn-smoked-chili-bitters',
+    description: 'A celebration of fire and earth, this bold and evocative bitters combines the sweet nutty aroma of roasted corn with the smoky depth of dried chilies, paying homage to the rich Mesoamerican cuisine. Accented with cacao and warm spices, it delivers a savoury, smoky complexity that transforms cocktails into robust, unforgettable creations. Crafted for innovative bartenders, it's the essential ingredient for adding rich layers and a gentle heat to your drinks.',
+    details: {
+      ingredients: 'Water, alcohol (45% ABV), roasted corn, smoked chilies (pasilla, guajillo), cacao nibs, selected spices, natural botanicals.',
+      size: '150ml (5.1 fl oz)',
+      usage: '2-3 dashes per cocktail',
+      flavorProfile: 'Savoury, smoky, and earthy, with hints of natural sweetness from roasted corn and a subtle heat from smoked chilies like pasilla or guajillo.'
+    },
+    signatureCocktail: {
+      name: 'Smoky Earth',
+      description: 'A sophisticated cocktail that balances the earthy smokiness of mezcal with the rich complexity of our Roasted Corn & Smoked Chili Bitters. The sweetness of agave nectar and corn liqueur creates a foundation that allows the subtle heat and savory notes to shine through. Finished with a touch of lime for brightness, this cocktail is a celebration of Mesoamerican flavors in a glass.',
+      ingredients: [
+        '5cl Mezcal',
+        '2cl Corn Liqueur',
+        '1cl Agave Syrup',
+        '1cl Fresh lime juice',
+        '4 dashes Roasted Corn & Smoked Chili Bitters'
+      ],
+      garnish: [
+        'Charred Corn Husk',
+        'Dried Chili Thread',
+        'Smoked Salt Rim (partial)'
+      ]
+    },
+    related: [1, 3, 7],
+    rating: 4.9,
+    reviews: 18,
+  },
+  {
+    id: 3,
     name: 'Orange Bitters',
     category: 'bitters',
     price: 19.95,
@@ -62,7 +96,7 @@ const allProducts = [
     reviews: 18,
   },
   {
-    id: 3,
+    id: 4,
     name: 'Cherry Bitters',
     category: 'bitters',
     price: 18.50,
@@ -74,12 +108,12 @@ const allProducts = [
       size: '100ml (3.4 fl oz)',
       usage: '2-3 dashes per cocktail',
     },
-    related: [1, 4, 7],
+    related: [1, 2, 7],
     rating: 4.9,
     reviews: 32,
   },
   {
-    id: 4,
+    id: 5,
     name: 'Chocolate Bitters',
     category: 'bitters',
     price: 20.95,
@@ -96,7 +130,7 @@ const allProducts = [
     reviews: 15,
   },
   {
-    id: 5,
+    id: 6,
     name: 'Lavender Bitters',
     category: 'bitters',
     price: 21.50,
@@ -108,12 +142,12 @@ const allProducts = [
       size: '100ml (3.4 fl oz)',
       usage: '2-3 dashes per cocktail',
     },
-    related: [10, 11, 6],
+    related: [10, 11, 2],
     rating: 4.7,
     reviews: 21,
   },
   {
-    id: 6,
+    id: 7,
     name: 'Grapefruit Bitters',
     category: 'bitters',
     price: 19.95,
@@ -130,7 +164,7 @@ const allProducts = [
     reviews: 12,
   },
   {
-    id: 7,
+    id: 8,
     name: 'Spiced Bitters',
     category: 'bitters',
     price: 22.95,
@@ -142,14 +176,14 @@ const allProducts = [
       size: '100ml (3.4 fl oz)',
       usage: '2-3 dashes per cocktail',
     },
-    related: [1, 3, 4],
+    related: [1, 2, 4],
     rating: 4.9,
     reviews: 29,
   },
   
   // Cordials (5 types)
   {
-    id: 8,
+    id: 9,
     name: 'Elderflower Cordial',
     category: 'cordials',
     price: 22.50,
@@ -166,7 +200,7 @@ const allProducts = [
     reviews: 42,
   },
   {
-    id: 9,
+    id: 10,
     name: 'Ginger Cordial',
     category: 'cordials',
     price: 21.95,
@@ -178,12 +212,12 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [8, 11, 14],
+    related: [9, 11, 14],
     rating: 4.6,
     reviews: 28,
   },
   {
-    id: 10,
+    id: 11,
     name: 'Lavender Cordial',
     category: 'cordials',
     price: 24.95,
@@ -195,12 +229,12 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [8, 5, 11],
+    related: [9, 6, 12],
     rating: 4.7,
     reviews: 36,
   },
   {
-    id: 11,
+    id: 12,
     name: 'Rose Cordial',
     category: 'cordials',
     price: 23.95,
@@ -212,12 +246,12 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [8, 10, 12],
+    related: [9, 11, 13],
     rating: 4.9,
     reviews: 33,
   },
   {
-    id: 12,
+    id: 13,
     name: 'Hibiscus Cordial',
     category: 'cordials',
     price: 25.95,
@@ -229,14 +263,14 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [11, 8, 15],
+    related: [12, 9, 15],
     rating: 4.8,
     reviews: 39,
   },
   
   // Shrubs (4 types)
   {
-    id: 13,
+    id: 14,
     name: 'Blackberry Shrub',
     category: 'shrubs',
     price: 24.95,
@@ -248,12 +282,12 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [14, 15, 16],
+    related: [15, 16, 17],
     rating: 4.9,
     reviews: 48,
   },
   {
-    id: 14,
+    id: 15,
     name: 'Raspberry Shrub',
     category: 'shrubs',
     price: 23.50,
@@ -265,12 +299,12 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [13, 15, 9],
+    related: [14, 16, 10],
     rating: 4.7,
     reviews: 31,
   },
   {
-    id: 15,
+    id: 16,
     name: 'Peach Shrub',
     category: 'shrubs',
     price: 22.95,
@@ -282,12 +316,12 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [13, 14, 16],
+    related: [14, 15, 17],
     rating: 4.6,
     reviews: 26,
   },
   {
-    id: 16,
+    id: 17,
     name: 'Strawberry Basil Shrub',
     category: 'shrubs',
     price: 25.50,
@@ -299,7 +333,7 @@ const allProducts = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [13, 14, 15],
+    related: [14, 15, 16],
     rating: 4.8,
     reviews: 37,
   },
@@ -542,7 +576,7 @@ const Product = () => {
                 </div>
               </TabsContent>
               
-              {/* Updated Signature Cocktail Tab with Image */}
+              {/* Signature Cocktail Tab with Image */}
               {product.signatureCocktail && (
                 <TabsContent value="cocktail" className="mt-4">
                   <div className="space-y-4">
