@@ -18,7 +18,7 @@ export const initAudio = (): void => {
       return;
     }
     
-    audioContext = new AudioContextClass();
+    audioContext = new AudioContextClass({ latencyHint: 'interactive' });
     audioContext.resume().catch(() => {});
     
     // Pre-generate the click buffer to avoid generation delay later
@@ -51,8 +51,8 @@ const createClickBuffer = async (): Promise<AudioBuffer | null> => {
   if (!audioContext) return null;
   
   try {
-    // Duration of the click sound (very short)
-    const duration = 0.1; // Reduced from 0.15 to 0.1 seconds for faster sound
+    // Duration of the click sound (extremely short)
+    const duration = 0.05; // Reduced from 0.1 to 0.05 seconds for even faster sound
     const sampleRate = audioContext.sampleRate;
     const bufferSize = duration * sampleRate;
     const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
@@ -63,22 +63,22 @@ const createClickBuffer = async (): Promise<AudioBuffer | null> => {
       const t = i / sampleRate; // Time in seconds
       
       // Initial click (metallic impact) - made more prominent and faster decay
-      const initialClickAmplitude = Math.exp(-t * 100) * 0.6; // Increased decay rate and amplitude
+      const initialClickAmplitude = Math.exp(-t * 200) * 0.8; // Increased decay rate and amplitude
       const initialClick = (Math.random() * 2 - 1) * initialClickAmplitude;
       
       // Mechanical thunk (low frequency component) - faster decay
       const thunkFreq = 80;
-      const thunkAmplitude = Math.exp(-t * 50) * 0.4; // Increased decay rate
+      const thunkAmplitude = Math.exp(-t * 100) * 0.4; // Increased decay rate
       const thunk = Math.sin(2 * Math.PI * thunkFreq * t) * thunkAmplitude;
       
       // Spring ting (high frequency damped oscillation) - faster decay
       const tingFreq = 1800 + Math.sin(t * 50) * 100;
-      const tingAmplitude = Math.exp(-t * 80) * 0.15; // Increased decay rate
+      const tingAmplitude = Math.exp(-t * 160) * 0.15; // Increased decay rate
       const ting = Math.sin(2 * Math.PI * tingFreq * t) * tingAmplitude;
       
       // Mechanical resonance - faster decay
       const resonanceFreq = 320;
-      const resonanceAmplitude = Math.exp(-t * 40) * 0.1; // Increased decay rate
+      const resonanceAmplitude = Math.exp(-t * 80) * 0.1; // Increased decay rate
       const resonance = Math.sin(2 * Math.PI * resonanceFreq * t) * resonanceAmplitude;
       
       // Combine all components with heavier weighting on the initial click for immediacy
@@ -130,7 +130,7 @@ const createVintageMechanicalClick = (): void => {
       // Create context on demand if it doesn't exist
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioContextClass) return;
-      audioContext = new AudioContextClass();
+      audioContext = new AudioContextClass({ latencyHint: 'interactive' });
     }
     
     // Force resume the audio context
@@ -141,7 +141,7 @@ const createVintageMechanicalClick = (): void => {
     masterGain.connect(audioContext.destination);
     
     // Create components for the vintage mechanical switch sound
-    // Use very short duration components for minimal delay
+    // Use extremely short duration components for minimal delay
     
     // 1. Initial metal contact "thunk" sound (low frequency component)
     const thunkOsc = audioContext.createOscillator();
@@ -149,7 +149,7 @@ const createVintageMechanicalClick = (): void => {
     thunkOsc.frequency.setValueAtTime(80, audioContext.currentTime);
     thunkOsc.type = 'triangle';
     thunkGain.gain.setValueAtTime(0.5, audioContext.currentTime);
-    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.06);
+    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03); // Shortened from 0.06
     thunkOsc.connect(thunkGain);
     thunkGain.connect(masterGain);
     
@@ -159,19 +159,19 @@ const createVintageMechanicalClick = (): void => {
     tingOsc.frequency.setValueAtTime(1800, audioContext.currentTime);
     tingOsc.type = 'sine';
     tingGain.gain.setValueAtTime(0.2, audioContext.currentTime);
-    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03);
+    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.015); // Shortened from 0.03
     tingOsc.connect(tingGain);
     tingGain.connect(masterGain);
     
     // 3. Mechanical contact "click" sound (noise component)
-    const bufferSize = audioContext.sampleRate * 0.03; // Very short 30ms buffer
+    const bufferSize = audioContext.sampleRate * 0.015; // Very short 15ms buffer (shortened from 30ms)
     const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const data = buffer.getChannelData(0);
     
     // Generate noise burst with most energy at the very beginning
     for (let i = 0; i < bufferSize; i++) {
       // More energy at the beginning, very quick decay
-      const factor = Math.pow(1 - (i / bufferSize), 4); // Sharper decay
+      const factor = Math.pow(1 - (i / bufferSize), 8); // Sharper decay (changed from 4 to 8)
       data[i] = (Math.random() * 2 - 1) * factor;
     }
     
@@ -187,8 +187,8 @@ const createVintageMechanicalClick = (): void => {
     clickNode.start(startTime);
     
     // Stop oscillators after very short duration
-    thunkOsc.stop(startTime + 0.1);
-    tingOsc.stop(startTime + 0.1);
+    thunkOsc.stop(startTime + 0.05); // Shortened from 0.1
+    tingOsc.stop(startTime + 0.05); // Shortened from 0.1
     
   } catch (error) {
     console.error("Failed to create synthetic click:", error);

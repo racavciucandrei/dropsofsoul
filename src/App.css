@@ -43,7 +43,7 @@
 }
 
 /* Custom transition duration for ultra-fast light switch response */
-.duration-15 {
-  transition-duration: 15ms !important;
+.duration-5 {
+  transition-duration: 5ms !important;
 }
 

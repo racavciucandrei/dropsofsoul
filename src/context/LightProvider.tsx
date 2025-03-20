@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { playAudio, initAudio } from "../utils/soundUtils";
 
@@ -17,11 +16,8 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     // Call sound function with zero latency - MUST come before state update
     playAudio('/click.mp3');
     
-    // Small delay to ensure sound starts first
-    requestAnimationFrame(() => {
-      // Use synchronous state update for immediate feedback
-      setIsLightOn(!isLightOn);
-    });
+    // Update state immediately instead of using requestAnimationFrame
+    setIsLightOn(!isLightOn);
   };
 
   // Apply light effect to the entire page
