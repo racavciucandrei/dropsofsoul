@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ const allProducts = [
     id: 1,
     name: 'Tepache Bitters',
     category: 'bitters',
-    price: 18.95,
+    price: 26.00,
     image: '/assets/product-1.jpg',
     slug: 'tepache-bitters',
     bestseller: true,

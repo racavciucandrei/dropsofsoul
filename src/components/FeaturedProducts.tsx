@@ -12,7 +12,7 @@ const products = [
     id: 1,
     name: 'Tepache Bitters',
     category: 'Bitters',
-    price: 18.95,
+    price: 26.00,
     image: '/assets/product-1.jpg',
     slug: 'tepache-bitters',
   },
