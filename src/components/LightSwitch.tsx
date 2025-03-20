@@ -64,10 +64,8 @@ const LightSwitch = () => {
   const isOnOffOnOffOnPattern = (pattern: boolean[]) => {
     if (pattern.length < 5) return false;
     
-    // Get the last 5 toggles
     const lastFive = pattern.slice(-5);
     
-    // Check for the specific pattern (true, false, true, false, true)
     return (
       lastFive[0] === true && 
       lastFive[1] === false && 
@@ -78,49 +76,35 @@ const LightSwitch = () => {
   };
 
   const handleToggle = () => {
-    // Prevent rapid toggling - a simple debounce
     const now = Date.now();
     if (now - lastToggleTimeRef.current < 300) {
       return;
     }
     lastToggleTimeRef.current = now;
     
-    // Update count and toggle light
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
-    // Toggle light (which will play the sound internally)
     toggleLight();
     
-    // Update the pattern AFTER toggling (so it reflects the new state)
     const newPattern = [...togglePattern, !isLightOn];
     setTogglePattern(newPattern);
     
-    // Only check for pattern after we have enough toggles
     if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern)) {
       showDivineWarning();
     }
   };
 
   const showDivineWarning = () => {
-    // Add a small delay to ensure the warning comes after the toggle sound
     setTimeout(() => {
-      // Create a demonic/satanic divine voice effect
       const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       
-      // Extremely slow rate for a demonic, otherworldly effect
-      utterance.rate = 0.6;
-      
-      // Very low pitch for a deep, satanic quality
-      utterance.pitch = 0.3;
-      
-      // Maximum volume
+      utterance.rate = 0.5;
+      utterance.pitch = 0.1;
       utterance.volume = 1.0;
       
-      // Get all available voices
       const voices = window.speechSynthesis.getVoices();
       
-      // Try to find the deepest, most resonant voice available for a satanic effect
       const demonicVoice = voices.find(voice => 
         voice.name.includes('Bass') || 
         voice.name.toLowerCase().includes('deep') || 
@@ -133,13 +117,19 @@ const LightSwitch = () => {
         utterance.voice = demonicVoice;
       }
       
-      // Apply distortion effect through speech parameters
-      // The extremely low pitch and slow rate creates a demonic quality
+      utterance.onstart = () => {
+        setTimeout(() => {
+          const echoUtterance = new SpeechSynthesisUtterance("don't play with that switch");
+          echoUtterance.volume = 0.3;
+          echoUtterance.rate = 0.4;
+          echoUtterance.pitch = 0.05;
+          if (demonicVoice) echoUtterance.voice = demonicVoice;
+          window.speechSynthesis.speak(echoUtterance);
+        }, 200);
+      };
       
-      // Apply the speech synthesis
       window.speechSynthesis.speak(utterance);
       
-      // Display text message with the warning
       toast({
         title: "Divine Warning",
         description: "Hey, don't play with that switch!",
