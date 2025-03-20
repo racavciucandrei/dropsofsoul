@@ -12,7 +12,7 @@ const LightSwitch = () => {
       setShowMessage(true);
       const timer = setTimeout(() => {
         setShowMessage(false);
-      }, 1600); // Hide message after 1.6 seconds (reduced from 3)
+      }, 600); // Hide message after 0.6 seconds (reduced from 1.6)
       
       return () => clearTimeout(timer);
     }
