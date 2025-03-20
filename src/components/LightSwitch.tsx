@@ -36,14 +36,15 @@ const LightSwitch = () => {
 
   // Handle switch toggle with count tracking
   const handleToggle = () => {
+    // First increment toggle count
+    const newCount = toggleCount + 1;
+    setToggleCount(newCount);
+    
+    // Then toggle the light
     toggleLight();
     
-    // Increment toggle count
-    setToggleCount(prev => prev + 1);
-    
-    // Check if the user is toggling too much (2 or more times)
-    // Now it will trigger immediately after the 2nd toggle
-    if (toggleCount >= 1 && !warningShown) {
+    // Now check if this is the second or later toggle
+    if (newCount >= 2 && !warningShown) {
       // Play warning using Speech Synthesis
       const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       utterance.rate = 1.0;
