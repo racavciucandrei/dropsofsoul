@@ -31,25 +31,31 @@ const LightSwitch = () => {
     // Then toggle the light
     toggleLight();
     
-    // Now check if this is the second or later toggle
+    // Check if this is the second or later toggle and warning hasn't been shown yet
     if (newCount >= 2 && !warningShown) {
-      // Play warning using Speech Synthesis
-      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-      window.speechSynthesis.speak(utterance);
-      
-      // Show toast notification
-      toast({
-        title: "Stop that!",
-        description: "Hey, don't play with that switch!",
-        variant: "destructive",
-      });
-      
-      // Prevent showing again until reset
-      setWarningShown(true);
+      // Show warning using Speech Synthesis
+      showWarning();
     }
+  };
+
+  // Separate function to show warning
+  const showWarning = () => {
+    // Play warning using Speech Synthesis
+    const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    window.speechSynthesis.speak(utterance);
+    
+    // Show toast notification
+    toast({
+      title: "Stop that!",
+      description: "Hey, don't play with that switch!",
+      variant: "destructive",
+    });
+    
+    // Mark warning as shown
+    setWarningShown(true);
   };
 
   return (
