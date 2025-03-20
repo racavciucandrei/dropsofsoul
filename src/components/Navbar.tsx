@@ -43,19 +43,17 @@ const Navbar = () => {
       )}
     >
       <div className="container-custom flex items-center justify-between">
-        {/* Company name that's visible even when lights are off */}
+        {/* Company name with special glow effect when lights are off */}
         <Link 
           to="/" 
-          className="relative z-10 font-serif text-2xl font-bold tracking-tight"
-          style={{
-            textShadow: isLightOn ? 'none' : '0 0 5px rgba(255, 191, 36, 0.8)'
-          }}
+          className="relative z-10 font-serif text-2xl font-bold tracking-tight company-name"
         >
           Drops of Soul
         </Link>
         
         {/* Rest of navbar that's only visible when lights are on */}
-        <div className={isLightOn ? '' : 'opacity-0 pointer-events-none'}>
+        <div className={cn("transition-all duration-500", 
+          isLightOn ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
@@ -74,7 +72,8 @@ const Navbar = () => {
           </nav>
         </div>
         
-        <div className={cn("flex items-center space-x-4", isLightOn ? '' : 'opacity-0 pointer-events-none')}>
+        <div className={cn("flex items-center space-x-4 transition-all duration-500", 
+          isLightOn ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
           <Button 
             variant="ghost" 
             size="icon" 

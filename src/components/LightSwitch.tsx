@@ -1,10 +1,28 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useLight } from "@/context/LightProvider";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
+  const { toast } = useToast();
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleToggleLight = () => {
+    setIsAnimating(true);
+    toggleLight();
+    
+    toast({
+      title: isLightOn ? "Lights turned off" : "Lights turned on",
+      description: isLightOn 
+        ? "The room is now dark." 
+        : "Now you can see inside the soul.",
+      duration: 3000,
+    });
+    
+    setTimeout(() => setIsAnimating(false), 500);
+  };
 
   return (
     <div className="fixed top-20 right-6 z-[60] flex flex-col items-center">
@@ -19,7 +37,7 @@ const LightSwitch = () => {
       {/* Pull string */}
       <div 
         className="cursor-pointer flex flex-col items-center" 
-        onClick={toggleLight}
+        onClick={handleToggleLight}
         aria-label={isLightOn ? "Turn light off" : "Turn light on"}
       >
         <div className="w-1 h-24 bg-gray-300 rounded-full relative">
@@ -34,7 +52,8 @@ const LightSwitch = () => {
         {/* Pull handle */}
         <div className={cn(
           "w-4 h-8 bg-gray-300 border border-gray-400 rounded-md transition-all",
-          isLightOn ? "bg-amber-200" : ""
+          isLightOn ? "bg-amber-200" : "",
+          isAnimating ? "pull-string-animate" : ""
         )}>
           <div className="w-full h-1 bg-gray-400 mt-1" />
           <div className="w-full h-1 bg-gray-400 mt-1" />

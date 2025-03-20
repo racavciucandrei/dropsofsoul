@@ -54,8 +54,8 @@ const Hero = () => {
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
       {/* Background Slideshow */}
       <div className={cn(
-        "absolute inset-0 z-0",
-        !isLightOn && "opacity-10 transition-opacity duration-500"
+        "absolute inset-0 z-0 transition-opacity duration-500",
+        isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
       )}>
         {images.map((src, index) => (
           <div
@@ -76,8 +76,9 @@ const Hero = () => {
       
       {/* Content */}
       <div className={cn(
-        "container-custom relative z-10 pt-28 pb-16 content-visibility",
-        isLightOn ? "opacity-100" : "opacity-10"
+        "container-custom relative z-10 pt-28 pb-16",
+        "transition-all duration-500",
+        isLightOn ? "opacity-100" : "opacity-0 pointer-events-none"
       )}>
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
@@ -122,10 +123,7 @@ const Hero = () => {
         </div>
         
         {/* Navigation Dots */}
-        <div className={cn(
-          "absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-2 content-visibility",
-          isLightOn ? "opacity-100" : "opacity-10"
-        )}>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-2">
           {images.map((_, index) => (
             <button
               key={index}
