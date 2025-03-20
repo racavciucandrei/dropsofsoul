@@ -11,8 +11,8 @@ export const useSeductiveVoice = () => {
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance();
       
-      // Cartoon character voice settings
-      utterance.rate = 1.2;     // Faster, more animated pace
+      // Cartoon character voice settings with slower speaking rate
+      utterance.rate = 0.8;     // Slower pace for better comprehension
       utterance.pitch = 1.7;    // Higher pitched for cartoon effect
       utterance.volume = 1.0;   // Full volume
       
