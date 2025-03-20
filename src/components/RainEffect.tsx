@@ -36,13 +36,13 @@ const RainEffect = () => {
 
     // Create initial droplets
     const createDroplets = () => {
-      // Reduce droplet count for slower, more sparse rain
-      const dropletCount = Math.floor(window.innerWidth / 20); 
+      // Further reduce droplet count for even more sparse rain
+      const dropletCount = Math.floor(window.innerWidth / 25); 
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
-        // Increase size range for larger raindrops (1.2-3.0px)
-        const size = Math.random() * 1.8 + 1.2; 
+        // Increase size range for even larger raindrops (2.0-4.0px)
+        const size = Math.random() * 2.0 + 2.0; 
         newDroplets.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1, // Start above the viewport
@@ -50,8 +50,8 @@ const RainEffect = () => {
           // Slower speed between 4-8
           speed: Math.random() * 4 + 4, 
           opacity: Math.random() * 0.4 + 0.3, // Keep same opacity
-          // Longer teardrop shape based on larger size
-          length: size * (Math.random() * 8 + 6), 
+          // Longer teardrop shape for larger drops
+          length: size * (Math.random() * 9 + 7), 
           sway: 0,
           swayDirection: Math.random() > 0.5 ? 1 : -1,
           // Reduce sway speed for gentler movement
