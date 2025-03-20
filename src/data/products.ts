@@ -1,3 +1,4 @@
+
 // Product data types
 export interface ProductDetails {
   ingredients: string;
@@ -386,10 +387,11 @@ export const allProducts: Product[] = [
         '3cl Timur Berry Cordial',
         '1cl Verjus',
         'Hibiscus & Cardamom Bitters (layered using a pipette)',
-        'Jasmine Air Foam',
         '2 puffs Absinthe'
       ],
-      garnish: [],
+      garnish: [
+        'Jasmine Air Foam'
+      ],
       imagePath: '/placeholder.svg'
     },
     related: [1, 2, 11],
