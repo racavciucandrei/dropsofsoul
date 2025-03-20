@@ -10,6 +10,26 @@ const LightSwitch = () => {
   const [warningShown, setWarningShown] = useState(false);
   const { toast } = useToast();
   
+  // Store toggle count in localStorage to persist across renders
+  useEffect(() => {
+    const storedCount = localStorage.getItem('toggleCount');
+    const storedWarningShown = localStorage.getItem('warningShown');
+    
+    if (storedCount) {
+      setToggleCount(parseInt(storedCount, 10));
+    }
+    
+    if (storedWarningShown === 'true') {
+      setWarningShown(true);
+    }
+  }, []);
+  
+  // Update localStorage when toggleCount or warningShown changes
+  useEffect(() => {
+    localStorage.setItem('toggleCount', toggleCount.toString());
+    localStorage.setItem('warningShown', warningShown.toString());
+  }, [toggleCount, warningShown]);
+  
   // Show message when lights are turned on and hide after delay
   useEffect(() => {
     if (isLightOn) {
