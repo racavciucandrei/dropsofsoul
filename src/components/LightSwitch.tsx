@@ -1,33 +1,50 @@
 
 import React from "react";
-import { Lightbulb, LightbulbOff } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { useLight } from "@/context/LightProvider";
-import { Switch } from "@/components/ui/switch";
+import { cn } from "@/lib/utils";
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
 
   return (
-    <div className="fixed top-24 right-6 z-[60] flex items-center gap-2 bg-background/80 backdrop-blur-sm p-2 rounded-full shadow-lg border border-border">
-      <div className="relative">
-        {isLightOn ? (
-          <Lightbulb className="h-5 w-5 text-amber-400" />
-        ) : (
-          <LightbulbOff className="h-5 w-5 text-muted-foreground" />
-        )}
-        {isLightOn && (
-          <div className="absolute -inset-1 bg-amber-400/20 rounded-full blur-md -z-10"></div>
-        )}
+    <div className="fixed top-20 right-6 z-[60] flex flex-col items-center">
+      {/* Light bulb with glow effect */}
+      <div className={cn(
+        "w-8 h-8 rounded-full mb-1 transition-all duration-300",
+        isLightOn 
+          ? "bg-amber-400 shadow-[0_0_15px_5px_rgba(251,191,36,0.7)]" 
+          : "bg-gray-400"
+      )} />
+      
+      {/* Pull string */}
+      <div 
+        className="cursor-pointer flex flex-col items-center" 
+        onClick={toggleLight}
+        aria-label={isLightOn ? "Turn light off" : "Turn light on"}
+      >
+        <div className="w-1 h-24 bg-gray-300 rounded-full relative">
+          {/* String texture lines */}
+          <div className="absolute inset-0 flex flex-col justify-around items-center opacity-30">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="w-full h-px bg-gray-600" />
+            ))}
+          </div>
+        </div>
+        
+        {/* Pull handle */}
+        <div className={cn(
+          "w-4 h-8 bg-gray-300 border border-gray-400 rounded-md transition-all",
+          isLightOn ? "bg-amber-200" : ""
+        )}>
+          <div className="w-full h-1 bg-gray-400 mt-1" />
+          <div className="w-full h-1 bg-gray-400 mt-1" />
+        </div>
+        
+        {/* Accessibility hint */}
+        <span className="sr-only">
+          {isLightOn ? "Turn off the light" : "Pull to turn on the light"}
+        </span>
       </div>
-      <Switch
-        checked={isLightOn}
-        onCheckedChange={toggleLight}
-        className={cn(
-          isLightOn ? "animate-pulse" : "",
-          "transition-all duration-300"
-        )}
-      />
     </div>
   );
 };

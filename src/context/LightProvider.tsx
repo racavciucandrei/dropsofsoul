@@ -9,6 +9,7 @@ type LightContextType = {
 const LightContext = createContext<LightContextType | undefined>(undefined);
 
 export const LightProvider = ({ children }: { children: React.ReactNode }) => {
+  // Start with lights off by default
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {

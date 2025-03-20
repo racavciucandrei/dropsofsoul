@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLight } from '@/context/LightProvider';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -17,6 +18,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { isLightOn } = useLight();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,31 +43,38 @@ const Navbar = () => {
       )}
     >
       <div className="container-custom flex items-center justify-between">
+        {/* Company name that's visible even when lights are off */}
         <Link 
           to="/" 
           className="relative z-10 font-serif text-2xl font-bold tracking-tight"
+          style={{
+            textShadow: isLightOn ? 'none' : '0 0 5px rgba(255, 191, 36, 0.8)'
+          }}
         >
           Drops of Soul
         </Link>
         
-        <nav className="hidden md:flex items-center space-x-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
-                location.pathname === link.path 
-                  ? "text-primary font-semibold" 
-                  : "text-foreground/80"
-              )}
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
+        {/* Rest of navbar that's only visible when lights are on */}
+        <div className={isLightOn ? '' : 'opacity-0 pointer-events-none'}>
+          <nav className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-primary",
+                  location.pathname === link.path 
+                    ? "text-primary font-semibold" 
+                    : "text-foreground/80"
+                )}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+        </div>
         
-        <div className="flex items-center space-x-4">
+        <div className={cn("flex items-center space-x-4", isLightOn ? '' : 'opacity-0 pointer-events-none')}>
           <Button 
             variant="ghost" 
             size="icon" 
