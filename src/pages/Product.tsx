@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -39,7 +38,8 @@ const allProducts = [
         'Pineapple Frond',
         'Dried Lime Wheel',
         'Half of a Dried Pineapple Wheel'
-      ]
+      ],
+      imagePath: '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png'
     },
     related: [2, 3, 4],
     rating: 4.8,
@@ -73,7 +73,8 @@ const allProducts = [
         'Charred Corn Husk',
         'Dried Chili Thread',
         'Smoked Salt Rim (partial)'
-      ]
+      ],
+      imagePath: '/placeholder.svg'
     },
     related: [1, 3, 7],
     rating: 4.9,
@@ -608,7 +609,7 @@ const Product = () => {
                       <div className="md:w-1/2">
                         <div className="aspect-square rounded-lg overflow-hidden bg-muted">
                           <img 
-                            src="/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png" 
+                            src={product.signatureCocktail.imagePath || "/placeholder.svg"} 
                             alt={`${product.signatureCocktail.name} Cocktail`}
                             className="w-full h-full object-cover"
                             onError={(e) => {
