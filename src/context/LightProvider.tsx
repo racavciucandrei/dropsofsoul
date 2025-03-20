@@ -14,10 +14,10 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {
-    // Play sound before visual change for better synchronization
+    // Call sound function with zero latency - MUST come before state update
     playAudio('/click.mp3');
     
-    // Use immediate state update instead of functional update for better performance
+    // Use synchronous state update for immediate feedback
     setIsLightOn(!isLightOn);
   };
 
@@ -41,11 +41,15 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     document.documentElement.classList.add("lights-off");
     document.body.classList.add("lights-off");
     
-    // Initialize audio system
+    // Initialize audio system immediately on load
     initAudio();
     
     // Setup event listeners to ensure audio can play on iOS/Safari
     const unlockAudio = () => {
+      // Force immediate audio initialization
+      const silentContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      silentContext.resume().catch(() => {});
+      
       initAudio();
       document.removeEventListener('click', unlockAudio);
       document.removeEventListener('touchstart', unlockAudio);

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { useToast } from '@/hooks/use-toast';
-import { playAudio, preloadAudio, initAudio } from '@/utils/soundUtils';
+import { initAudio } from '@/utils/soundUtils';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -10,64 +10,28 @@ const LightSwitch = () => {
   const [toggleCount, setToggleCount] = useState(0);
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioInitializedRef = useRef(false);
   
   // Initialize audio system on component mount
   useEffect(() => {
-    // Create a hidden audio element specifically for the switch sound
-    const audio = document.createElement('audio');
-    audio.id = 'clickSound';
-    audio.src = '/click.mp3';
-    audio.preload = 'auto';
-    audio.style.display = 'none';
-    document.body.appendChild(audio);
+    // Initialize audio immediately, don't wait for user interaction
+    initAudio();
+    audioInitializedRef.current = true;
     
-    // Preload the audio
-    audioRef.current = preloadAudio('/click.mp3');
-    
-    // Initialize audio system on first user interaction
-    const initAudioSystem = () => {
-      if (audioInitializedRef.current) return;
-      
-      initAudio();
-      audioInitializedRef.current = true;
-      
-      // Try to play a silent sound to unlock audio
-      const silentPlay = () => {
-        const audio = audioRef.current;
-        if (audio) {
-          audio.volume = 0;
-          audio.muted = true;
-          audio.play().catch(() => {
-            // Ignore errors here, this is just to unlock audio
-          });
-        }
-      };
-      
-      silentPlay();
-      
-      // Remove event listeners after initialization
-      document.removeEventListener('click', initAudioSystem);
-      document.removeEventListener('touchstart', initAudioSystem);
-      document.removeEventListener('keydown', initAudioSystem);
+    // Try to force Web Audio API to initialize
+    const forceInit = () => {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioContext.resume().catch(() => {});
+      document.removeEventListener('click', forceInit);
+      document.removeEventListener('touchstart', forceInit);
     };
     
-    // Add event listeners for user interaction to initialize audio
-    document.addEventListener('click', initAudioSystem);
-    document.addEventListener('touchstart', initAudioSystem);
-    document.addEventListener('keydown', initAudioSystem);
+    document.addEventListener('click', forceInit, { once: true });
+    document.addEventListener('touchstart', forceInit, { once: true });
     
     return () => {
-      document.removeEventListener('click', initAudioSystem);
-      document.removeEventListener('touchstart', initAudioSystem);
-      document.removeEventListener('keydown', initAudioSystem);
-      
-      // Clean up the audio element
-      const audioElement = document.getElementById('clickSound');
-      if (audioElement) {
-        document.body.removeChild(audioElement);
-      }
+      document.removeEventListener('click', forceInit);
+      document.removeEventListener('touchstart', forceInit);
     };
   }, []);
   
@@ -122,20 +86,11 @@ const LightSwitch = () => {
 
   // Handle switch toggle with count tracking and optimized for minimal delay
   const handleToggle = () => {
-    // First, ensure audio is ready - this eliminates delay in audio initialization
-    if (!audioInitializedRef.current) {
-      initAudio();
-      audioInitializedRef.current = true;
-    }
-    
-    // Don't call playAudio here, let toggleLight handle it for better synchronization
-    // This avoids double sound playing and reduces delay
-    
-    // First increment toggle count
+    // First increment toggle count - do this before sound to reduce any delay
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
-    // Then toggle the light which will also play the sound
+    // Then toggle the light (this will also play the sound)
     toggleLight();
     
     // Update toggle pattern with the new state (after toggle)
@@ -176,8 +131,8 @@ const LightSwitch = () => {
           {/* Switch plate */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-300 rounded-md opacity-50"></div>
           
-          {/* Toggle switch with reduced transition time for better sync with sound */}
-          <div className={`w-4 h-7 bg-amber-800 rounded-sm shadow-md absolute ${isLightOn ? 'top-1' : 'bottom-1'} transition-all duration-100`}></div>
+          {/* Toggle switch with minimal transition time for better sync with sound */}
+          <div className={`w-4 h-7 bg-amber-800 rounded-sm shadow-md absolute ${isLightOn ? 'top-1' : 'bottom-1'} transition-all duration-50`}></div>
           
           {/* Screws */}
           <div className="absolute top-1 left-1 w-1.5 h-1.5 rounded-full bg-amber-900 border border-amber-950"></div>

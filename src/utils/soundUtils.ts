@@ -1,99 +1,154 @@
-// Enhanced audio utilities with improved vintage mechanical switch sound synthesis
 
-// Keep track of whether audio has been initialized
-let audioInitialized = false;
+// Ultra low-latency audio utilities with zero-delay vintage mechanical switch sound
 
-// Create and cache audio elements for instant playback
-const audioCache: Record<string, HTMLAudioElement> = {};
+// Global variables for immediate access
+let audioContext: AudioContext | null = null;
+let isAudioInitialized = false;
+let clickBuffer: AudioBuffer | null = null;
 
-// Initialize audio on first user interaction
+// Initialize audio system with preemptive loading
 export const initAudio = (): void => {
-  if (audioInitialized) return;
+  if (isAudioInitialized) return;
   
   try {
-    // Pre-load the switch sound for immediate playback
-    const switchSound = new Audio('/click.mp3');
-    switchSound.preload = 'auto';
-    switchSound.load();
-    audioCache['click'] = switchSound;
-    
-    // Create a silent sound to unlock audio on iOS/Safari
-    const silentSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAACAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAQKAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==');
-    silentSound.play().catch(() => {
-      // Ignore errors - this is just to unlock audio on iOS
-    });
-    
-    // Also initialize Web Audio API for synthetic sound
-    if (window.AudioContext || (window as any).webkitAudioContext) {
-      // Create a dummy context to initialize the audio subsystem
-      const dummyContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      dummyContext.resume().catch(() => {});
-      
-      // Create and immediately play a very short silent buffer
-      const silentBuffer = dummyContext.createBuffer(1, 1, 22050);
-      const source = dummyContext.createBufferSource();
-      source.buffer = silentBuffer;
-      source.connect(dummyContext.destination);
-      source.start(0);
+    // Create audio context immediately
+    const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextClass) {
+      console.warn("Web Audio API not supported");
+      return;
     }
     
-    console.log("Audio system initialized successfully");
-    audioInitialized = true;
+    audioContext = new AudioContextClass();
+    audioContext.resume().catch(() => {});
+    
+    // Pre-generate the click buffer to avoid generation delay later
+    createClickBuffer().then(buffer => {
+      clickBuffer = buffer;
+      console.log("Click buffer created and cached");
+    });
+    
+    // Pre-warm the audio system with a silent sound (iOS/Safari fix + latency reduction)
+    const silentBuffer = audioContext.createBuffer(1, 1, 22050);
+    const source = audioContext.createBufferSource();
+    source.buffer = silentBuffer;
+    source.connect(audioContext.destination);
+    source.start(0);
+    
+    // Try to load the MP3 as well for redundancy
+    const audio = new Audio();
+    audio.src = '/click.mp3';
+    audio.load();
+    
+    isAudioInitialized = true;
+    console.log("Audio system initialized with ultra-low latency");
   } catch (error) {
     console.warn("Error initializing audio:", error);
   }
 };
 
-// Play sound with high priority and immediate response
-export const playAudio = (audioPath: string): void => {
-  // First ensure Web Audio API is initialized for instant response
-  createVintageMechanicalClick();
+// Pre-generate the click buffer for instantaneous playback later
+const createClickBuffer = async (): Promise<AudioBuffer | null> => {
+  if (!audioContext) return null;
   
-  // Try to use cached audio as well (belt and suspenders approach)
-  if (audioCache['click']) {
-    try {
-      // Reset audio to beginning and play it immediately
-      const audio = audioCache['click'];
-      audio.currentTime = 0;
-      audio.volume = 1.0;
-      audio.muted = false;
-      audio.play()
-        .then(() => console.log("Switch sound played from cache"))
-        .catch(error => {
-          console.warn("Cached audio failed, trying alternative:", error);
-        });
-    } catch (error) {
-      console.warn("Error with cached audio:", error);
+  try {
+    // Duration of the click sound (very short)
+    const duration = 0.15; // seconds
+    const sampleRate = audioContext.sampleRate;
+    const bufferSize = duration * sampleRate;
+    const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
+    const data = buffer.getChannelData(0);
+    
+    // Generate an optimized vintage mechanical switch sound
+    for (let i = 0; i < bufferSize; i++) {
+      const t = i / sampleRate; // Time in seconds
+      
+      // Initial click (metallic impact)
+      const initialClickAmplitude = Math.exp(-t * 80) * 0.5;
+      const initialClick = (Math.random() * 2 - 1) * initialClickAmplitude;
+      
+      // Mechanical thunk (low frequency component)
+      const thunkFreq = 80;
+      const thunkAmplitude = Math.exp(-t * 40) * 0.4;
+      const thunk = Math.sin(2 * Math.PI * thunkFreq * t) * thunkAmplitude;
+      
+      // Spring ting (high frequency damped oscillation)
+      const tingFreq = 1800 + Math.sin(t * 50) * 100;
+      const tingAmplitude = Math.exp(-t * 60) * 0.15;
+      const ting = Math.sin(2 * Math.PI * tingFreq * t) * tingAmplitude;
+      
+      // Mechanical resonance
+      const resonanceFreq = 320;
+      const resonanceAmplitude = Math.exp(-t * 30) * 0.1;
+      const resonance = Math.sin(2 * Math.PI * resonanceFreq * t) * resonanceAmplitude;
+      
+      // Combine all components with heavier weighting on the initial click for immediacy
+      data[i] = initialClick + thunk + ting + resonance;
     }
+    
+    return buffer;
+  } catch (error) {
+    console.error("Failed to create click buffer:", error);
+    return null;
   }
 };
 
-// Create a synthetic vintage mechanical click sound using Web Audio API (zero latency)
-const createVintageMechanicalClick = (): void => {
+// Ultra-low-latency audio playback function - focus on instantaneous sound
+export const playAudio = (_audioPath: string): void => {
   try {
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContext) {
-      console.error("Web Audio API not supported");
-      return;
+    if (!audioContext) {
+      // Emergency initialization if context doesn't exist
+      initAudio();
+      if (!audioContext) return;
     }
     
-    const audioContext = new AudioContext();
-    // Use resume() to handle auto-play policy
+    // Force resume the audio context in case it's suspended
+    audioContext.resume().catch(() => {});
+    
+    // Method 1: Use pre-generated buffer for instant playback (Web Audio API)
+    if (clickBuffer) {
+      const source = audioContext.createBufferSource();
+      source.buffer = clickBuffer;
+      source.connect(audioContext.destination);
+      source.start(0); // Start immediately at time 0
+      
+      // Method 2: Generate sound on-the-fly as backup
+    } else {
+      createVintageMechanicalClick();
+    }
+  } catch (error) {
+    // Fallback to synthetic sound generation if buffer playback fails
+    createVintageMechanicalClick();
+    console.warn("Buffer playback failed, using synthetic sound:", error);
+  }
+};
+
+// Emergency backup method: generate sound directly for zero-latency
+const createVintageMechanicalClick = (): void => {
+  try {
+    if (!audioContext) {
+      // Create context on demand if it doesn't exist
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioContextClass) return;
+      audioContext = new AudioContextClass();
+    }
+    
+    // Force resume the audio context
     audioContext.resume().catch(() => {});
     
     const masterGain = audioContext.createGain();
     masterGain.gain.setValueAtTime(0.7, audioContext.currentTime);
     masterGain.connect(audioContext.destination);
     
-    // Create components for the vintage mechanical switch sound with zero latency
+    // Create components for the vintage mechanical switch sound
+    // Use very short duration components for minimal delay
     
     // 1. Initial metal contact "thunk" sound (low frequency component)
     const thunkOsc = audioContext.createOscillator();
     const thunkGain = audioContext.createGain();
-    thunkOsc.frequency.setValueAtTime(80, audioContext.currentTime); // Slightly higher for better presence
+    thunkOsc.frequency.setValueAtTime(80, audioContext.currentTime);
     thunkOsc.type = 'triangle';
-    thunkGain.gain.setValueAtTime(0.5, audioContext.currentTime); // Start with non-zero for immediate sound
-    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
+    thunkGain.gain.setValueAtTime(0.5, audioContext.currentTime);
+    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.06);
     thunkOsc.connect(thunkGain);
     thunkGain.connect(masterGain);
     
@@ -102,79 +157,49 @@ const createVintageMechanicalClick = (): void => {
     const tingGain = audioContext.createGain();
     tingOsc.frequency.setValueAtTime(1800, audioContext.currentTime);
     tingOsc.type = 'sine';
-    tingGain.gain.setValueAtTime(0.2, audioContext.currentTime); // Start with non-zero for immediate sound
-    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05);
+    tingGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.03);
     tingOsc.connect(tingGain);
     tingGain.connect(masterGain);
     
-    // 3. Mechanical contact "click" sound (noise component) - instant start
-    const bufferSize = audioContext.sampleRate * 0.05; // 50ms buffer (shorter for less latency)
+    // 3. Mechanical contact "click" sound (noise component)
+    const bufferSize = audioContext.sampleRate * 0.03; // Very short 30ms buffer
     const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const data = buffer.getChannelData(0);
     
-    // Generate noise burst for click with more energy at the start for immediate tactile feel
+    // Generate noise burst with most energy at the very beginning
     for (let i = 0; i < bufferSize; i++) {
-      // More energy at the beginning, quick decay
-      const factor = Math.pow(1 - (i / bufferSize), 3);
+      // More energy at the beginning, very quick decay
+      const factor = Math.pow(1 - (i / bufferSize), 4); // Sharper decay
       data[i] = (Math.random() * 2 - 1) * factor;
     }
     
     const clickNode = audioContext.createBufferSource();
-    const clickGain = audioContext.createGain();
     clickNode.buffer = buffer;
-    clickGain.gain.setValueAtTime(0.6, audioContext.currentTime); // Louder for better presence
-    clickNode.connect(clickGain);
-    clickGain.connect(masterGain);
-    
-    // 4. Mechanical resonance (filtered noise for vintage vibes)
-    const resonanceNode = audioContext.createBufferSource();
-    const resonanceGain = audioContext.createGain();
-    const resonanceFilter = audioContext.createBiquadFilter();
-    
-    resonanceNode.buffer = buffer; // Reuse the noise buffer
-    resonanceFilter.type = 'bandpass';
-    resonanceFilter.frequency.setValueAtTime(320, audioContext.currentTime); // Slightly higher for better presence
-    resonanceFilter.Q.setValueAtTime(8, audioContext.currentTime); // Lower Q for faster response
-    
-    resonanceGain.gain.setValueAtTime(0.15, audioContext.currentTime); // Start with non-zero for immediate sound
-    resonanceGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-    
-    resonanceNode.connect(resonanceFilter);
-    resonanceFilter.connect(resonanceGain);
-    resonanceGain.connect(masterGain);
+    clickNode.connect(masterGain);
     
     // Start all components simultaneously for zero latency
+    // Use exact same start time for all components
     const startTime = audioContext.currentTime;
     thunkOsc.start(startTime);
     tingOsc.start(startTime);
     clickNode.start(startTime);
-    resonanceNode.start(startTime);
     
-    // Stop oscillators after short duration
-    thunkOsc.stop(startTime + 0.15);
-    tingOsc.stop(startTime + 0.15);
+    // Stop oscillators after very short duration
+    thunkOsc.stop(startTime + 0.1);
+    tingOsc.stop(startTime + 0.1);
     
-    console.log("Played improved synthetic vintage mechanical switch sound");
   } catch (error) {
-    console.error("Failed to create synthetic vintage mechanical click:", error);
+    console.error("Failed to create synthetic click:", error);
   }
 };
 
-// Function to preload audio file for better performance
+// Preload audio function is no longer used since we're using Web Audio API
+// but kept for backward compatibility
 export const preloadAudio = (audioPath: string): HTMLAudioElement => {
-  // Check if already cached
-  if (audioCache[audioPath]) {
-    return audioCache[audioPath];
-  }
-  
-  // Create and cache the audio element
   const audio = new Audio();
   audio.src = audioPath;
   audio.preload = 'auto';
   audio.load();
-  
-  // Store in cache
-  audioCache[audioPath] = audio;
-  
   return audio;
 };
