@@ -10,8 +10,46 @@ const LightSwitch = () => {
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
   
-  // Create audio object for the click sound
-  const [clickSound] = useState(() => new Audio('/click.mp3'));
+  // Create audio context for generating click sound programmatically
+  const [audioContext] = useState(() => {
+    try {
+      // Create audio context for browsers that support it
+      return new (window.AudioContext || (window as any).webkitAudioContext)();
+    } catch (e) {
+      console.error("Web Audio API not supported:", e);
+      return null;
+    }
+  });
+  
+  // Function to play a click sound using the Web Audio API
+  const playClickSound = () => {
+    if (!audioContext) return;
+    
+    try {
+      // Create an oscillator for a short click sound
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      // Configure the oscillator
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(500, audioContext.currentTime); // Higher frequency for a "click"
+      
+      // Configure the gain node for a quick attack and decay
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.08);
+      
+      // Connect the nodes
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Start and stop the oscillator
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } catch (err) {
+      console.error("Error playing sound:", err);
+    }
+  };
   
   // Store toggle count in localStorage to persist across renders
   useEffect(() => {
@@ -65,8 +103,7 @@ const LightSwitch = () => {
   // Handle switch toggle with count tracking
   const handleToggle = () => {
     // Play the click sound
-    clickSound.currentTime = 0;
-    clickSound.play().catch(err => console.error("Error playing sound:", err));
+    playClickSound();
     
     // First increment toggle count
     const newCount = toggleCount + 1;
