@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLight } from '@/context/LightProvider';
-import { Switch } from '@/components/ui/switch';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -18,32 +17,32 @@ const LightSwitch = () => {
       return () => clearTimeout(timer);
     }
   }, [isLightOn]);
-  
-  const handlePullString = () => {
-    const pullString = document.querySelector('.pull-string');
-    if (pullString) {
-      pullString.classList.add('pull-string-animate');
-      setTimeout(() => {
-        pullString.classList.remove('pull-string-animate');
-      }, 500);
-    }
-    toggleLight();
-  };
 
   return (
     <div className="fixed right-6 top-24 z-50 flex flex-col items-center">
+      {/* Old American style toggle light switch */}
       <div 
         className="cursor-pointer flex flex-col items-center"
-        onClick={handlePullString}
+        onClick={toggleLight}
       >
-        <div className="pull-string w-1 h-10 bg-amber-600 rounded-full mb-1"></div>
-        <div className="w-6 h-6 rounded-full bg-amber-400 border-2 border-amber-600 flex items-center justify-center text-amber-900 text-xs font-bold">
-          {isLightOn ? "ON" : "OFF"}
+        <div className="w-8 h-14 bg-amber-200 border-2 border-amber-800 rounded-md shadow-md flex flex-col items-center justify-center relative">
+          {/* Switch plate */}
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-300 rounded-md opacity-50"></div>
+          
+          {/* Toggle switch */}
+          <div className={`w-4 h-7 bg-amber-800 rounded-sm shadow-md absolute ${isLightOn ? 'top-1' : 'bottom-1'} transition-all duration-200`}></div>
+          
+          {/* Screws */}
+          <div className="absolute top-1 left-1 w-1.5 h-1.5 rounded-full bg-amber-900 border border-amber-950"></div>
+          <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-900 border border-amber-950"></div>
+          <div className="absolute bottom-1 left-1 w-1.5 h-1.5 rounded-full bg-amber-900 border border-amber-950"></div>
+          <div className="absolute bottom-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-900 border border-amber-950"></div>
         </div>
       </div>
+      
       <div className="mt-2 text-xs font-medium">
         <span className={isLightOn ? "opacity-100" : "opacity-50"}>
-          {isLightOn ? "Lights On" : "Lights Off"}
+          {isLightOn ? "ON" : "OFF"}
         </span>
       </div>
       
