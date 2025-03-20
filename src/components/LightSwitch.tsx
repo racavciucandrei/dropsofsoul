@@ -7,21 +7,28 @@ const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
   const [showMessage, setShowMessage] = useState(false);
   const [toggleCount, setToggleCount] = useState(0);
+  const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
   
   // Store toggle count in localStorage to persist across renders
   useEffect(() => {
     const storedCount = localStorage.getItem('toggleCount');
+    const storedPattern = localStorage.getItem('togglePattern');
     
     if (storedCount) {
       setToggleCount(parseInt(storedCount, 10));
+    }
+    
+    if (storedPattern) {
+      setTogglePattern(JSON.parse(storedPattern));
     }
   }, []);
   
   // Update localStorage when toggleCount changes
   useEffect(() => {
     localStorage.setItem('toggleCount', toggleCount.toString());
-  }, [toggleCount]);
+    localStorage.setItem('togglePattern', JSON.stringify(togglePattern));
+  }, [toggleCount, togglePattern]);
   
   // Show message when lights are turned on and hide after delay
   useEffect(() => {
@@ -35,17 +42,38 @@ const LightSwitch = () => {
     }
   }, [isLightOn]);
 
+  // Check if the pattern matches "on-off-on-off-on"
+  const isOnOffOnOffOnPattern = (pattern: boolean[]) => {
+    if (pattern.length < 5) return false;
+    
+    // Get the last 5 toggles
+    const lastFive = pattern.slice(-5);
+    
+    // The pattern should be: true, false, true, false, true
+    return (
+      lastFive[0] === true && 
+      lastFive[1] === false && 
+      lastFive[2] === true && 
+      lastFive[3] === false && 
+      lastFive[4] === true
+    );
+  };
+
   // Handle switch toggle with count tracking
   const handleToggle = () => {
     // First increment toggle count
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
-    // Then toggle the light
+    // Then toggle the light and update pattern
     toggleLight();
     
-    // Show warning if this is the second toggle or later
-    if (newCount >= 2) {
+    // Update toggle pattern with the new state (after toggle)
+    const newPattern = [...togglePattern, !isLightOn];
+    setTogglePattern(newPattern);
+    
+    // Check if the pattern matches "on-off-on-off-on"
+    if (isOnOffOnOffOnPattern(newPattern)) {
       showWarning();
     }
   };
