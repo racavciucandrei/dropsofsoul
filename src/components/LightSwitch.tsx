@@ -7,28 +7,21 @@ const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
   const [showMessage, setShowMessage] = useState(false);
   const [toggleCount, setToggleCount] = useState(0);
-  const [warningShown, setWarningShown] = useState(false);
   const { toast } = useToast();
   
   // Store toggle count in localStorage to persist across renders
   useEffect(() => {
     const storedCount = localStorage.getItem('toggleCount');
-    const storedWarningShown = localStorage.getItem('warningShown');
     
     if (storedCount) {
       setToggleCount(parseInt(storedCount, 10));
     }
-    
-    if (storedWarningShown === 'true') {
-      setWarningShown(true);
-    }
   }, []);
   
-  // Update localStorage when toggleCount or warningShown changes
+  // Update localStorage when toggleCount changes
   useEffect(() => {
     localStorage.setItem('toggleCount', toggleCount.toString());
-    localStorage.setItem('warningShown', warningShown.toString());
-  }, [toggleCount, warningShown]);
+  }, [toggleCount]);
   
   // Show message when lights are turned on and hide after delay
   useEffect(() => {
@@ -51,9 +44,8 @@ const LightSwitch = () => {
     // Then toggle the light
     toggleLight();
     
-    // Check if this is the second or later toggle and warning hasn't been shown yet
-    if (newCount >= 2 && !warningShown) {
-      // Show warning using Speech Synthesis
+    // Show warning if this is the second toggle or later
+    if (newCount >= 2) {
       showWarning();
     }
   };
@@ -73,9 +65,6 @@ const LightSwitch = () => {
       description: "Hey, don't play with that switch!",
       variant: "destructive",
     });
-    
-    // Mark warning as shown
-    setWarningShown(true);
   };
 
   return (
