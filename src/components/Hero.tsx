@@ -75,11 +75,7 @@ const Hero = () => {
       </div>
       
       {/* Content */}
-      <div className={cn(
-        "container-custom relative z-10 pt-28 pb-16",
-        "transition-all duration-500",
-        isLightOn ? "opacity-100" : "opacity-0 pointer-events-none"
-      )}>
+      <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
             <div className="inline-block">

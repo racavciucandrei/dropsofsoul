@@ -52,7 +52,7 @@ const App = () => (
           <RainEffect />
           <Navbar />
           <LightSwitch />
-          <main className="transition-all duration-500">
+          <main className="transition-all duration-500 content-visibility">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/products" element={<Products />} />

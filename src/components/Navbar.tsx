@@ -52,8 +52,7 @@ const Navbar = () => {
         </Link>
         
         {/* Rest of navbar that's only visible when lights are on */}
-        <div className={cn("transition-all duration-500", 
-          isLightOn ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+        <div className="hide-in-dark">
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link
@@ -72,8 +71,7 @@ const Navbar = () => {
           </nav>
         </div>
         
-        <div className={cn("flex items-center space-x-4 transition-all duration-500", 
-          isLightOn ? 'opacity-100' : 'opacity-0 pointer-events-none')}>
+        <div className="hide-in-dark flex items-center space-x-4">
           <Button 
             variant="ghost" 
             size="icon" 
