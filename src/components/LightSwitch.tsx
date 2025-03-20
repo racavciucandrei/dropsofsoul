@@ -10,6 +10,7 @@ const LightSwitch = () => {
   const audioInitializedRef = useRef(false);
   const lastToggleTimeRef = useRef(0);
   const switchButtonRef = useRef<HTMLDivElement>(null);
+  const voicePlayedRef = useRef(false);
   
   useEffect(() => {
     console.log("LightSwitch component mounted");
@@ -59,8 +60,10 @@ const LightSwitch = () => {
     };
     document.addEventListener('click', unblockAudio, { once: true });
     
+    // Reset voice played flag when component unmounts
     return () => {
       document.removeEventListener('click', unblockAudio);
+      voicePlayedRef.current = false;
     };
   }, []);
   
@@ -136,18 +139,22 @@ const LightSwitch = () => {
     const newPattern = [...togglePattern, !isLightOn];
     setTogglePattern(newPattern);
     
-    if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern)) {
-      showInfernalWarning();
+    if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern) && !voicePlayedRef.current) {
+      showSeductiveWarning();
+      voicePlayedRef.current = true;
     }
   };
 
-  const showInfernalWarning = () => {
+  const showSeductiveWarning = () => {
+    // Cancel any existing speech synthesis
+    window.speechSynthesis.cancel();
+    
     setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
+      const utterance = new SpeechSynthesisUtterance("Hey... don't play with that switch");
       
-      // Updated voice settings for a sultry feminine voice
-      utterance.rate = 0.8;    // Slightly slower for romantic effect
-      utterance.pitch = 1.5;   // Higher pitch for feminine voice
+      // More seductive voice settings
+      utterance.rate = 0.7;    // Even slower for more seductive effect
+      utterance.pitch = 1.2;   // Slightly lower pitch for a huskier feminine voice
       utterance.volume = 1.0;
       
       const voices = window.speechSynthesis.getVoices();
@@ -169,17 +176,8 @@ const LightSwitch = () => {
         console.log("No female voice found, using default with adjusted pitch");
       }
       
-      // Add subtle breathy echo with voice variation for sultry effect
-      utterance.onstart = () => {
-        setTimeout(() => {
-          const echoUtterance = new SpeechSynthesisUtterance("don't play with that switch");
-          echoUtterance.volume = 0.7;
-          echoUtterance.rate = 0.7;    // Even slower for the echo
-          echoUtterance.pitch = 1.6;   // Slightly higher pitch for the echo
-          if (femaleVoice) echoUtterance.voice = femaleVoice;
-          window.speechSynthesis.speak(echoUtterance);
-        }, 300);
-      };
+      // Add breathy pause between words for sensual effect
+      utterance.text = "Hey... don't... play with that... switch";
       
       window.speechSynthesis.speak(utterance);
     }, 100);
