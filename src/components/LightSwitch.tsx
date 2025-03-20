@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { initAudio, playAudio } from '@/utils/soundUtils';
@@ -146,32 +145,38 @@ const LightSwitch = () => {
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       
-      // Extremely slow and deep for infernal voice effect
-      utterance.rate = 0.6;  // Very slow speech
-      utterance.pitch = 0.1; // Extremely low pitch
+      // Updated voice settings for a sultry feminine voice
+      utterance.rate = 0.8;    // Slightly slower for romantic effect
+      utterance.pitch = 1.5;   // Higher pitch for feminine voice
       utterance.volume = 1.0;
       
       const voices = window.speechSynthesis.getVoices();
       
-      const infernalVoice = voices.find(voice => 
-        voice.name.includes('Male') || 
-        voice.name.includes('Daniel') ||
-        voice.name.includes('George') ||
-        voice.name.includes('James')
+      // Find a feminine voice
+      const femaleVoice = voices.find(voice => 
+        voice.name.includes('Female') || 
+        voice.name.includes('Samantha') ||
+        voice.name.includes('Victoria') ||
+        voice.name.includes('Karen') ||
+        voice.name.includes('Moira') ||
+        voice.name.includes('Tessa')
       );
       
-      if (infernalVoice) {
-        utterance.voice = infernalVoice;
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+        console.log("Using female voice:", femaleVoice.name);
+      } else {
+        console.log("No female voice found, using default with adjusted pitch");
       }
       
-      // Add subtle echo effect with voice variation
+      // Add subtle breathy echo with voice variation for sultry effect
       utterance.onstart = () => {
         setTimeout(() => {
           const echoUtterance = new SpeechSynthesisUtterance("don't play with that switch");
-          echoUtterance.volume = 0.6;
-          echoUtterance.rate = 0.5;
-          echoUtterance.pitch = 0.08;
-          if (infernalVoice) echoUtterance.voice = infernalVoice;
+          echoUtterance.volume = 0.7;
+          echoUtterance.rate = 0.7;    // Even slower for the echo
+          echoUtterance.pitch = 1.6;   // Slightly higher pitch for the echo
+          if (femaleVoice) echoUtterance.voice = femaleVoice;
           window.speechSynthesis.speak(echoUtterance);
         }, 300);
       };
