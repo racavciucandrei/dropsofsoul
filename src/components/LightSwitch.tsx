@@ -106,7 +106,7 @@ const LightSwitch = () => {
     // Add a small delay to ensure the warning comes after the toggle sound
     setTimeout(() => {
       // Create a demonic/satanic divine voice effect
-      const utterance = new SpeechSynthesisUtterance("Cease thy meddling with the sacred switch!");
+      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       
       // Extremely slow rate for a demonic, otherworldly effect
       utterance.rate = 0.6;
@@ -142,7 +142,7 @@ const LightSwitch = () => {
       // Display text message with the warning
       toast({
         title: "Divine Warning",
-        description: "Cease thy meddling with the sacred switch!",
+        description: "Hey, don't play with that switch!",
         variant: "destructive",
       });
     }, 100);
