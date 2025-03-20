@@ -18,7 +18,7 @@ const Footer = () => {
               Drops of Soul
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              Handcrafted cocktail ingredients from the mountains to your glass.
+              Handcrafted cocktail ingredients that elevate your drinking experience.
             </p>
             <div className="flex space-x-4 mt-6">
               <Button
@@ -127,7 +127,7 @@ const Footer = () => {
           <div>
             <h3 className="font-medium mb-4">Subscribe</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Join our newsletter for exclusive offers and mountain-inspired cocktail recipes.
+              Join our newsletter for exclusive offers and inspired cocktail recipes.
             </p>
             <div className="flex space-x-2">
               <Input 
