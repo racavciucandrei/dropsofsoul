@@ -99,8 +99,8 @@ const LightSwitch = () => {
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       
-      utterance.rate = 0.5;
-      utterance.pitch = 0.1;
+      utterance.rate = 0.4;
+      utterance.pitch = 0.05;
       utterance.volume = 1.0;
       
       const voices = window.speechSynthesis.getVoices();
@@ -119,12 +119,21 @@ const LightSwitch = () => {
       
       utterance.onstart = () => {
         setTimeout(() => {
-          const echoUtterance = new SpeechSynthesisUtterance("don't play with that switch");
-          echoUtterance.volume = 0.3;
-          echoUtterance.rate = 0.4;
-          echoUtterance.pitch = 0.05;
-          if (demonicVoice) echoUtterance.voice = demonicVoice;
-          window.speechSynthesis.speak(echoUtterance);
+          const echoUtterance1 = new SpeechSynthesisUtterance("don't play with that switch");
+          echoUtterance1.volume = 0.5;
+          echoUtterance1.rate = 0.3;
+          echoUtterance1.pitch = 0.03;
+          if (demonicVoice) echoUtterance1.voice = demonicVoice;
+          window.speechSynthesis.speak(echoUtterance1);
+          
+          setTimeout(() => {
+            const echoUtterance2 = new SpeechSynthesisUtterance("with that switch");
+            echoUtterance2.volume = 0.3;
+            echoUtterance2.rate = 0.25;
+            echoUtterance2.pitch = 0.01;
+            if (demonicVoice) echoUtterance2.voice = demonicVoice;
+            window.speechSynthesis.speak(echoUtterance2);
+          }, 300);
         }, 200);
       };
       
