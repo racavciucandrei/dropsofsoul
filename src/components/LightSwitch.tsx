@@ -1,10 +1,26 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLight } from '@/context/LightProvider';
+import { useToast } from '@/hooks/use-toast';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
   const [showMessage, setShowMessage] = useState(false);
+  const [toggleCount, setToggleCount] = useState(0);
+  const [warningShown, setWarningShown] = useState(false);
+  const { toast } = useToast();
+  
+  // Reset toggle count after a period of inactivity (30 seconds)
+  useEffect(() => {
+    if (toggleCount > 0) {
+      const timer = setTimeout(() => {
+        setToggleCount(0);
+        setWarningShown(false);
+      }, 30000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [toggleCount]);
   
   // Show message when lights are turned on and hide after delay
   useEffect(() => {
@@ -12,18 +28,46 @@ const LightSwitch = () => {
       setShowMessage(true);
       const timer = setTimeout(() => {
         setShowMessage(false);
-      }, 1300); // Hide message after 1.3 seconds (changed from 0.6)
+      }, 1300); // Hide message after 1.3 seconds
       
       return () => clearTimeout(timer);
     }
   }, [isLightOn]);
+
+  // Handle switch toggle with count tracking
+  const handleToggle = () => {
+    toggleLight();
+    
+    // Increment toggle count
+    setToggleCount(prev => prev + 1);
+    
+    // Check if the user is toggling too much (more than 5 times in a short period)
+    if (toggleCount >= 5 && !warningShown) {
+      // Play warning using Speech Synthesis
+      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      window.speechSynthesis.speak(utterance);
+      
+      // Show toast notification
+      toast({
+        title: "Stop that!",
+        description: "Hey, don't play with that switch!",
+        variant: "destructive",
+      });
+      
+      // Prevent showing again until reset
+      setWarningShown(true);
+    }
+  };
 
   return (
     <div className="fixed right-6 top-24 z-50 flex flex-col items-center">
       {/* Old American style toggle light switch */}
       <div 
         className="cursor-pointer flex flex-col items-center"
-        onClick={toggleLight}
+        onClick={handleToggle}
       >
         <div className="w-8 h-14 bg-amber-200 border-2 border-amber-800 rounded-md shadow-md flex flex-col items-center justify-center relative">
           {/* Switch plate */}
