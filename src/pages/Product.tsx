@@ -12,16 +12,17 @@ const allProducts = [
   // Bitters (7 types)
   {
     id: 1,
-    name: 'Aromatic Bitters',
+    name: 'Tepache Bitters',
     category: 'bitters',
     price: 18.95,
     images: ['/assets/product-1.jpg', '/assets/product-1-alt.jpg', '/assets/product-1-detail.jpg'],
-    slug: 'aromatic-bitters',
-    description: 'Our classic Aromatic Bitters are crafted with a blend of botanicals including gentian root, cassia bark, and bitter orange peel. Perfect for adding depth and complexity to Old Fashioneds, Manhattans, and other classic cocktails.',
+    slug: 'tepache-bitters',
+    description: 'Rooted in the rich traditions of Mexico, this bitters captures the soul of tepache, celebrating the fermented pineapple drink. The dried sweetness of pineapple peel blends harmoniously with earthy and spiced flavours, creating a vibrant, bold elixir. Handcrafted for adventurous bartenders, it brings a funky twist to cocktails, with the wild flavours of traditional Mexican fermentation in every drop.',
     details: {
-      ingredients: 'Water, alcohol (45% ABV), gentian root, cassia bark, cardamom, bitter orange peel, cloves, natural flavors.',
+      ingredients: 'Water, alcohol (45% ABV), pineapple peel, selected spices, natural botanicals.',
       size: '100ml (3.4 fl oz)',
       usage: '2-3 dashes per cocktail',
+      flavorProfile: 'A tangy, sweet, and spicy blend inspired by the vibrant, fermented essence of tepache. The focus is on pineapple peel, spices, and a touch of funk.'
     },
     related: [2, 3, 4],
     rating: 4.8,

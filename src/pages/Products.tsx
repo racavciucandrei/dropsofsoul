@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,11 +14,11 @@ const allProducts = [
   // Bitters (7 types)
   {
     id: 1,
-    name: 'Aromatic Bitters',
+    name: 'Tepache Bitters',
     category: 'bitters',
     price: 18.95,
     image: '/assets/product-1.jpg',
-    slug: 'aromatic-bitters',
+    slug: 'tepache-bitters',
     bestseller: true,
   },
   {

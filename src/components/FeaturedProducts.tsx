@@ -10,11 +10,11 @@ import { ShoppingCart, Heart } from 'lucide-react';
 const products = [
   {
     id: 1,
-    name: 'Aromatic Bitters',
+    name: 'Tepache Bitters',
     category: 'Bitters',
     price: 18.95,
     image: '/assets/product-1.jpg',
-    slug: 'aromatic-bitters',
+    slug: 'tepache-bitters',
   },
   {
     id: 8,
