@@ -32,7 +32,7 @@ export interface Product {
 
 // Comprehensive product data
 export const allProducts: Product[] = [
-  // Bitters (8 types now)
+  // Bitters
   {
     id: 1,
     name: 'Tepache Bitters',
@@ -65,7 +65,7 @@ export const allProducts: Product[] = [
       ],
       imagePath: '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png'
     },
-    related: [2, 3, 4],
+    related: [18, 19, 21],
     rating: 4.8,
     reviews: 24,
   },
@@ -98,111 +98,9 @@ export const allProducts: Product[] = [
       ],
       imagePath: '/placeholder.svg'
     },
-    related: [1, 3, 7],
+    related: [1, 18, 19],
     rating: 4.9,
     reviews: 18,
-  },
-  {
-    id: 3,
-    name: 'Orange Bitters',
-    category: 'bitters',
-    price: 19.95,
-    images: ['/assets/product-4.jpg', '/assets/product-4-alt.jpg', '/assets/product-4-detail.jpg'],
-    slug: 'orange-bitters',
-    description: 'Our Orange Bitters highlight the bright, zesty character of orange peel, complemented by a blend of spices. These bitters add a citrus lift to cocktails like the Martinez, Old Fashioned, or any drink that needs a touch of brightness.',
-    details: {
-      ingredients: 'Water, alcohol (45% ABV), bitter orange peel, sweet orange essence, cardamom, coriander, natural flavors.',
-      size: '100ml (3.4 fl oz)',
-      usage: '2-3 dashes per cocktail',
-    },
-    related: [1, 6, 7],
-    rating: 4.7,
-    reviews: 18,
-  },
-  {
-    id: 4,
-    name: 'Cherry Bitters',
-    category: 'bitters',
-    price: 18.50,
-    images: ['/assets/product-6.jpg', '/assets/product-6-alt.jpg', '/assets/product-6-detail.jpg'],
-    slug: 'cherry-bitters',
-    description: 'Our Cherry Bitters pair the rich, fruity notes of cherries with warm spices and a hint of almond. These bitters bring a subtle fruity complexity to Manhattans, Old Fashioneds, and other classic cocktails.',
-    details: {
-      ingredients: 'Water, alcohol (45% ABV), dried cherries, bitter almond, cinnamon, vanilla, natural flavors.',
-      size: '100ml (3.4 fl oz)',
-      usage: '2-3 dashes per cocktail',
-    },
-    related: [1, 2, 7],
-    rating: 4.9,
-    reviews: 32,
-  },
-  {
-    id: 5,
-    name: 'Chocolate Bitters',
-    category: 'bitters',
-    price: 20.95,
-    images: ['/assets/product-9.jpg', '/assets/product-9-alt.jpg', '/assets/product-9-detail.jpg'],
-    slug: 'chocolate-bitters',
-    description: 'Our Chocolate Bitters combine rich cocoa with subtle spices and a hint of vanilla. These bitters add depth and complexity to cocktails, particularly those with aged spirits, coffee liqueurs, or cream components.',
-    details: {
-      ingredients: 'Water, alcohol (45% ABV), cocoa nibs, vanilla bean, cinnamon, natural flavors.',
-      size: '100ml (3.4 fl oz)',
-      usage: '2-3 dashes per cocktail',
-    },
-    related: [3, 7, 1],
-    rating: 4.6,
-    reviews: 15,
-  },
-  {
-    id: 6,
-    name: 'Lavender Bitters',
-    category: 'bitters',
-    price: 21.50,
-    images: ['/assets/product-10.jpg', '/assets/product-10-alt.jpg', '/assets/product-10-detail.jpg'],
-    slug: 'lavender-bitters',
-    description: 'Our Lavender Bitters feature the delicate floral notes of lavender balanced with citrus and gentle spices. These bitters add a floral complexity to gin cocktails, champagne drinks, and modern mixology creations.',
-    details: {
-      ingredients: 'Water, alcohol (45% ABV), lavender flowers, lemon peel, vanilla, natural flavors.',
-      size: '100ml (3.4 fl oz)',
-      usage: '2-3 dashes per cocktail',
-    },
-    related: [10, 11, 2],
-    rating: 4.7,
-    reviews: 21,
-  },
-  {
-    id: 7,
-    name: 'Grapefruit Bitters',
-    category: 'bitters',
-    price: 19.95,
-    images: ['/assets/product-11.jpg', '/assets/product-11-alt.jpg', '/assets/product-11-detail.jpg'],
-    slug: 'grapefruit-bitters',
-    description: 'Our Grapefruit Bitters capture the bright, tangy essence of grapefruit with subtle bitter undertones. These bitters add zesty complexity to Palomas, gin and tonics, and a wide range of citrus-forward cocktails.',
-    details: {
-      ingredients: 'Water, alcohol (45% ABV), grapefruit peel, gentian root, coriander, natural flavors.',
-      size: '100ml (3.4 fl oz)',
-      usage: '2-3 dashes per cocktail',
-    },
-    related: [2, 5, 14],
-    rating: 4.5,
-    reviews: 12,
-  },
-  {
-    id: 8,
-    name: 'Spiced Bitters',
-    category: 'bitters',
-    price: 22.95,
-    images: ['/assets/product-12.jpg', '/assets/product-12-alt.jpg', '/assets/product-12-detail.jpg'],
-    slug: 'spiced-bitters',
-    description: 'Our Spiced Bitters blend warm spices like cinnamon, clove, and allspice with subtle citrus notes. These bitters add warmth and complexity to rum cocktails, whiskey drinks, and seasonal creations.',
-    details: {
-      ingredients: 'Water, alcohol (45% ABV), cinnamon, clove, allspice, orange peel, natural flavors.',
-      size: '100ml (3.4 fl oz)',
-      usage: '2-3 dashes per cocktail',
-    },
-    related: [1, 2, 4],
-    rating: 4.9,
-    reviews: 29,
   },
   
   // Cordials (5 types)
@@ -253,7 +151,7 @@ export const allProducts: Product[] = [
       size: '250ml (8.4 fl oz)',
       usage: '15-30ml per drink',
     },
-    related: [9, 6, 12],
+    related: [9, 12, 13],
     rating: 4.7,
     reviews: 36,
   },
@@ -362,7 +260,7 @@ export const allProducts: Product[] = [
     reviews: 37,
   },
   
-  // Hibiscus & Cardamom Bitters
+  // Specialty Bitters
   {
     id: 18,
     name: 'Hibiscus & Cardamom Bitters',
@@ -394,12 +292,11 @@ export const allProducts: Product[] = [
       ],
       imagePath: '/placeholder.svg'
     },
-    related: [1, 2, 11],
+    related: [1, 2, 19],
     rating: 4.8,
     reviews: 15,
   },
   
-  // Adding new Coffee & Grapefruit Bitters
   {
     id: 19,
     name: 'Coffee & Grapefruit Bitters',
@@ -429,12 +326,11 @@ export const allProducts: Product[] = [
       ],
       imagePath: '/lovable-uploads/f5280f26-197f-4528-baa5-0e3d04fe30f5.png'
     },
-    related: [1, 7, 18],
+    related: [1, 18, 20],
     rating: 4.7,
     reviews: 12,
   },
   
-  // Adding new Curry Leaf & Tamarind Bitters
   {
     id: 20,
     name: 'Curry Leaf & Tamarind Bitters',
@@ -464,12 +360,11 @@ export const allProducts: Product[] = [
       ],
       imagePath: '/placeholder.svg'
     },
-    related: [1, 2, 18],
+    related: [1, 2, 21],
     rating: 4.7,
     reviews: 9,
   },
   
-  // Adding new Szechuan Pepper & Cacao Bitters
   {
     id: 21,
     name: 'Szechuan Pepper & Cacao Bitters',
