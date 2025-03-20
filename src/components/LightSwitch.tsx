@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { useToast } from '@/hooks/use-toast';
@@ -99,90 +100,124 @@ const LightSwitch = () => {
     setTimeout(() => {
       try {
         const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const thunderGain = audioContext.createGain();
-        thunderGain.gain.value = 0.7;
-        thunderGain.connect(audioContext.destination);
+        const demonicGain = audioContext.createGain();
+        demonicGain.gain.value = 0.8;
+        demonicGain.connect(audioContext.destination);
         
+        // Low rumbling sound
         const oscillator1 = audioContext.createOscillator();
         oscillator1.type = 'sine';
-        oscillator1.frequency.value = 40;
+        oscillator1.frequency.value = 30; // Very low frequency for a deep rumble
         const gain1 = audioContext.createGain();
-        gain1.gain.value = 0.8;
+        gain1.gain.value = 1.0;
         oscillator1.connect(gain1);
-        gain1.connect(thunderGain);
+        gain1.connect(demonicGain);
         
+        // Crackling fire-like sounds
         const oscillator2 = audioContext.createOscillator();
         oscillator2.type = 'sawtooth';
-        oscillator2.frequency.value = 120;
+        oscillator2.frequency.value = 80;
         const gain2 = audioContext.createGain();
-        gain2.gain.setValueAtTime(0.8, audioContext.currentTime);
-        gain2.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+        gain2.gain.setValueAtTime(0.4, audioContext.currentTime);
+        gain2.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 1.2);
         oscillator2.connect(gain2);
-        gain2.connect(thunderGain);
+        gain2.connect(demonicGain);
+        
+        // Distortion for hellish effect
+        const distortion = audioContext.createWaveShaper();
+        function makeDistortionCurve(amount = 50) {
+          const k = typeof amount === 'number' ? amount : 50;
+          const n_samples = 44100;
+          const curve = new Float32Array(n_samples);
+          const deg = Math.PI / 180;
+          
+          for (let i = 0; i < n_samples; ++i) {
+            const x = (i * 2) / n_samples - 1;
+            curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+          }
+          return curve;
+        }
+        
+        distortion.curve = makeDistortionCurve(400);
+        distortion.oversample = '4x';
+        gain1.connect(distortion);
+        distortion.connect(audioContext.destination);
         
         oscillator1.start();
         oscillator2.start();
         
-        oscillator1.stop(audioContext.currentTime + 1.5);
-        oscillator2.stop(audioContext.currentTime + 0.5);
+        oscillator1.stop(audioContext.currentTime + 2.5);
+        oscillator2.stop(audioContext.currentTime + 1.2);
       } catch (e) {
-        console.error("Could not create thunder effect", e);
+        console.error("Could not create demonic sound effect", e);
       }
       
-      const utterance = new SpeechSynthesisUtterance("MORTAL! CEASE PLAYING WITH THE FORCES OF LIGHT AND DARKNESS!");
+      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       
-      utterance.rate = 0.9;
-      utterance.pitch = 0.7;
+      // Extremely slow and deep for demonic effect
+      utterance.rate = 0.6;  // Very slow speech
+      utterance.pitch = 0.1; // Extremely low pitch
       utterance.volume = 1.0;
       
       const voices = window.speechSynthesis.getVoices();
       
-      const odinVoice = voices.find(voice => 
+      const demonicVoice = voices.find(voice => 
         voice.name.includes('Male') || 
         voice.name.includes('Daniel') ||
         voice.name.includes('George') ||
         voice.name.includes('James')
       );
       
-      if (odinVoice) {
-        utterance.voice = odinVoice;
+      if (demonicVoice) {
+        utterance.voice = demonicVoice;
       }
       
       utterance.onstart = () => {
+        // Add multiple overlapping echoes with decreasing volume and lower pitch
         setTimeout(() => {
-          const echoUtterance1 = new SpeechSynthesisUtterance("THE FORCES OF LIGHT AND DARKNESS");
+          const echoUtterance1 = new SpeechSynthesisUtterance("don't play with that switch");
           echoUtterance1.volume = 0.7;
-          echoUtterance1.rate = 0.85;
-          echoUtterance1.pitch = 0.6;
-          if (odinVoice) echoUtterance1.voice = odinVoice;
+          echoUtterance1.rate = 0.5;
+          echoUtterance1.pitch = 0.08;
+          if (demonicVoice) echoUtterance1.voice = demonicVoice;
           window.speechSynthesis.speak(echoUtterance1);
           
           setTimeout(() => {
-            const echoUtterance2 = new SpeechSynthesisUtterance("LIGHT AND DARKNESS");
+            const echoUtterance2 = new SpeechSynthesisUtterance("with that switch");
             echoUtterance2.volume = 0.5;
-            echoUtterance2.rate = 0.8;
-            echoUtterance2.pitch = 0.5;
-            if (odinVoice) echoUtterance2.voice = odinVoice;
+            echoUtterance2.rate = 0.4;
+            echoUtterance2.pitch = 0.06;
+            if (demonicVoice) echoUtterance2.voice = demonicVoice;
             window.speechSynthesis.speak(echoUtterance2);
-          }, 800);
-        }, 500);
+            
+            setTimeout(() => {
+              const echoUtterance3 = new SpeechSynthesisUtterance("switch");
+              echoUtterance3.volume = 0.3;
+              echoUtterance3.rate = 0.3;
+              echoUtterance3.pitch = 0.04;
+              if (demonicVoice) echoUtterance3.voice = demonicVoice;
+              window.speechSynthesis.speak(echoUtterance3);
+            }, 400);
+          }, 350);
+        }, 300);
       };
       
       window.speechSynthesis.speak(utterance);
       
       toast({
-        title: "Divine Warning from Odin",
-        description: "MORTAL! CEASE PLAYING WITH THE FORCES OF LIGHT AND DARKNESS!",
+        title: "Demonic Warning",
+        description: "Hey, don't play with that switch!",
         variant: "destructive",
       });
       
+      // Add red flash effect instead of white for hellish appearance
       const flash = document.createElement('div');
       flash.style.position = 'fixed';
       flash.style.top = '0';
       flash.style.left = '0';
       flash.style.width = '100vw';
       flash.style.height = '100vh';
-      flash.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+      flash.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
       flash.style.zIndex = '9999';
       flash.style.transition = 'opacity 1.5s';
       document.body.appendChild(flash);
@@ -192,7 +227,7 @@ const LightSwitch = () => {
         setTimeout(() => {
           document.body.removeChild(flash);
         }, 1500);
-      }, 100);
+      }, 200);
     }, 100);
   };
 
