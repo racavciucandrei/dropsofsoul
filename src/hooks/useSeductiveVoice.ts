@@ -1,4 +1,3 @@
-
 import { useRef } from 'react';
 
 export const useSeductiveVoice = () => {
@@ -11,31 +10,29 @@ export const useSeductiveVoice = () => {
     setTimeout(() => {
       const utterance = new SpeechSynthesisUtterance();
       
-      // Cartoon character voice settings with slower speaking rate
-      utterance.rate = 0.8;     // Slower pace for better comprehension
-      utterance.pitch = 1.7;    // Higher pitched for cartoon effect
-      utterance.volume = 1.0;   // Full volume
+      // Tom and Jerry housekeeper style voice settings
+      utterance.rate = 0.9;      // Slightly slower pace for the character style
+      utterance.pitch = 0.7;     // Lower pitched for the iconic voice
+      utterance.volume = 1.0;    // Full volume
       
-      // Updated funny cartoon character line
+      // Keep the same line but we'll deliver it with different voice characteristics
       utterance.text = "Now look at this one he just discovered a switch!";
       
       const voices = window.speechSynthesis.getVoices();
       
-      // Try to find a voice that might work well for cartoon character
-      const cartoonishVoice = voices.find(voice => 
-        voice.name.includes('Samantha') ||
-        voice.name.includes('Karen') ||
+      // Try to find a deeper voice that might work better for this character style
+      const suitableVoice = voices.find(voice => 
         voice.name.includes('Daniel') ||
         voice.name.includes('Fred') ||
         voice.name.includes('Google US English') ||
-        voice.name.includes('Microsoft Zira')
+        voice.name.includes('Microsoft David')
       );
       
-      if (cartoonishVoice) {
-        utterance.voice = cartoonishVoice;
-        console.log("Using cartoon-like voice:", cartoonishVoice.name);
+      if (suitableVoice) {
+        utterance.voice = suitableVoice;
+        console.log("Using character-like voice:", suitableVoice.name);
       } else {
-        console.log("No suitable voice found, using default with cartoon adjustments");
+        console.log("No suitable voice found, using default with adjusted settings");
       }
       
       window.speechSynthesis.speak(utterance);
