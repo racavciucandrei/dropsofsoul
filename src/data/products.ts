@@ -1,3 +1,4 @@
+
 // Product data types
 export interface ProductDetails {
   ingredients: string;
@@ -187,6 +188,41 @@ export const allProducts: Product[] = [
     related: [12, 9, 15],
     rating: 4.8,
     reviews: 39,
+  },
+  {
+    id: 23,
+    name: 'Raspberry & Lychee Cordial',
+    category: 'cordials',
+    price: 24.95,
+    images: ['/assets/product-7.jpg', '/assets/product-7-alt.jpg', '/assets/product-7-detail.jpg'],
+    slug: 'raspberry-lychee-cordial',
+    description: 'This elegant cordial blends the tartness of ripe, succulent raspberries with the floral sweetness of lychee. By preserving the natural characteristics of the fruits through a precise, gentle extraction process, we achieve a well-rounded and smooth flavor. Ideal for both cocktails and mocktails, its balanced taste captures the essence of fresh fruit and lasting finish in every drop.',
+    details: {
+      ingredients: 'Water, cane sugar, raspberry extract, lychee extract, citric acid, natural flavors.',
+      size: '250ml (8.4 fl oz)',
+      usage: '15-30ml per drink',
+      flavorProfile: 'A perfect balance of tart raspberry and delicate floral lychee sweetness, creating a sophisticated, fruit-forward profile.'
+    },
+    signatureCocktail: {
+      name: 'Lychee Clover Club',
+      description: 'A sophisticated twist on the classic Clover Club, this cocktail combines the botanical notes of gin with the fruity complexity of our Raspberry & Lychee Cordial. The dry vermouth adds depth, while fresh raspberry puree and lemon juice bring bright, fresh acidity. The vegan foam creates a silky, luxurious texture, making this a visually stunning and deliciously balanced cocktail that showcases the cordial's unique flavor profile.',
+      ingredients: [
+        '5cl gin',
+        '2cl Dry Vermouth',
+        '3cl Raspberry & Lychee Cordial',
+        '3cl Raspberry puree',
+        '1cl fresh lemon juice',
+        '3 dashes of vegan foam'
+      ],
+      garnish: [
+        '3 raspberries on a pick',
+        'Golden Lychee'
+      ],
+      imagePath: '/placeholder.svg'
+    },
+    related: [9, 11, 15],
+    rating: 4.9,
+    reviews: 16,
   },
   
   // Shrubs (4 types)
@@ -433,3 +469,4 @@ export const allProducts: Product[] = [
     reviews: 5,
   },
 ];
+
