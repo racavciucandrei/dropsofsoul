@@ -33,7 +33,7 @@ const allProducts = [
         '3cl Pineapple & Lime Cordial',
         '1cl Fresh lime juice',
         '3 dashes Tepache Bitters',
-        'Pineapple Juice (cleared) (see technique below)'
+        'Pineapple Juice (cleared)'
       ],
       garnish: [
         'Pineapple Frond',
