@@ -41,7 +41,7 @@ const About = () => {
                 At Drops of Soul, we believe that the purest ingredients create the most soulful drinking experiences. Our journey is just beginning, but our passion for crafting unique flavors is already transforming cocktails and beverages.
               </p>
               <p>
-                Each of our products is handcrafted in small batches using carefully selected ingredients. As a new company, we're excited to share our creations and build a community of flavor enthusiasts.
+                Each of our products is handcrafted in small batches using carefully selected ingredients. Coming soon: mobile cocktail catering for weddings, corporate events, and private parties.
               </p>
             </div>
             

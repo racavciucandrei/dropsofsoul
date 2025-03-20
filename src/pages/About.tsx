@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, GlassWater, PartyPopper, Users } from 'lucide-react';
 
 const About = () => {
   return (
@@ -90,6 +89,72 @@ const About = () => {
                 We combine tradition with innovation to create unique flavor profiles that can't be found anywhere else.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Cocktail Catering Service */}
+      <section className="py-20 bg-primary/5">
+        <div className="container-custom">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
+              Coming Soon
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Mobile Cocktail Catering
+            </h2>
+            <p className="text-muted-foreground">
+              Elevate your events with our premium mobile cocktail catering service, bringing the craft cocktail experience directly to you.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="p-6 rounded-lg border bg-card transition-all duration-300 hover:shadow-md">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
+                <PartyPopper className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Special Events</h3>
+              <p className="text-muted-foreground">
+                Perfect for weddings, birthdays, corporate events, and private parties with capacity for up to 100 guests.
+              </p>
+            </div>
+            
+            <div className="p-6 rounded-lg border bg-card transition-all duration-300 hover:shadow-md">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
+                <GlassWater className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Signature Cocktails</h3>
+              <p className="text-muted-foreground">
+                Customize your event with signature cocktails featuring our handcrafted bitters, cordials, and shrubs for a truly unique experience.
+              </p>
+            </div>
+            
+            <div className="p-6 rounded-lg border bg-card transition-all duration-300 hover:shadow-md">
+              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-primary/10 text-primary mb-4">
+                <Users className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-2">Professional Service</h3>
+              <p className="text-muted-foreground">
+                Our experienced mixologists bring everything needed to create an exceptional cocktail experience at your location.
+              </p>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <p className="text-muted-foreground mb-6">
+              Our mobile bar service is launching soon. Contact us to learn more about availability for your upcoming events.
+            </p>
+            <Button 
+              asChild 
+              variant="outline" 
+              size="lg" 
+              className="rounded-full group"
+            >
+              <Link to="/contact">
+                Inquire About Catering
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -247,3 +312,4 @@ const About = () => {
 };
 
 export default About;
+
