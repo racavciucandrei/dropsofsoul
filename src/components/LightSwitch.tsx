@@ -1,6 +1,6 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
-import { useToast } from '@/hooks/use-toast';
 import { initAudio } from '@/utils/soundUtils';
 
 const LightSwitch = () => {
@@ -8,7 +8,6 @@ const LightSwitch = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [toggleCount, setToggleCount] = useState(0);
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
-  const { toast } = useToast();
   const audioInitializedRef = useRef(false);
   const lastToggleTimeRef = useRef(0);
   
@@ -131,11 +130,7 @@ const LightSwitch = () => {
       
       window.speechSynthesis.speak(utterance);
       
-      toast({
-        title: "Warning",
-        description: "Hey, don't play with that switch!",
-        variant: "destructive",
-      });
+      // Removed the toast notification here
     }, 100);
   };
 
