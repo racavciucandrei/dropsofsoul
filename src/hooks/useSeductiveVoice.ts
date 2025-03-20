@@ -9,16 +9,19 @@ export const useSeductiveVoice = () => {
     window.speechSynthesis.cancel();
     
     setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance("Hey... don't play with that switch");
+      const utterance = new SpeechSynthesisUtterance();
       
-      // More seductive voice settings
-      utterance.rate = 0.7;    // Even slower for more seductive effect
-      utterance.pitch = 1.2;   // Slightly lower pitch for a huskier feminine voice
-      utterance.volume = 1.0;
+      // Marilyn Monroe-inspired voice settings
+      utterance.rate = 0.6;     // Very slow, breathy pace
+      utterance.pitch = 1.4;    // Higher pitched, feminine voice
+      utterance.volume = 1.0;   // Full volume
+      
+      // Add breathy pauses and Marilyn's characteristic drawl
+      utterance.text = "Ohhh... hey there... don't play... with that switch... sugar";
       
       const voices = window.speechSynthesis.getVoices();
       
-      // Find a feminine voice
+      // Find a feminine voice for Marilyn-like effect
       const femaleVoice = voices.find(voice => 
         voice.name.includes('Female') || 
         voice.name.includes('Samantha') ||
@@ -30,13 +33,10 @@ export const useSeductiveVoice = () => {
       
       if (femaleVoice) {
         utterance.voice = femaleVoice;
-        console.log("Using female voice:", femaleVoice.name);
+        console.log("Using Marilyn-inspired voice:", femaleVoice.name);
       } else {
-        console.log("No female voice found, using default with adjusted pitch");
+        console.log("No female voice found, using default with Marilyn-inspired adjustments");
       }
-      
-      // Add breathy pause between words for sensual effect
-      utterance.text = "Hey... don't... play with that... switch";
       
       window.speechSynthesis.speak(utterance);
       voicePlayedRef.current = true;
