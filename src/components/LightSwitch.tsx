@@ -10,13 +10,13 @@ const LightSwitch = () => {
   const [warningShown, setWarningShown] = useState(false);
   const { toast } = useToast();
   
-  // Reset toggle count after a period of inactivity (30 seconds)
+  // Reset toggle count after a period of inactivity (10 seconds)
   useEffect(() => {
     if (toggleCount > 0) {
       const timer = setTimeout(() => {
         setToggleCount(0);
         setWarningShown(false);
-      }, 30000);
+      }, 10000); // Changed from 30000 to 10000 (10 seconds)
       
       return () => clearTimeout(timer);
     }
