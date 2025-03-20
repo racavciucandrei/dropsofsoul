@@ -1,4 +1,3 @@
-
 // Product data types
 export interface ProductDetails {
   ingredients: string;
@@ -205,7 +204,7 @@ export const allProducts: Product[] = [
     },
     signatureCocktail: {
       name: 'Lychee Clover Club',
-      description: 'A sophisticated twist on the classic Clover Club, this cocktail combines the botanical notes of gin with the fruity complexity of our Raspberry & Lychee Cordial. The dry vermouth adds depth, while fresh raspberry puree and lemon juice bring bright, fresh acidity. The vegan foam creates a silky, luxurious texture, making this a visually stunning and deliciously balanced cocktail that showcases the cordial's unique flavor profile.',
+      description: 'A sophisticated twist on the classic Clover Club, this cocktail combines the botanical notes of gin with the fruity complexity of our Raspberry & Lychee Cordial. The dry vermouth adds depth, while fresh raspberry puree and lemon juice bring bright, fresh acidity. The vegan foam creates a silky, luxurious texture, making this a visually stunning and deliciously balanced cocktail that showcases the cordial\'s unique flavor profile.',
       ingredients: [
         '5cl gin',
         '2cl Dry Vermouth',
