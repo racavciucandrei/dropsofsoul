@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { playAudio, initAudio } from "../utils/soundUtils";
 
@@ -13,7 +14,7 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {
-    // Call sound function with zero latency - MUST come before state update
+    // Play sound before visual update
     playAudio('/click.mp3');
     
     // Update state immediately instead of using requestAnimationFrame
@@ -49,7 +50,16 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
       const silentContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       silentContext.resume().catch(() => {});
       
+      // Try to play a silent sound to unlock audio
+      const silentSource = silentContext.createBufferSource();
+      const buffer = silentContext.createBuffer(1, 1, 22050);
+      silentSource.buffer = buffer;
+      silentSource.connect(silentContext.destination);
+      silentSource.start(0);
+      
       initAudio();
+      playAudio('/click.mp3'); // Try to play sound once to unlock audio
+      
       document.removeEventListener('click', unlockAudio);
       document.removeEventListener('touchstart', unlockAudio);
     };

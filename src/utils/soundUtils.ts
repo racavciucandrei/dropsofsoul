@@ -5,12 +5,15 @@
 let audioContext: AudioContext | null = null;
 let isAudioInitialized = false;
 let clickBuffer: AudioBuffer | null = null;
+let clickAudio: HTMLAudioElement | null = null;
 
 // Initialize audio system with preemptive loading
 export const initAudio = (): void => {
   if (isAudioInitialized) return;
   
   try {
+    console.log("Initializing audio system...");
+    
     // Create audio context immediately
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContextClass) {
@@ -19,25 +22,26 @@ export const initAudio = (): void => {
     }
     
     audioContext = new AudioContextClass({ latencyHint: 'interactive' });
-    audioContext.resume().catch(() => {});
+    audioContext.resume().catch((e) => console.error("Failed to resume audio context:", e));
+    
+    // Pre-load the MP3 file
+    clickAudio = new Audio('/click.mp3');
+    clickAudio.load();
     
     // Pre-generate the click buffer to avoid generation delay later
     createClickBuffer().then(buffer => {
       clickBuffer = buffer;
       console.log("Click buffer created and cached");
-    });
+    }).catch(e => console.error("Failed to create click buffer:", e));
     
     // Pre-warm the audio system with a silent sound (iOS/Safari fix + latency reduction)
-    const silentBuffer = audioContext.createBuffer(1, 1, 22050);
-    const source = audioContext.createBufferSource();
-    source.buffer = silentBuffer;
-    source.connect(audioContext.destination);
-    source.start(0);
-    
-    // Try to load the MP3 as well for redundancy
-    const audio = new Audio();
-    audio.src = '/click.mp3';
-    audio.load();
+    if (audioContext) {
+      const silentBuffer = audioContext.createBuffer(1, 1, 22050);
+      const source = audioContext.createBufferSource();
+      source.buffer = silentBuffer;
+      source.connect(audioContext.destination);
+      source.start(0);
+    }
     
     isAudioInitialized = true;
     console.log("Audio system initialized with ultra-low latency");
@@ -92,8 +96,44 @@ const createClickBuffer = async (): Promise<AudioBuffer | null> => {
   }
 };
 
-// Ultra-low-latency audio playback function - focus on instantaneous sound
+// Multi-strategy approach for ultra-low-latency audio playback
 export const playAudio = (_audioPath: string): void => {
+  console.log("Attempting to play audio...");
+  
+  try {
+    // Strategy 1: Use HTML5 Audio API (most compatible)
+    if (clickAudio) {
+      // Clone the audio to allow overlapping sounds
+      const audioClone = clickAudio.cloneNode() as HTMLAudioElement;
+      audioClone.volume = 1.0;
+      audioClone.play().catch(e => {
+        console.warn("HTML5 Audio playback failed:", e);
+        // Fall back to Web Audio API
+        playWithWebAudio();
+      });
+    } else {
+      // No preloaded audio, create a new one
+      const audio = new Audio(_audioPath);
+      audio.volume = 1.0;
+      audio.play().catch(e => {
+        console.warn("HTML5 Audio playback failed:", e);
+        // Fall back to Web Audio API
+        playWithWebAudio();
+      });
+    }
+    
+    // Also try Web Audio API in parallel for better reliability
+    playWithWebAudio();
+    
+  } catch (error) {
+    console.warn("Audio playback failed:", error);
+    // Attempt fallback
+    playWithWebAudio();
+  }
+};
+
+// Web Audio API playback strategy
+const playWithWebAudio = (): void => {
   try {
     if (!audioContext) {
       // Emergency initialization if context doesn't exist
@@ -104,16 +144,22 @@ export const playAudio = (_audioPath: string): void => {
     // Force resume the audio context in case it's suspended
     audioContext.resume().catch(() => {});
     
-    // Method 1: Use pre-generated buffer for instant playback (Web Audio API)
+    // Strategy 2: Use pre-generated buffer for instant playback (Web Audio API)
     if (clickBuffer) {
       const source = audioContext.createBufferSource();
       source.buffer = clickBuffer;
-      source.connect(audioContext.destination);
-      // Use zero scheduling delay - most important for removing perceptible latency
-      source.start(0); 
       
-      // Method 2: Generate sound on-the-fly as backup
+      // Add gain node for volume control
+      const gainNode = audioContext.createGain();
+      gainNode.gain.value = 1.0;
+      
+      source.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      // Use zero scheduling delay - most important for removing perceptible latency
+      source.start(0);
     } else {
+      // Strategy 3: Generate sound on-the-fly as backup
       createVintageMechanicalClick();
     }
   } catch (error) {
@@ -195,8 +241,7 @@ const createVintageMechanicalClick = (): void => {
   }
 };
 
-// Preload audio function is no longer used since we're using Web Audio API
-// but kept for backward compatibility
+// Preload audio function for backward compatibility
 export const preloadAudio = (audioPath: string): HTMLAudioElement => {
   const audio = new Audio();
   audio.src = audioPath;

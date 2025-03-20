@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
-import { initAudio } from '@/utils/soundUtils';
+import { initAudio, playAudio } from '@/utils/soundUtils';
+import { Switch } from '@/components/ui/switch';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -12,12 +13,17 @@ const LightSwitch = () => {
   const lastToggleTimeRef = useRef(0);
   
   useEffect(() => {
+    // Initialize audio immediately
     initAudio();
     audioInitializedRef.current = true;
     
+    // Force audio initialization for iOS/Safari
     const forceInit = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       audioContext.resume().catch(() => {});
+      // Manual audio trigger to unblock audio on iOS
+      playAudio('/click.mp3');
+      
       document.removeEventListener('click', forceInit);
       document.removeEventListener('touchstart', forceInit);
     };
@@ -84,6 +90,9 @@ const LightSwitch = () => {
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
+    // Play sound directly here as well for redundancy
+    playAudio('/click.mp3');
+    
     toggleLight();
     
     const newPattern = [...togglePattern, !isLightOn];
@@ -129,8 +138,6 @@ const LightSwitch = () => {
       };
       
       window.speechSynthesis.speak(utterance);
-      
-      // Removed the toast notification here
     }, 100);
   };
 
