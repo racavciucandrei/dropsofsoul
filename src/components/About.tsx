@@ -28,7 +28,7 @@ const About = () => {
           <div className="space-y-6">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full">
-                Our Story
+                New Beginnings
               </span>
             </div>
             
@@ -38,10 +38,10 @@ const About = () => {
             
             <div className="space-y-4 text-muted-foreground">
               <p>
-                At Drops of Soul, we believe that the purest ingredients create the most soulful drinking experiences. Our journey began with a passion for crafting unique flavors that elevate cocktails and beverages.
+                At Drops of Soul, we believe that the purest ingredients create the most soulful drinking experiences. Our journey is just beginning, but our passion for crafting unique flavors is already transforming cocktails and beverages.
               </p>
               <p>
-                Each of our products is handcrafted in small batches using carefully selected ingredients. We take pride in our artisanal practices and our commitment to quality that inspires our craft.
+                Each of our products is handcrafted in small batches using carefully selected ingredients. As a new company, we're excited to share our creations and build a community of flavor enthusiasts.
               </p>
             </div>
             

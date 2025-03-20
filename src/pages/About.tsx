@@ -94,40 +94,40 @@ const About = () => {
         </div>
       </section>
       
-      {/* Our Story */}
+      {/* Our Story - Updated for a new company */}
       <section className="py-20 bg-secondary/30">
         <div className="container-custom">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
               <div className="space-y-6">
-                <h2 className="text-3xl font-bold">Our Journey</h2>
+                <h2 className="text-3xl font-bold">Our Beginning</h2>
                 
                 <div className="space-y-4">
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">The Beginning</h3>
+                    <h3 className="font-semibold mb-1">The Inspiration</h3>
                     <p className="text-muted-foreground text-sm">
-                      Drops of Soul began in a small kitchen, where our founder started experimenting with botanical infusions and traditional recipes.
+                      Drops of Soul began with a vision to create handcrafted cocktail ingredients that could transform everyday drinks into exceptional experiences.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">First Workshop</h3>
+                    <h3 className="font-semibold mb-1">Our Workshop</h3>
                     <p className="text-muted-foreground text-sm">
-                      After growing popularity at local markets, we opened our first workshop and began supplying local bars and restaurants.
+                      We've established our first artisanal workshop where we handcraft our products with care and precision, using only the finest ingredients.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">Online Expansion</h3>
+                    <h3 className="font-semibold mb-1">Our Launch</h3>
                     <p className="text-muted-foreground text-sm">
-                      We launched our online store, allowing cocktail enthusiasts across the country to experience our handcrafted products.
+                      We're excited to introduce our collection to cocktail enthusiasts and home bartenders who appreciate quality ingredients and unique flavors.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
-                    <h3 className="font-semibold mb-1">Today</h3>
+                    <h3 className="font-semibold mb-1">Looking Forward</h3>
                     <p className="text-muted-foreground text-sm">
-                      While we've grown, our commitment to quality and craftsmanship remains unchanged. Each bottle is still handcrafted with care and attention to detail.
+                      Though we're just beginning, our commitment to quality and craftsmanship guides everything we do. We look forward to growing alongside our community of flavor enthusiasts.
                     </p>
                   </div>
                 </div>
@@ -138,7 +138,7 @@ const About = () => {
               <div className="aspect-[3/4] overflow-hidden rounded-lg">
                 <img 
                   src="/assets/story-1.jpg" 
-                  alt="Our early days" 
+                  alt="Our beginnings" 
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -163,10 +163,10 @@ const About = () => {
               Our Team
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Meet the Artisans
+              Meet the Founders
             </h2>
             <p className="text-muted-foreground">
-              Our team of passionate craftspeople brings together expertise in herbalism, mixology, and culinary arts.
+              Our small but passionate team brings together expertise in herbalism, mixology, and culinary arts.
             </p>
           </div>
           
@@ -180,7 +180,7 @@ const About = () => {
                 />
               </div>
               <h3 className="text-xl font-bold">Sarah Johnson</h3>
-              <p className="text-primary font-medium mb-2">Founder & Master Blender</p>
+              <p className="text-primary font-medium mb-2">Founder & Flavor Artist</p>
               <p className="text-muted-foreground text-sm">
                 With a background in herbalism and mixology, Sarah brings a unique perspective to crafting complex and balanced flavors.
               </p>
@@ -195,7 +195,7 @@ const About = () => {
                 />
               </div>
               <h3 className="text-xl font-bold">Marcus Lee</h3>
-              <p className="text-primary font-medium mb-2">Head of Production</p>
+              <p className="text-primary font-medium mb-2">Co-Founder & Production Lead</p>
               <p className="text-muted-foreground text-sm">
                 Marcus oversees our workshop operations, ensuring that every batch meets our exacting standards of quality.
               </p>
@@ -210,7 +210,7 @@ const About = () => {
                 />
               </div>
               <h3 className="text-xl font-bold">Elena Rodriguez</h3>
-              <p className="text-primary font-medium mb-2">Creative Director</p>
+              <p className="text-primary font-medium mb-2">Co-Founder & Creative Director</p>
               <p className="text-muted-foreground text-sm">
                 Elena brings her expertise in flavor development and botanical sourcing to create our unique product lineup.
               </p>
