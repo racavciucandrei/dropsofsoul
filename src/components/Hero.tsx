@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useLight } from '@/context/LightProvider';
 
 const images = [
   '/assets/hero-1.jpg',
@@ -16,6 +16,7 @@ const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVp
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
+  const { isLightOn } = useLight();
   
   useEffect(() => {
     // Preload all images and track which ones have loaded
@@ -51,7 +52,10 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
       {/* Background Slideshow */}
-      <div className="absolute inset-0 z-0">
+      <div className={cn(
+        "absolute inset-0 z-0",
+        !isLightOn && "opacity-10 transition-opacity duration-500"
+      )}>
         {images.map((src, index) => (
           <div
             key={index}
@@ -70,7 +74,10 @@ const Hero = () => {
       </div>
       
       {/* Content */}
-      <div className="container-custom relative z-10 pt-28 pb-16">
+      <div className={cn(
+        "container-custom relative z-10 pt-28 pb-16 content-visibility",
+        isLightOn ? "opacity-100" : "opacity-10"
+      )}>
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
             <div className="inline-block">
@@ -114,7 +121,10 @@ const Hero = () => {
         </div>
         
         {/* Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-2">
+        <div className={cn(
+          "absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-2 content-visibility",
+          isLightOn ? "opacity-100" : "opacity-10"
+        )}>
           {images.map((_, index) => (
             <button
               key={index}
@@ -130,6 +140,11 @@ const Hero = () => {
           ))}
         </div>
       </div>
+      
+      {/* Light effect when light is on */}
+      {isLightOn && (
+        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/30 to-transparent pointer-events-none"></div>
+      )}
     </section>
   );
 };

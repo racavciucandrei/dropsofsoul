@@ -12,29 +12,34 @@ import Product from "./pages/Product";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import RainEffect from "./components/RainEffect";
+import { LightProvider } from "./context/LightProvider";
+import LightSwitch from "./components/LightSwitch";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <RainEffect />
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:category" element={<Products />} />
-            <Route path="/product/:slug" element={<Product />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </BrowserRouter>
+      <LightProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <RainEffect />
+          <Navbar />
+          <LightSwitch />
+          <main>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/:category" element={<Products />} />
+              <Route path="/product/:slug" element={<Product />} />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+        </BrowserRouter>
+      </LightProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

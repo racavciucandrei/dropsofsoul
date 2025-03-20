@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -113,6 +112,9 @@ export default {
 				sans: ['Inter var', 'sans-serif'],
 				serif: ['Playfair Display', 'serif'],
 			},
+			backgroundImage: {
+				'radial-gradient': 'radial-gradient(var(--tw-gradient-stops))',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
@@ -137,6 +139,14 @@ export default {
 				shimmer: {
 					'100%': { transform: 'translateX(100%)' },
 				},
+				flicker: {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.7' },
+				},
+				glow: {
+					'0%, 100%': { opacity: '1', boxShadow: '0 0 20px rgba(255, 191, 0, 0.7)' },
+					'50%': { opacity: '0.7', boxShadow: '0 0 10px rgba(255, 191, 0, 0.5)' },
+				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -145,6 +155,8 @@ export default {
 				slideUpFade: 'slideUpFade 0.5s ease-out forwards',
 				slideDownFade: 'slideDownFade 0.5s ease-out forwards',
 				shimmer: 'shimmer 2s infinite',
+				flicker: 'flicker 3s ease-in-out infinite',
+				glow: 'glow 2s ease-in-out infinite',
 			},
 		}
 	},
