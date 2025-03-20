@@ -14,6 +14,7 @@ const Product = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [cocktailImageLoaded, setCocktailImageLoaded] = useState(false);
+  const [selectedCocktailIndex, setSelectedCocktailIndex] = useState(0);
   
   // Find product by slug
   const product = allProducts.find(p => p.slug === slug) || allProducts[0]; // Fallback to first product if not found
@@ -27,6 +28,11 @@ const Product = () => {
       setQuantity(newQuantity);
     }
   };
+
+  // Get current cocktail
+  const currentCocktail = product.signatureCocktails && product.signatureCocktails.length > 0 
+    ? product.signatureCocktails[selectedCocktailIndex] 
+    : null;
   
   return (
     <div className="min-h-screen pt-24">
@@ -247,60 +253,84 @@ const Product = () => {
               </TabsContent>
               
               {/* Signature Cocktail Tab with Image */}
-              {product.signatureCocktail && (
+              {product.signatureCocktails && product.signatureCocktails.length > 0 && (
                 <TabsContent value="cocktail" className="mt-4">
-                  <div className="space-y-4">
-                    <div className="flex flex-col md:flex-row gap-6">
-                      <div className="md:w-1/2">
-                        <h3 className="font-medium text-lg">{product.signatureCocktail.name}</h3>
-                        <p className="text-muted-foreground text-sm mt-1">{product.signatureCocktail.description}</p>
-                        
-                        <div className="mt-4">
-                          <h4 className="font-medium text-sm">Ingredients:</h4>
-                          <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
-                            {product.signatureCocktail.ingredients.map((ingredient, index) => (
-                              <li key={index}>{ingredient}</li>
-                            ))}
-                          </ul>
-                        </div>
-                        
-                        <div className="mt-4">
-                          <h4 className="font-medium text-sm">Garnish:</h4>
-                          <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
-                            {product.signatureCocktail.garnish.map((item, index) => (
-                              <li key={index}>{item}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                      
-                      <div className="md:w-1/2">
-                        <div className={cn(
-                          "aspect-square rounded-lg overflow-hidden bg-muted",
-                          cocktailImageLoaded ? "" : "shimmer"
-                        )}>
-                          <img 
-                            src={product.signatureCocktail.imagePath} 
-                            alt={`${product.signatureCocktail.name} Cocktail`}
-                            className={cn(
-                              "w-full h-full object-cover transition-opacity duration-500",
-                              cocktailImageLoaded ? "opacity-100" : "opacity-0"
-                            )}
-                            onLoad={() => setCocktailImageLoaded(true)}
-                            onError={(e) => {
-                              console.error("Failed to load cocktail image:", product.signatureCocktail.imagePath);
-                              const target = e.target as HTMLImageElement;
-                              target.src = "/placeholder.svg";
-                              setCocktailImageLoaded(true);
+                  {/* Cocktail Selector - Show only if there are multiple cocktails */}
+                  {product.signatureCocktails.length > 1 && (
+                    <div className="mb-6">
+                      <h3 className="text-lg font-medium mb-3">Our Signature Cocktails</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {product.signatureCocktails.map((cocktail, index) => (
+                          <Button
+                            key={index}
+                            variant={selectedCocktailIndex === index ? "default" : "outline"}
+                            onClick={() => {
+                              setSelectedCocktailIndex(index);
+                              setCocktailImageLoaded(false);
                             }}
-                          />
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-2 text-center italic">
-                          {product.signatureCocktail.name} - Made with {product.name}
-                        </p>
+                            className="rounded-full"
+                          >
+                            {cocktail.name}
+                          </Button>
+                        ))}
                       </div>
                     </div>
-                  </div>
+                  )}
+                  
+                  {currentCocktail && (
+                    <div className="space-y-4">
+                      <div className="flex flex-col md:flex-row gap-6">
+                        <div className="md:w-1/2">
+                          <h3 className="font-medium text-lg">{currentCocktail.name}</h3>
+                          <p className="text-muted-foreground text-sm mt-1">{currentCocktail.description}</p>
+                          
+                          <div className="mt-4">
+                            <h4 className="font-medium text-sm">Ingredients:</h4>
+                            <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
+                              {currentCocktail.ingredients.map((ingredient, index) => (
+                                <li key={index}>{ingredient}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          <div className="mt-4">
+                            <h4 className="font-medium text-sm">Garnish:</h4>
+                            <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
+                              {currentCocktail.garnish.map((item, index) => (
+                                <li key={index}>{item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                        
+                        <div className="md:w-1/2">
+                          <div className={cn(
+                            "aspect-square rounded-lg overflow-hidden bg-muted",
+                            cocktailImageLoaded ? "" : "shimmer"
+                          )}>
+                            <img 
+                              src={currentCocktail.imagePath} 
+                              alt={`${currentCocktail.name} Cocktail`}
+                              className={cn(
+                                "w-full h-full object-cover transition-opacity duration-500",
+                                cocktailImageLoaded ? "opacity-100" : "opacity-0"
+                              )}
+                              onLoad={() => setCocktailImageLoaded(true)}
+                              onError={(e) => {
+                                console.error("Failed to load cocktail image:", currentCocktail.imagePath);
+                                const target = e.target as HTMLImageElement;
+                                target.src = "/placeholder.svg";
+                                setCocktailImageLoaded(true);
+                              }}
+                            />
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-2 text-center italic">
+                            {currentCocktail.name} - Made with {product.name}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </TabsContent>
               )}
             </Tabs>

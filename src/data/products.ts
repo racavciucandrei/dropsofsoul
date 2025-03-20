@@ -23,7 +23,7 @@ export interface Product {
   slug: string;
   description: string;
   details: ProductDetails;
-  signatureCocktail?: SignatureCocktail;
+  signatureCocktails?: SignatureCocktail[];
   related: number[];
   rating: number;
   reviews: number;
@@ -46,24 +46,26 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'A tangy, sweet, and spicy blend inspired by the vibrant, fermented essence of tepache. The focus is on pineapple peel, spices, and a touch of funk.'
     },
-    signatureCocktail: {
-      name: 'Tepache Dream',
-      description: 'A vibrant and tropical cocktail that marries the deep smokiness of aged tequila and mezcal with the refreshing, tangy sweetness of pineapple and lime. Infused with Tepache Bitters, it carries a nuanced, savoury complexity that evokes the spirit of pineapple fermentation. The carbonized pineapple juice adds an effervescent touch, while the garnishes — a pineapple frond, dried lime wheel, and dried pineapple — create a stunning visual display. This drink is an immersive experience that balances boldness and refreshment, perfect for showcasing the unique character of Tepache Bitters.',
-      ingredients: [
-        '4cl Aged Tequila',
-        '1cl Mezcal',
-        '3cl Pineapple & Lime Cordial',
-        '1cl Fresh lime juice',
-        '3 dashes Tepache Bitters',
-        'Pineapple Juice (cleared)'
-      ],
-      garnish: [
-        'Pineapple Frond',
-        'Dried Lime Wheel',
-        'Half of a Dried Pineapple Wheel'
-      ],
-      imagePath: '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png'
-    },
+    signatureCocktails: [
+      {
+        name: 'Tepache Dream',
+        description: 'A vibrant and tropical cocktail that marries the deep smokiness of aged tequila and mezcal with the refreshing, tangy sweetness of pineapple and lime. Infused with Tepache Bitters, it carries a nuanced, savoury complexity that evokes the spirit of pineapple fermentation. The carbonized pineapple juice adds an effervescent touch, while the garnishes — a pineapple frond, dried lime wheel, and dried pineapple — create a stunning visual display. This drink is an immersive experience that balances boldness and refreshment, perfect for showcasing the unique character of Tepache Bitters.',
+        ingredients: [
+          '4cl Aged Tequila',
+          '1cl Mezcal',
+          '3cl Pineapple & Lime Cordial',
+          '1cl Fresh lime juice',
+          '3 dashes Tepache Bitters',
+          'Pineapple Juice (cleared)'
+        ],
+        garnish: [
+          'Pineapple Frond',
+          'Dried Lime Wheel',
+          'Half of a Dried Pineapple Wheel'
+        ],
+        imagePath: '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png'
+      }
+    ],
     related: [18, 19, 21],
     rating: 4.8,
     reviews: 24,
@@ -82,21 +84,23 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'Savoury, smoky, and earthy, with hints of natural sweetness from roasted corn and a subtle heat from smoked chilies like pasilla or guajillo.'
     },
-    signatureCocktail: {
-      name: 'Maiz à Trois',
-      description: 'The Maiz à Trois celebrates the heart of Mexican culture with an intriguing combination of smoky, earthy, and subtly sweet flavors. Nixta Corn Liqueur provides a rich, corn-forward sweetness, balanced by the deep, bold character of Maiz Nation Mexican Whiskey. The Pox adds an extra layer of complexity, while the Roasted Corn and Chipotle Bitters introduce smoky heat and a touch of spice. The garnish of pickled baby corn, flambéed with aromatic salt, adds a touch of acidity and drama, enhancing the cocktail\'s overall depth. This drink is both a visual and flavorful experience, perfect for those who appreciate bold, nuanced flavors with a hint of flair.',
-      ingredients: [
-        '3cl Nixta Corn Liqueur',
-        '1cl Pox',
-        '2cl Maiz Nation Mexican Whiskey',
-        '3 dashes Roasted Corn & Smoked Chili Bitters'
-      ],
-      garnish: [
-        'Pickled baby corn, flambéed for dramatic effect',
-        'A sprinkle of homemade aromatic salt (smoked paprika, chili flakes, and sea salt)'
-      ],
-      imagePath: '/placeholder.svg'
-    },
+    signatureCocktails: [
+      {
+        name: 'Maiz à Trois',
+        description: 'The Maiz à Trois celebrates the heart of Mexican culture with an intriguing combination of smoky, earthy, and subtly sweet flavors. Nixta Corn Liqueur provides a rich, corn-forward sweetness, balanced by the deep, bold character of Maiz Nation Mexican Whiskey. The Pox adds an extra layer of complexity, while the Roasted Corn and Chipotle Bitters introduce smoky heat and a touch of spice. The garnish of pickled baby corn, flambéed with aromatic salt, adds a touch of acidity and drama, enhancing the cocktail\'s overall depth. This drink is both a visual and flavorful experience, perfect for those who appreciate bold, nuanced flavors with a hint of flair.',
+        ingredients: [
+          '3cl Nixta Corn Liqueur',
+          '1cl Pox',
+          '2cl Maiz Nation Mexican Whiskey',
+          '3 dashes Roasted Corn & Smoked Chili Bitters'
+        ],
+        garnish: [
+          'Pickled baby corn, flambéed for dramatic effect',
+          'A sprinkle of homemade aromatic salt (smoked paprika, chili flakes, and sea salt)'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [1, 18, 19],
     rating: 4.9,
     reviews: 18,
@@ -202,23 +206,43 @@ export const allProducts: Product[] = [
       usage: '15-30ml per drink',
       flavorProfile: 'A perfect balance of tart raspberry and delicate floral lychee sweetness, creating a sophisticated, fruit-forward profile.'
     },
-    signatureCocktail: {
-      name: 'Lychee Clover Club',
-      description: 'A sophisticated twist on the classic Clover Club, this cocktail combines the botanical notes of gin with the fruity complexity of our Raspberry & Lychee Cordial. The dry vermouth adds depth, while fresh raspberry puree and lemon juice bring bright, fresh acidity. The vegan foam creates a silky, luxurious texture, making this a visually stunning and deliciously balanced cocktail that showcases the cordial\'s unique flavor profile.',
-      ingredients: [
-        '5cl gin',
-        '2cl Dry Vermouth',
-        '3cl Raspberry & Lychee Cordial',
-        '3cl Raspberry puree',
-        '1cl fresh lemon juice',
-        '3 dashes of vegan foam'
-      ],
-      garnish: [
-        '3 raspberries on a pick',
-        'Golden Lychee'
-      ],
-      imagePath: '/placeholder.svg'
-    },
+    signatureCocktails: [
+      {
+        name: 'Lychee Clover Club',
+        description: 'A sophisticated twist on the classic Clover Club, this cocktail combines the botanical notes of gin with the fruity complexity of our Raspberry & Lychee Cordial. The dry vermouth adds depth, while fresh raspberry puree and lemon juice bring bright, fresh acidity. The vegan foam creates a silky, luxurious texture, making this a visually stunning and deliciously balanced cocktail that showcases the cordial\'s unique flavor profile.',
+        ingredients: [
+          '5cl gin',
+          '2cl Dry Vermouth',
+          '3cl Raspberry & Lychee Cordial',
+          '3cl Raspberry puree',
+          '1cl fresh lemon juice',
+          '3 dashes of vegan foam'
+        ],
+        garnish: [
+          '3 raspberries on a pick',
+          'Golden Lychee'
+        ],
+        imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Rosita Encantada',
+        description: 'An enchanting and sophisticated cocktail that showcases the versatility of the Raspberry & Lychee Cordial. The floral notes of Belsasar Rose vermouth combine beautifully with the unique character of coconut fat-washed tequila, creating a silky mouthfeel. The cordial brings fruity brightness, balanced by the acidity of Supasawa and the complexity of Peychaud\'s Bitters. The rose elements add an elegant aromatic dimension, while the saline solution enhances all flavors. The stunning coconut and rose isomalt candy garnish makes this award-winning creation as visually impressive as it is delicious.',
+        ingredients: [
+          '4cl Belsasar Rose',
+          '3cl Coco Fat Washed Don Julio Blanco/Santa Spina Cruda',
+          '1cl Rose Syrup',
+          '2cl Raspberry & Lychee Cordial',
+          '1cl Supasawa',
+          '2 dashes Peychaud\'s Bitters',
+          '3 drops Saline Solution 20%',
+          '2 puffs Rose Water'
+        ],
+        garnish: [
+          'Coconut & Rose Isomalt Candy'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [9, 11, 15],
     rating: 4.9,
     reviews: 16,
@@ -309,23 +333,25 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'Floral, tart, and lightly spiced, with the vivid aroma of cardamom and the tang of hibiscus petals.'
     },
-    signatureCocktail: {
-      name: 'Nectar of the Unknown',
-      description: 'Nectar of the Unknown invites you to explore the unknown with each sip. A cocktail that explores the mysterious and intriguing depths of flavor, is a harmonious balance of smoky, floral, and exotic elements. The base combines the earthy depth of mezcal and the bright, aromatic profile of pisco, while maraschino liqueur adds a touch of sweet almond complexity. A vibrant Timur berry cordial with its grapefruit-peppery character elevates the mix, balanced by the tart freshness of verjus. The bitters and foam layer new dimensions of flavor and aroma, transforming every sip into a journey of discovery.',
-      ingredients: [
-        '1cl Mezcal',
-        '3cl Pisco',
-        '2cl Maraschino Liqueur',
-        '3cl Timur Berry Cordial',
-        '1cl Verjus',
-        'Hibiscus & Cardamom Bitters (layered using a pipette)',
-        '2 puffs Absinthe'
-      ],
-      garnish: [
-        'Jasmine Air Foam'
-      ],
-      imagePath: '/placeholder.svg'
-    },
+    signatureCocktails: [
+      {
+        name: 'Nectar of the Unknown',
+        description: 'Nectar of the Unknown invites you to explore the unknown with each sip. A cocktail that explores the mysterious and intriguing depths of flavor, is a harmonious balance of smoky, floral, and exotic elements. The base combines the earthy depth of mezcal and the bright, aromatic profile of pisco, while maraschino liqueur adds a touch of sweet almond complexity. A vibrant Timur berry cordial with its grapefruit-peppery character elevates the mix, balanced by the tart freshness of verjus. The bitters and foam layer new dimensions of flavor and aroma, transforming every sip into a journey of discovery.',
+        ingredients: [
+          '1cl Mezcal',
+          '3cl Pisco',
+          '2cl Maraschino Liqueur',
+          '3cl Timur Berry Cordial',
+          '1cl Verjus',
+          'Hibiscus & Cardamom Bitters (layered using a pipette)',
+          '2 puffs Absinthe'
+        ],
+        garnish: [
+          'Jasmine Air Foam'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [1, 2, 19],
     rating: 4.8,
     reviews: 15,
@@ -345,21 +371,23 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'Bold and rich, balancing the roasted bitterness of coffee with the bright, zesty notes of grapefruit.'
     },
-    signatureCocktail: {
-      name: 'Citrus Roast Negroni',
-      description: 'The Citrus Roast Negroni celebrates the art of infusion with its bold, layered profile. Notes of roasted coffee complement the bittersweet complexity of Campari, while the grapefruit peel adds a refreshing aromatic brightness. Perfect for lovers of bold, innovative twists on the classics.',
-      ingredients: [
-        '3cl coffee-infused Campari',
-        '3cl sweet vermouth',
-        '3cl grapefruit infused gin',
-        '3 dashes Coffee & Grapefruit Bitters'
-      ],
-      garnish: [
-        'Grapefruit twist',
-        '3 Coffee Beans'
-      ],
-      imagePath: '/lovable-uploads/f5280f26-197f-4528-baa5-0e3d04fe30f5.png'
-    },
+    signatureCocktails: [
+      {
+        name: 'Citrus Roast Negroni',
+        description: 'The Citrus Roast Negroni celebrates the art of infusion with its bold, layered profile. Notes of roasted coffee complement the bittersweet complexity of Campari, while the grapefruit peel adds a refreshing aromatic brightness. Perfect for lovers of bold, innovative twists on the classics.',
+        ingredients: [
+          '3cl coffee-infused Campari',
+          '3cl sweet vermouth',
+          '3cl grapefruit infused gin',
+          '3 dashes Coffee & Grapefruit Bitters'
+        ],
+        garnish: [
+          'Grapefruit twist',
+          '3 Coffee Beans'
+        ],
+        imagePath: '/lovable-uploads/f5280f26-197f-4528-baa5-0e3d04fe30f5.png'
+      }
+    ],
     related: [1, 18, 20],
     rating: 4.7,
     reviews: 12,
@@ -379,21 +407,23 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'Herbal and tangy, with the distinct savory notes of curry leaves balanced by the tart richness of tamarind.'
     },
-    signatureCocktail: {
-      name: 'Masala Chai Gimlet',
-      description: 'The Masala Chai Gimlet is a sophisticated fusion of East meets West, combining the botanical complexity of London Dry Gin with the warm, spiced notes of masala chai. The fresh lime juice adds brightness, while the Curry Leaf & Tamarind Bitters bring depth and a distinctive savory element that transforms this classic cocktail into a culinary adventure. The tamarind and curry powder garnish not only enhances the aroma but provides a visual nod to the drink\'s inspiration, creating a multi-sensory experience that pays homage to Indian flavors.',
-      ingredients: [
-        '5cl London Dry Gin',
-        '3cl masala chai cordial',
-        '1cl fresh lime juice',
-        '3 dashes Curry Leaf & Tamarind Bitters'
-      ],
-      garnish: [
-        'Tamarind',
-        'Curry powder'
-      ],
-      imagePath: '/placeholder.svg'
-    },
+    signatureCocktails: [
+      {
+        name: 'Masala Chai Gimlet',
+        description: 'The Masala Chai Gimlet is a sophisticated fusion of East meets West, combining the botanical complexity of London Dry Gin with the warm, spiced notes of masala chai. The fresh lime juice adds brightness, while the Curry Leaf & Tamarind Bitters bring depth and a distinctive savory element that transforms this classic cocktail into a culinary adventure. The tamarind and curry powder garnish not only enhances the aroma but provides a visual nod to the drink\'s inspiration, creating a multi-sensory experience that pays homage to Indian flavors.',
+        ingredients: [
+          '5cl London Dry Gin',
+          '3cl masala chai cordial',
+          '1cl fresh lime juice',
+          '3 dashes Curry Leaf & Tamarind Bitters'
+        ],
+        garnish: [
+          'Tamarind',
+          'Curry powder'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [1, 2, 21],
     rating: 4.7,
     reviews: 9,
@@ -413,24 +443,26 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'Tingling, numbing spice of Szechuan peppercorns paired with the rich, earthy depth of cacao.'
     },
-    signatureCocktail: {
-      name: 'One Night In Bangkok',
-      description: 'This cocktail is as exciting and layered as the city itself. It starts with freshly muddled ginger for a spicy kick, balanced by sweet mango puree. The lemongrass and verbena cordial adds a fresh, aromatic dimension, while lime juice provides essential acidity. Coconut-infused aged rum creates a tropical base that carries all the flavors. The combination of dried mango bitters and Szechuan and cacao bitters adds depth and complexity. The finishing touch: a silky lemongrass espuma crowned with freshly grated nutmeg, offering a creamy, aromatic contrast to the zesty and spicy profile below. A true sensory adventure that leaves you wanting more—just like an unforgettable night in Bangkok.',
-      ingredients: [
-        '1 small piece of fresh ginger (muddled)',
-        '4cl Mango puree (sweetened)',
-        '2cl Lemongrass and verbena cordial',
-        '1cl Lime juice',
-        '5cl Coconut-infused light aged rum',
-        '3 dashes Dried mango bitters',
-        '5 dashes Szechuan Pepper & Cacao Bitters'
-      ],
-      garnish: [
-        'Lemongrass Espuma',
-        'Freshly ground nutmeg'
-      ],
-      imagePath: '/placeholder.svg'
-    },
+    signatureCocktails: [
+      {
+        name: 'One Night In Bangkok',
+        description: 'This cocktail is as exciting and layered as the city itself. It starts with freshly muddled ginger for a spicy kick, balanced by sweet mango puree. The lemongrass and verbena cordial adds a fresh, aromatic dimension, while lime juice provides essential acidity. Coconut-infused aged rum creates a tropical base that carries all the flavors. The combination of dried mango bitters and Szechuan and cacao bitters adds depth and complexity. The finishing touch: a silky lemongrass espuma crowned with freshly grated nutmeg, offering a creamy, aromatic contrast to the zesty and spicy profile below. A true sensory adventure that leaves you wanting more—just like an unforgettable night in Bangkok.',
+        ingredients: [
+          '1 small piece of fresh ginger (muddled)',
+          '4cl Mango puree (sweetened)',
+          '2cl Lemongrass and verbena cordial',
+          '1cl Lime juice',
+          '5cl Coconut-infused light aged rum',
+          '3 dashes Dried mango bitters',
+          '5 dashes Szechuan Pepper & Cacao Bitters'
+        ],
+        garnish: [
+          'Lemongrass Espuma',
+          'Freshly ground nutmeg'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [2, 19, 20],
     rating: 4.8,
     reviews: 7,
@@ -450,22 +482,23 @@ export const allProducts: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'The nutty warmth of toasted sesame seeds, balanced with the sharp, earthy heat of Pipper longum.'
     },
-    signatureCocktail: {
-      name: 'Sea Me, Taste Me',
-      description: 'An alluring blend of saffron-infused vodka and sea algae-infused fino sherry, this cocktail evokes the essence of the ocean—smooth, salty, and slightly mysterious. A playful mist of piper longum and sesame bitters adds a fragrant, peppery kick that lingers, making it a perfect sip for a sultry night by the shore.',
-      ingredients: [
-        '5cl Saffron-infused vodka',
-        '3cl Sea algae-infused fino sherry',
-        '2-3 puffs of Piper longum and sesame bitters (sprayed or misted)'
-      ],
-      garnish: [
-        'Pickled caper berry'
-      ],
-      imagePath: '/placeholder.svg'
-    },
+    signatureCocktails: [
+      {
+        name: 'Sea Me, Taste Me',
+        description: 'An alluring blend of saffron-infused vodka and sea algae-infused fino sherry, this cocktail evokes the essence of the ocean—smooth, salty, and slightly mysterious. A playful mist of piper longum and sesame bitters adds a fragrant, peppery kick that lingers, making it a perfect sip for a sultry night by the shore.',
+        ingredients: [
+          '5cl Saffron-infused vodka',
+          '3cl Sea algae-infused fino sherry',
+          '2-3 puffs of Piper longum and sesame bitters (sprayed or misted)'
+        ],
+        garnish: [
+          'Pickled caper berry'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [1, 19, 21],
     rating: 4.7,
     reviews: 5,
   },
 ];
-
