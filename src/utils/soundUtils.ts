@@ -1,140 +1,129 @@
-// Enhanced audio utilities with multiple fallback mechanisms for cross-browser support
+// Enhanced audio utilities with immediate playback for vintage switch sounds
 
 // Keep track of whether audio has been initialized
 let audioInitialized = false;
 
-// Create a single audio element that can be reused
-const getAudioElement = (src: string): HTMLAudioElement => {
-  const existingAudio = document.getElementById('global-audio-element') as HTMLAudioElement;
-  if (existingAudio) {
-    existingAudio.src = src;
-    return existingAudio;
-  }
-  
-  const audio = document.createElement('audio');
-  audio.id = 'global-audio-element';
-  audio.style.display = 'none';
-  document.body.appendChild(audio);
-  audio.src = src;
-  return audio;
-};
+// Create and cache audio elements for instant playback
+const audioCache: Record<string, HTMLAudioElement> = {};
 
 // Initialize audio on first user interaction
 export const initAudio = (): void => {
   if (audioInitialized) return;
   
   try {
-    // Create and play a silent sound to unlock audio
-    const audio = getAudioElement('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAACAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAQKAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==');
-    audio.volume = 0;
-    audio.muted = true;
+    // Pre-load the switch sound for immediate playback
+    const switchSound = new Audio('/click.mp3');
+    switchSound.load();
+    audioCache['click'] = switchSound;
     
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(() => {
-          console.log("Audio system initialized successfully");
-          audioInitialized = true;
-        })
-        .catch(err => {
-          console.warn("Silent audio initialization failed:", err);
-        });
-    }
+    // Create a silent sound to unlock audio on iOS/Safari
+    const silentSound = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASW5mbwAAAA8AAAACAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAQKAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==');
+    silentSound.play().catch(() => {
+      // Ignore errors - this is just to unlock audio on iOS
+    });
+    
+    console.log("Audio system initialized successfully");
+    audioInitialized = true;
   } catch (error) {
     console.warn("Error initializing audio:", error);
   }
 };
 
-// Play sound with multiple fallback mechanisms
+// Play sound with high priority and immediate response
 export const playAudio = (audioPath: string): void => {
-  console.log(`Attempting to play sound: ${audioPath}`);
-  
-  // Method 1: Use pre-existing audio element if available
-  const existingAudio = document.getElementById('clickSound') as HTMLAudioElement;
-  if (existingAudio) {
+  // Try to use cached audio first for instant playback
+  if (audioCache['click']) {
     try {
-      existingAudio.currentTime = 0;
-      existingAudio.volume = 1.0;
-      existingAudio.muted = false;
-      const promise = existingAudio.play();
-      if (promise !== undefined) {
-        promise.catch(error => {
-          console.warn("Existing audio element failed:", error);
-          tryAlternativeMethods(audioPath);
+      // Reset audio to beginning and play it immediately
+      const audio = audioCache['click'];
+      audio.currentTime = 0;
+      audio.volume = 1.0;
+      audio.muted = false;
+      audio.play()
+        .then(() => console.log("Switch sound played from cache"))
+        .catch(error => {
+          console.warn("Cached audio failed, trying alternative:", error);
+          playFallbackAudio(audioPath);
         });
-      }
       return;
     } catch (error) {
-      console.warn("Error with existing audio element:", error);
+      console.warn("Error with cached audio:", error);
     }
   }
   
-  tryAlternativeMethods(audioPath);
+  // Fallback to creating a new audio instance
+  playFallbackAudio(audioPath);
 };
 
-// Try alternative methods for playing sound
-const tryAlternativeMethods = (audioPath: string): void => {
-  // Method 2: Create a new Audio object
+// Fallback audio playback methods
+const playFallbackAudio = (audioPath: string): void => {
+  // Try a new Audio object
   try {
     const audio = new Audio(audioPath);
     audio.volume = 1.0;
     const promise = audio.play();
-    if (promise !== undefined) {
+    if (promise) {
       promise
-        .then(() => console.log("New Audio object played successfully"))
-        .catch(error => {
-          console.warn("New Audio object failed:", error);
-          useWebAudioAPI(audioPath);
-        });
+        .then(() => console.log("Fallback audio played successfully"))
+        .catch(() => createSyntheticClick());
     }
   } catch (error) {
-    console.warn("Error creating new Audio object:", error);
-    useWebAudioAPI(audioPath);
+    console.warn("Fallback audio failed:", error);
+    createSyntheticClick();
   }
 };
 
-// Use Web Audio API as a final fallback
-const useWebAudioAPI = (audioPath: string): void => {
+// Create a synthetic vintage mechanical click sound as last resort
+const createSyntheticClick = (): void => {
   try {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContext) {
-      console.error("Web Audio API not supported in this browser");
+      console.error("Web Audio API not supported");
       return;
     }
     
     const audioContext = new AudioContext();
     
-    // Create a short clicking sound programmatically as a last resort
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    // Create an oscillator for the mechanical click sound
+    const clickOscillator = audioContext.createOscillator();
+    const clickGain = audioContext.createGain();
     
-    oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(40, audioContext.currentTime + 0.1);
+    // Configure for vintage mechanical click sound (more bass-heavy)
+    clickOscillator.type = 'square';
+    clickOscillator.frequency.setValueAtTime(80, audioContext.currentTime); // Lower frequency for vintage feel
     
-    gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    // Fast attack, medium decay for mechanical feel
+    clickGain.gain.setValueAtTime(0, audioContext.currentTime);
+    clickGain.gain.linearRampToValueAtTime(0.8, audioContext.currentTime + 0.01);
+    clickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
     
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+    clickOscillator.connect(clickGain);
+    clickGain.connect(audioContext.destination);
     
-    oscillator.start();
-    oscillator.stop(audioContext.currentTime + 0.1);
+    clickOscillator.start();
+    clickOscillator.stop(audioContext.currentTime + 0.15);
     
-    console.log("Played synthesized click using Web Audio API");
+    console.log("Played synthetic vintage click as fallback");
   } catch (error) {
-    console.error("Web Audio API failed:", error);
+    console.error("Failed to create synthetic click:", error);
   }
 };
 
 // Function to preload audio file for better performance
 export const preloadAudio = (audioPath: string): HTMLAudioElement => {
+  // Check if already cached
+  if (audioCache[audioPath]) {
+    return audioCache[audioPath];
+  }
+  
+  // Create and cache the audio element
   const audio = new Audio();
   audio.src = audioPath;
   audio.preload = 'auto';
-  
-  // Try to load it
   audio.load();
+  
+  // Store in cache
+  audioCache[audioPath] = audio;
   
   return audio;
 };
