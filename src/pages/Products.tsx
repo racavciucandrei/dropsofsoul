@@ -10,8 +10,9 @@ import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Sample product data
+// Updated product data
 const allProducts = [
+  // Bitters (7 types)
   {
     id: 1,
     name: 'Aromatic Bitters',
@@ -23,24 +24,6 @@ const allProducts = [
   },
   {
     id: 2,
-    name: 'Elderflower Cordial',
-    category: 'cordials',
-    price: 22.50,
-    image: '/assets/product-2.jpg',
-    slug: 'elderflower-cordial',
-    bestseller: false,
-  },
-  {
-    id: 3,
-    name: 'Blackberry Shrub',
-    category: 'shrubs',
-    price: 24.95,
-    image: '/assets/product-3.jpg',
-    slug: 'blackberry-shrub',
-    bestseller: true,
-  },
-  {
-    id: 4,
     name: 'Orange Bitters',
     category: 'bitters',
     price: 19.95,
@@ -49,16 +32,7 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 5,
-    name: 'Ginger Cordial',
-    category: 'cordials',
-    price: 21.95,
-    image: '/assets/product-5.jpg',
-    slug: 'ginger-cordial',
-    bestseller: false,
-  },
-  {
-    id: 6,
+    id: 3,
     name: 'Cherry Bitters',
     category: 'bitters',
     price: 18.50,
@@ -67,7 +41,101 @@ const allProducts = [
     bestseller: true,
   },
   {
+    id: 4,
+    name: 'Chocolate Bitters',
+    category: 'bitters',
+    price: 20.95,
+    image: '/assets/product-9.jpg',
+    slug: 'chocolate-bitters',
+    bestseller: false,
+  },
+  {
+    id: 5,
+    name: 'Lavender Bitters',
+    category: 'bitters',
+    price: 21.50,
+    image: '/assets/product-10.jpg',
+    slug: 'lavender-bitters',
+    bestseller: false,
+  },
+  {
+    id: 6,
+    name: 'Grapefruit Bitters',
+    category: 'bitters',
+    price: 19.95,
+    image: '/assets/product-11.jpg',
+    slug: 'grapefruit-bitters',
+    bestseller: false,
+  },
+  {
     id: 7,
+    name: 'Spiced Bitters',
+    category: 'bitters',
+    price: 22.95,
+    image: '/assets/product-12.jpg',
+    slug: 'spiced-bitters',
+    bestseller: true,
+  },
+  
+  // Cordials (5 types)
+  {
+    id: 8,
+    name: 'Elderflower Cordial',
+    category: 'cordials',
+    price: 22.50,
+    image: '/assets/product-2.jpg',
+    slug: 'elderflower-cordial',
+    bestseller: false,
+  },
+  {
+    id: 9,
+    name: 'Ginger Cordial',
+    category: 'cordials',
+    price: 21.95,
+    image: '/assets/product-5.jpg',
+    slug: 'ginger-cordial',
+    bestseller: false,
+  },
+  {
+    id: 10,
+    name: 'Lavender Cordial',
+    category: 'cordials',
+    price: 24.95,
+    image: '/assets/product-8.jpg',
+    slug: 'lavender-cordial',
+    bestseller: true,
+  },
+  {
+    id: 11,
+    name: 'Rose Cordial',
+    category: 'cordials',
+    price: 23.95,
+    image: '/assets/product-13.jpg',
+    slug: 'rose-cordial',
+    bestseller: false,
+  },
+  {
+    id: 12,
+    name: 'Hibiscus Cordial',
+    category: 'cordials',
+    price: 25.95,
+    image: '/assets/product-14.jpg',
+    slug: 'hibiscus-cordial',
+    bestseller: true,
+  },
+  
+  // Shrubs (4 types)
+  {
+    id: 13,
+    name: 'Blackberry Shrub',
+    category: 'shrubs',
+    price: 24.95,
+    image: '/assets/product-3.jpg',
+    slug: 'blackberry-shrub',
+    bestseller: true,
+  },
+  {
+    id: 14,
     name: 'Raspberry Shrub',
     category: 'shrubs',
     price: 23.50,
@@ -76,12 +144,21 @@ const allProducts = [
     bestseller: false,
   },
   {
-    id: 8,
-    name: 'Lavender Cordial',
-    category: 'cordials',
-    price: 24.95,
-    image: '/assets/product-8.jpg',
-    slug: 'lavender-cordial',
+    id: 15,
+    name: 'Peach Shrub',
+    category: 'shrubs',
+    price: 22.95,
+    image: '/assets/product-15.jpg',
+    slug: 'peach-shrub',
+    bestseller: false,
+  },
+  {
+    id: 16,
+    name: 'Strawberry Basil Shrub',
+    category: 'shrubs',
+    price: 25.50,
+    image: '/assets/product-16.jpg',
+    slug: 'strawberry-basil-shrub',
     bestseller: true,
   },
 ];

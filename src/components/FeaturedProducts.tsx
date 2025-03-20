@@ -6,18 +6,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Heart } from 'lucide-react';
 
-// Custom product data with new names
+// Featured product selection
 const products = [
   {
     id: 1,
-    name: 'Aromatic Cocktail Bitters',
+    name: 'Aromatic Bitters',
     category: 'Bitters',
     price: 18.95,
     image: '/assets/product-1.jpg',
-    slug: 'aromatic-cocktail-bitters',
+    slug: 'aromatic-bitters',
   },
   {
-    id: 2,
+    id: 8,
     name: 'Elderflower Cordial',
     category: 'Cordials',
     price: 22.50,
@@ -25,7 +25,7 @@ const products = [
     slug: 'elderflower-cordial',
   },
   {
-    id: 3,
+    id: 13,
     name: 'Blackberry Shrub',
     category: 'Shrubs',
     price: 24.95,
@@ -33,12 +33,12 @@ const products = [
     slug: 'blackberry-shrub',
   },
   {
-    id: 4,
-    name: 'Orange Bitters',
-    category: 'Bitters',
-    price: 19.95,
-    image: '/assets/product-4.jpg',
-    slug: 'orange-bitters',
+    id: 12,
+    name: 'Hibiscus Cordial',
+    category: 'Cordials',
+    price: 25.95,
+    image: '/assets/product-14.jpg',
+    slug: 'hibiscus-cordial',
   },
 ];
 
