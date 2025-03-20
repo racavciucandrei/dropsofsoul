@@ -16,8 +16,8 @@ export const useSeductiveVoice = () => {
       utterance.pitch = 1.7;    // Higher pitched for cartoon effect
       utterance.volume = 1.0;   // Full volume
       
-      // Funny cartoon character line
-      utterance.text = "Woah woah woah! Hey buddy! That switch isn't a toy, ya know!";
+      // Updated funny cartoon character line
+      utterance.text = "Now look at this one he just discovered a switch!";
       
       const voices = window.speechSynthesis.getVoices();
       
