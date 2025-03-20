@@ -1,4 +1,4 @@
-// Enhanced audio utilities with immediate playback for vintage switch sounds
+// Enhanced audio utilities with improved vintage mechanical switch sound synthesis
 
 // Keep track of whether audio has been initialized
 let audioInitialized = false;
@@ -65,16 +65,16 @@ const playFallbackAudio = (audioPath: string): void => {
     if (promise) {
       promise
         .then(() => console.log("Fallback audio played successfully"))
-        .catch(() => createSyntheticClick());
+        .catch(() => createVintageMechanicalClick());
     }
   } catch (error) {
     console.warn("Fallback audio failed:", error);
-    createSyntheticClick();
+    createVintageMechanicalClick();
   }
 };
 
 // Create a synthetic vintage mechanical click sound as last resort
-const createSyntheticClick = (): void => {
+const createVintageMechanicalClick = (): void => {
   try {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
     if (!AudioContext) {
@@ -83,29 +83,87 @@ const createSyntheticClick = (): void => {
     }
     
     const audioContext = new AudioContext();
+    const masterGain = audioContext.createGain();
+    masterGain.gain.setValueAtTime(0.7, audioContext.currentTime);
+    masterGain.connect(audioContext.destination);
     
-    // Create an oscillator for the mechanical click sound
-    const clickOscillator = audioContext.createOscillator();
+    // Create components for the vintage mechanical switch sound
+    
+    // 1. Initial metal contact "thunk" sound (low frequency component)
+    const thunkOsc = audioContext.createOscillator();
+    const thunkGain = audioContext.createGain();
+    thunkOsc.frequency.setValueAtTime(60, audioContext.currentTime); // Very low frequency for mechanical feel
+    thunkOsc.type = 'triangle';
+    thunkGain.gain.setValueAtTime(0, audioContext.currentTime);
+    thunkGain.gain.linearRampToValueAtTime(0.9, audioContext.currentTime + 0.005);
+    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
+    thunkOsc.connect(thunkGain);
+    thunkGain.connect(masterGain);
+    
+    // 2. Metal spring "ting" sound (higher frequency component)
+    const tingOsc = audioContext.createOscillator();
+    const tingGain = audioContext.createGain();
+    tingOsc.frequency.setValueAtTime(1500, audioContext.currentTime);
+    tingOsc.type = 'sine';
+    tingGain.gain.setValueAtTime(0, audioContext.currentTime);
+    tingGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
+    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
+    tingOsc.connect(tingGain);
+    tingGain.connect(masterGain);
+    
+    // 3. Mechanical contact "click" sound (noise component)
+    const clickNode = audioContext.createBufferSource();
     const clickGain = audioContext.createGain();
+    const bufferSize = audioContext.sampleRate * 0.1; // 100ms buffer
+    const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
     
-    // Configure for vintage mechanical click sound (more bass-heavy)
-    clickOscillator.type = 'square';
-    clickOscillator.frequency.setValueAtTime(80, audioContext.currentTime); // Lower frequency for vintage feel
+    // Generate noise burst for click with more energy in lower frequencies for vintage feel
+    for (let i = 0; i < bufferSize; i++) {
+      // Decrease noise amplitude over time and emphasize low frequencies
+      const factor = 1 - (i / bufferSize);
+      // More random for first part to simulate mechanical contact
+      data[i] = (Math.random() * 2 - 1) * factor * factor;
+    }
     
-    // Fast attack, medium decay for mechanical feel
-    clickGain.gain.setValueAtTime(0, audioContext.currentTime);
-    clickGain.gain.linearRampToValueAtTime(0.8, audioContext.currentTime + 0.01);
-    clickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+    clickNode.buffer = buffer;
+    clickGain.gain.setValueAtTime(0.4, audioContext.currentTime);
+    clickGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
+    clickNode.connect(clickGain);
+    clickGain.connect(masterGain);
     
-    clickOscillator.connect(clickGain);
-    clickGain.connect(audioContext.destination);
+    // 4. Mechanical resonance (filtered noise for vintage vibes)
+    const resonanceNode = audioContext.createBufferSource();
+    const resonanceGain = audioContext.createGain();
+    const resonanceFilter = audioContext.createBiquadFilter();
     
-    clickOscillator.start();
-    clickOscillator.stop(audioContext.currentTime + 0.15);
+    resonanceNode.buffer = buffer; // Reuse the noise buffer
+    resonanceFilter.type = 'bandpass';
+    resonanceFilter.frequency.setValueAtTime(280, audioContext.currentTime); // Resonant frequency for vintage metal
+    resonanceFilter.Q.setValueAtTime(12, audioContext.currentTime); // High Q for resonance
     
-    console.log("Played synthetic vintage click as fallback");
+    resonanceGain.gain.setValueAtTime(0, audioContext.currentTime);
+    resonanceGain.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+    resonanceGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+    
+    resonanceNode.connect(resonanceFilter);
+    resonanceFilter.connect(resonanceGain);
+    resonanceGain.connect(masterGain);
+    
+    // Start all sound components with slight timing variations for realism
+    thunkOsc.start();
+    tingOsc.start(audioContext.currentTime + 0.005);
+    clickNode.start();
+    resonanceNode.start(audioContext.currentTime + 0.002);
+    
+    // Stop all components
+    thunkOsc.stop(audioContext.currentTime + 0.2);
+    tingOsc.stop(audioContext.currentTime + 0.2);
+    // No need to stop one-shot buffer sources
+    
+    console.log("Played improved synthetic vintage mechanical switch sound");
   } catch (error) {
-    console.error("Failed to create synthetic click:", error);
+    console.error("Failed to create synthetic vintage mechanical click:", error);
   }
 };
 

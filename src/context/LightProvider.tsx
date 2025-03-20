@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { playAudio, initAudio } from "../utils/soundUtils";
 
 type LightContextType = {
   isLightOn: boolean;
@@ -13,6 +14,7 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {
+    playAudio('/click.mp3');
     setIsLightOn((prev) => !prev);
   };
 
@@ -31,10 +33,28 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isLightOn]);
 
-  // Initial setup - make sure lights are off on first load
+  // Initial setup - make sure lights are off on first load and initialize audio
   useEffect(() => {
     document.documentElement.classList.add("lights-off");
     document.body.classList.add("lights-off");
+    
+    // Initialize audio system
+    initAudio();
+    
+    // Setup event listeners to ensure audio can play on iOS/Safari
+    const unlockAudio = () => {
+      initAudio();
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+    };
+    
+    document.addEventListener('click', unlockAudio, { once: true });
+    document.addEventListener('touchstart', unlockAudio, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('touchstart', unlockAudio);
+    };
   }, []);
 
   return (
