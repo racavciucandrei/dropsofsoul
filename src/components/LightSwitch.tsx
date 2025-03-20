@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { useToast } from '@/hooks/use-toast';
@@ -10,6 +11,7 @@ const LightSwitch = () => {
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
   const audioInitializedRef = useRef(false);
+  const lastToggleTimeRef = useRef(0);
   
   useEffect(() => {
     initAudio();
@@ -63,8 +65,10 @@ const LightSwitch = () => {
   const isOnOffOnOffOnPattern = (pattern: boolean[]) => {
     if (pattern.length < 5) return false;
     
+    // Get the last 5 toggles
     const lastFive = pattern.slice(-5);
     
+    // Check for the specific pattern (true, false, true, false, true)
     return (
       lastFive[0] === true && 
       lastFive[1] === false && 
@@ -75,31 +79,45 @@ const LightSwitch = () => {
   };
 
   const handleToggle = () => {
+    // Prevent rapid toggling - a simple debounce
+    const now = Date.now();
+    if (now - lastToggleTimeRef.current < 300) {
+      return;
+    }
+    lastToggleTimeRef.current = now;
+    
+    // Update count and toggle light
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
+    // Toggle light (which will play the sound internally)
     toggleLight();
     
+    // Update the pattern AFTER toggling (so it reflects the new state)
     const newPattern = [...togglePattern, !isLightOn];
     setTogglePattern(newPattern);
     
-    if (isOnOffOnOffOnPattern(newPattern)) {
+    // Only check for pattern after we have enough toggles
+    if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern)) {
       showWarning();
     }
   };
 
   const showWarning = () => {
-    const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-    window.speechSynthesis.speak(utterance);
-    
-    toast({
-      title: "Stop that!",
-      description: "Hey, don't play with that switch!",
-      variant: "destructive",
-    });
+    // Add a small delay to ensure the warning comes after the toggle sound
+    setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+      window.speechSynthesis.speak(utterance);
+      
+      toast({
+        title: "Stop that!",
+        description: "Hey, don't play with that switch!",
+        variant: "destructive",
+      });
+    }, 100);
   };
 
   return (

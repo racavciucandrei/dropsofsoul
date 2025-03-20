@@ -17,8 +17,11 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     // Call sound function with zero latency - MUST come before state update
     playAudio('/click.mp3');
     
-    // Use synchronous state update for immediate feedback
-    setIsLightOn(!isLightOn);
+    // Small delay to ensure sound starts first
+    requestAnimationFrame(() => {
+      // Use synchronous state update for immediate feedback
+      setIsLightOn(!isLightOn);
+    });
   };
 
   // Apply light effect to the entire page
