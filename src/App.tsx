@@ -11,6 +11,7 @@ import Products from "./pages/Products";
 import Product from "./pages/Product";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import RainEffect from "./components/RainEffect";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <RainEffect />
         <Navbar />
         <main>
           <Routes>
