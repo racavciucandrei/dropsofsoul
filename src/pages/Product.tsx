@@ -573,7 +573,7 @@ const Product = () => {
                       <div className="md:w-1/2">
                         <div className="aspect-square rounded-lg overflow-hidden bg-muted">
                           <img 
-                            src="/assets/tepache-dream-cocktail.jpg" 
+                            src="/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png" 
                             alt={`${product.signatureCocktail.name} Cocktail`}
                             className="w-full h-full object-cover"
                             onError={(e) => {
