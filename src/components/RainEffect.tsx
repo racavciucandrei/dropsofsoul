@@ -8,9 +8,9 @@ interface Droplet {
   speed: number;
   opacity: number;
   length: number;
-  sway: number; // Add subtle horizontal movement
-  swayDirection: number; // Control sway direction
-  swaySpeed: number; // Control sway speed
+  sway: number;
+  swayDirection: number;
+  swaySpeed: number;
 }
 
 const RainEffect = () => {
@@ -41,21 +41,18 @@ const RainEffect = () => {
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
-        // Increase size range for even larger raindrops (2.0-4.0px)
-        const size = Math.random() * 2.0 + 2.0; 
+        // Maintain large droplet size (2.0-4.0px)
+        const size = Math.random() * 2.0 + 2.0;
         newDroplets.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1, // Start above the viewport
           size: size,
-          // Slower speed between 4-8
-          speed: Math.random() * 4 + 4, 
-          opacity: Math.random() * 0.4 + 0.3, // Keep same opacity
-          // Longer teardrop shape for larger drops
-          length: size * (Math.random() * 9 + 7), 
+          speed: Math.random() * 4 + 4, // Slower speed between 4-8
+          opacity: Math.random() * 0.4 + 0.3,
+          length: size * (Math.random() * 9 + 7), // Keep long teardrop shape
           sway: 0,
           swayDirection: Math.random() > 0.5 ? 1 : -1,
-          // Reduce sway speed for gentler movement
-          swaySpeed: Math.random() * 0.03 + 0.005, 
+          swaySpeed: Math.random() * 0.03 + 0.005, // Gentle sway
         });
       }
 
@@ -64,50 +61,50 @@ const RainEffect = () => {
 
     createDroplets();
 
-    // Draw realistic teardrop shape
-    const drawTeardrop = (x: number, y: number, size: number, length: number, opacity: number) => {
+    // Draw droplet with point on top like 💧
+    const drawDroplet = (x: number, y: number, size: number, length: number, opacity: number) => {
       ctx.beginPath();
       
-      // Start at the bottom of the teardrop for better drawing
+      // Start at the bottom of the droplet (rounded part)
       ctx.moveTo(x, y + length);
       
-      // Draw left side curved path
+      // Draw the left side curved path (bottom half)
       ctx.quadraticCurveTo(
-        x - size/2, y + length * 0.7, 
-        x - size, y + length * 0.4
+        x - size, y + length * 0.7,
+        x - size, y + length * 0.5
       );
       
-      // Draw top rounded part
+      // Draw the left side of top half (coming to a point)
       ctx.quadraticCurveTo(
-        x - size, y, 
-        x, y - size/2
+        x - size * 0.8, y + length * 0.3,
+        x, y
       );
       
-      // Draw right side curved path
+      // Draw the right side of top half (coming to a point)
       ctx.quadraticCurveTo(
-        x + size, y, 
-        x + size, y + length * 0.4
+        x + size * 0.8, y + length * 0.3,
+        x + size, y + length * 0.5
       );
       
-      // Close the path back to the starting point
+      // Draw the right side curved path (bottom half)
       ctx.quadraticCurveTo(
-        x + size/2, y + length * 0.7, 
+        x + size, y + length * 0.7,
         x, y + length
       );
       
       // Create gradient for more realistic water appearance
-      const gradient = ctx.createLinearGradient(x, y - size/2, x, y + length);
-      gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity * 0.9})`);
+      const gradient = ctx.createLinearGradient(x, y, x, y + length);
+      gradient.addColorStop(0, `rgba(200, 230, 255, ${opacity * 0.8})`);
       gradient.addColorStop(0.5, `rgba(210, 235, 255, ${opacity})`);
-      gradient.addColorStop(1, `rgba(200, 230, 255, ${opacity * 0.7})`);
+      gradient.addColorStop(1, `rgba(255, 255, 255, ${opacity * 0.9})`);
       
       ctx.fillStyle = gradient;
       ctx.fill();
       
-      // Add highlight (small white dot at top left)
+      // Add highlight (small white dot at bottom for reflection)
       ctx.beginPath();
-      ctx.arc(x - size/3, y, size/4, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.8})`;
+      ctx.arc(x, y + length * 0.8, size/3, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.7})`;
       ctx.fill();
     };
 
@@ -115,9 +112,6 @@ const RainEffect = () => {
     const draw = () => {
       // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Optional: add slight blur for more realistic effect
-      // ctx.filter = 'blur(0.3px)';
       
       // Draw and update droplets
       droplets.current.forEach((droplet) => {
@@ -129,8 +123,8 @@ const RainEffect = () => {
           droplet.swayDirection *= -1;
         }
         
-        // Draw droplet as teardrop
-        drawTeardrop(
+        // Draw droplet shape like 💧 emoji (point at top)
+        drawDroplet(
           droplet.x + droplet.sway, 
           droplet.y, 
           droplet.size, 
