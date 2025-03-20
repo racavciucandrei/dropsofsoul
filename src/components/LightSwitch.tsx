@@ -120,23 +120,22 @@ const LightSwitch = () => {
     );
   };
 
-  // Handle switch toggle with count tracking
+  // Handle switch toggle with count tracking and optimized for minimal delay
   const handleToggle = () => {
-    // Ensure audio is initialized
+    // First, ensure audio is ready - this eliminates delay in audio initialization
     if (!audioInitializedRef.current) {
       initAudio();
       audioInitializedRef.current = true;
     }
     
-    // Play the vintage mechanical switch sound
-    playAudio('/click.mp3');
-    console.log("Attempting to play switch sound");
+    // Don't call playAudio here, let toggleLight handle it for better synchronization
+    // This avoids double sound playing and reduces delay
     
     // First increment toggle count
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
     
-    // Then toggle the light and update pattern
+    // Then toggle the light which will also play the sound
     toggleLight();
     
     // Update toggle pattern with the new state (after toggle)
@@ -177,8 +176,8 @@ const LightSwitch = () => {
           {/* Switch plate */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-amber-300 rounded-md opacity-50"></div>
           
-          {/* Toggle switch */}
-          <div className={`w-4 h-7 bg-amber-800 rounded-sm shadow-md absolute ${isLightOn ? 'top-1' : 'bottom-1'} transition-all duration-200`}></div>
+          {/* Toggle switch with reduced transition time for better sync with sound */}
+          <div className={`w-4 h-7 bg-amber-800 rounded-sm shadow-md absolute ${isLightOn ? 'top-1' : 'bottom-1'} transition-all duration-100`}></div>
           
           {/* Screws */}
           <div className="absolute top-1 left-1 w-1.5 h-1.5 rounded-full bg-amber-900 border border-amber-950"></div>

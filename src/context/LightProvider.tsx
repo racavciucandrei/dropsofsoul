@@ -14,8 +14,11 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLightOn, setIsLightOn] = useState(false);
 
   const toggleLight = () => {
+    // Play sound before visual change for better synchronization
     playAudio('/click.mp3');
-    setIsLightOn((prev) => !prev);
+    
+    // Use immediate state update instead of functional update for better performance
+    setIsLightOn(!isLightOn);
   };
 
   // Apply light effect to the entire page

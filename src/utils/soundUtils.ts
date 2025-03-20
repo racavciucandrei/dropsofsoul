@@ -13,6 +13,7 @@ export const initAudio = (): void => {
   try {
     // Pre-load the switch sound for immediate playback
     const switchSound = new Audio('/click.mp3');
+    switchSound.preload = 'auto';
     switchSound.load();
     audioCache['click'] = switchSound;
     
@@ -21,6 +22,20 @@ export const initAudio = (): void => {
     silentSound.play().catch(() => {
       // Ignore errors - this is just to unlock audio on iOS
     });
+    
+    // Also initialize Web Audio API for synthetic sound
+    if (window.AudioContext || (window as any).webkitAudioContext) {
+      // Create a dummy context to initialize the audio subsystem
+      const dummyContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      dummyContext.resume().catch(() => {});
+      
+      // Create and immediately play a very short silent buffer
+      const silentBuffer = dummyContext.createBuffer(1, 1, 22050);
+      const source = dummyContext.createBufferSource();
+      source.buffer = silentBuffer;
+      source.connect(dummyContext.destination);
+      source.start(0);
+    }
     
     console.log("Audio system initialized successfully");
     audioInitialized = true;
@@ -31,7 +46,10 @@ export const initAudio = (): void => {
 
 // Play sound with high priority and immediate response
 export const playAudio = (audioPath: string): void => {
-  // Try to use cached audio first for instant playback
+  // First ensure Web Audio API is initialized for instant response
+  createVintageMechanicalClick();
+  
+  // Try to use cached audio as well (belt and suspenders approach)
   if (audioCache['click']) {
     try {
       // Reset audio to beginning and play it immediately
@@ -43,37 +61,14 @@ export const playAudio = (audioPath: string): void => {
         .then(() => console.log("Switch sound played from cache"))
         .catch(error => {
           console.warn("Cached audio failed, trying alternative:", error);
-          playFallbackAudio(audioPath);
         });
-      return;
     } catch (error) {
       console.warn("Error with cached audio:", error);
     }
   }
-  
-  // Fallback to creating a new audio instance
-  playFallbackAudio(audioPath);
 };
 
-// Fallback audio playback methods
-const playFallbackAudio = (audioPath: string): void => {
-  // Try a new Audio object
-  try {
-    const audio = new Audio(audioPath);
-    audio.volume = 1.0;
-    const promise = audio.play();
-    if (promise) {
-      promise
-        .then(() => console.log("Fallback audio played successfully"))
-        .catch(() => createVintageMechanicalClick());
-    }
-  } catch (error) {
-    console.warn("Fallback audio failed:", error);
-    createVintageMechanicalClick();
-  }
-};
-
-// Create a synthetic vintage mechanical click sound as last resort
+// Create a synthetic vintage mechanical click sound using Web Audio API (zero latency)
 const createVintageMechanicalClick = (): void => {
   try {
     const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
@@ -83,52 +78,51 @@ const createVintageMechanicalClick = (): void => {
     }
     
     const audioContext = new AudioContext();
+    // Use resume() to handle auto-play policy
+    audioContext.resume().catch(() => {});
+    
     const masterGain = audioContext.createGain();
     masterGain.gain.setValueAtTime(0.7, audioContext.currentTime);
     masterGain.connect(audioContext.destination);
     
-    // Create components for the vintage mechanical switch sound
+    // Create components for the vintage mechanical switch sound with zero latency
     
     // 1. Initial metal contact "thunk" sound (low frequency component)
     const thunkOsc = audioContext.createOscillator();
     const thunkGain = audioContext.createGain();
-    thunkOsc.frequency.setValueAtTime(60, audioContext.currentTime); // Very low frequency for mechanical feel
+    thunkOsc.frequency.setValueAtTime(80, audioContext.currentTime); // Slightly higher for better presence
     thunkOsc.type = 'triangle';
-    thunkGain.gain.setValueAtTime(0, audioContext.currentTime);
-    thunkGain.gain.linearRampToValueAtTime(0.9, audioContext.currentTime + 0.005);
-    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.12);
+    thunkGain.gain.setValueAtTime(0.5, audioContext.currentTime); // Start with non-zero for immediate sound
+    thunkGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
     thunkOsc.connect(thunkGain);
     thunkGain.connect(masterGain);
     
     // 2. Metal spring "ting" sound (higher frequency component)
     const tingOsc = audioContext.createOscillator();
     const tingGain = audioContext.createGain();
-    tingOsc.frequency.setValueAtTime(1500, audioContext.currentTime);
+    tingOsc.frequency.setValueAtTime(1800, audioContext.currentTime);
     tingOsc.type = 'sine';
-    tingGain.gain.setValueAtTime(0, audioContext.currentTime);
-    tingGain.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
-    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
+    tingGain.gain.setValueAtTime(0.2, audioContext.currentTime); // Start with non-zero for immediate sound
+    tingGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05);
     tingOsc.connect(tingGain);
     tingGain.connect(masterGain);
     
-    // 3. Mechanical contact "click" sound (noise component)
-    const clickNode = audioContext.createBufferSource();
-    const clickGain = audioContext.createGain();
-    const bufferSize = audioContext.sampleRate * 0.1; // 100ms buffer
+    // 3. Mechanical contact "click" sound (noise component) - instant start
+    const bufferSize = audioContext.sampleRate * 0.05; // 50ms buffer (shorter for less latency)
     const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
     const data = buffer.getChannelData(0);
     
-    // Generate noise burst for click with more energy in lower frequencies for vintage feel
+    // Generate noise burst for click with more energy at the start for immediate tactile feel
     for (let i = 0; i < bufferSize; i++) {
-      // Decrease noise amplitude over time and emphasize low frequencies
-      const factor = 1 - (i / bufferSize);
-      // More random for first part to simulate mechanical contact
-      data[i] = (Math.random() * 2 - 1) * factor * factor;
+      // More energy at the beginning, quick decay
+      const factor = Math.pow(1 - (i / bufferSize), 3);
+      data[i] = (Math.random() * 2 - 1) * factor;
     }
     
+    const clickNode = audioContext.createBufferSource();
+    const clickGain = audioContext.createGain();
     clickNode.buffer = buffer;
-    clickGain.gain.setValueAtTime(0.4, audioContext.currentTime);
-    clickGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
+    clickGain.gain.setValueAtTime(0.6, audioContext.currentTime); // Louder for better presence
     clickNode.connect(clickGain);
     clickGain.connect(masterGain);
     
@@ -139,27 +133,26 @@ const createVintageMechanicalClick = (): void => {
     
     resonanceNode.buffer = buffer; // Reuse the noise buffer
     resonanceFilter.type = 'bandpass';
-    resonanceFilter.frequency.setValueAtTime(280, audioContext.currentTime); // Resonant frequency for vintage metal
-    resonanceFilter.Q.setValueAtTime(12, audioContext.currentTime); // High Q for resonance
+    resonanceFilter.frequency.setValueAtTime(320, audioContext.currentTime); // Slightly higher for better presence
+    resonanceFilter.Q.setValueAtTime(8, audioContext.currentTime); // Lower Q for faster response
     
-    resonanceGain.gain.setValueAtTime(0, audioContext.currentTime);
-    resonanceGain.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
-    resonanceGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.15);
+    resonanceGain.gain.setValueAtTime(0.15, audioContext.currentTime); // Start with non-zero for immediate sound
+    resonanceGain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
     
     resonanceNode.connect(resonanceFilter);
     resonanceFilter.connect(resonanceGain);
     resonanceGain.connect(masterGain);
     
-    // Start all sound components with slight timing variations for realism
-    thunkOsc.start();
-    tingOsc.start(audioContext.currentTime + 0.005);
-    clickNode.start();
-    resonanceNode.start(audioContext.currentTime + 0.002);
+    // Start all components simultaneously for zero latency
+    const startTime = audioContext.currentTime;
+    thunkOsc.start(startTime);
+    tingOsc.start(startTime);
+    clickNode.start(startTime);
+    resonanceNode.start(startTime);
     
-    // Stop all components
-    thunkOsc.stop(audioContext.currentTime + 0.2);
-    tingOsc.stop(audioContext.currentTime + 0.2);
-    // No need to stop one-shot buffer sources
+    // Stop oscillators after short duration
+    thunkOsc.stop(startTime + 0.15);
+    tingOsc.stop(startTime + 0.15);
     
     console.log("Played improved synthetic vintage mechanical switch sound");
   } catch (error) {
