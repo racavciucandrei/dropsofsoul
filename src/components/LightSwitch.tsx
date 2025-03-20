@@ -10,6 +10,9 @@ const LightSwitch = () => {
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
   const { toast } = useToast();
   
+  // Create audio object for the click sound
+  const [clickSound] = useState(() => new Audio('/click.mp3'));
+  
   // Store toggle count in localStorage to persist across renders
   useEffect(() => {
     const storedCount = localStorage.getItem('toggleCount');
@@ -61,6 +64,10 @@ const LightSwitch = () => {
 
   // Handle switch toggle with count tracking
   const handleToggle = () => {
+    // Play the click sound
+    clickSound.currentTime = 0;
+    clickSound.play().catch(err => console.error("Error playing sound:", err));
+    
     // First increment toggle count
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
