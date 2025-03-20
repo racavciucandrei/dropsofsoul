@@ -60,19 +60,17 @@ const allProducts = [
       flavorProfile: 'Savoury, smoky, and earthy, with hints of natural sweetness from roasted corn and a subtle heat from smoked chilies like pasilla or guajillo.'
     },
     signatureCocktail: {
-      name: 'Smoky Earth',
-      description: 'A sophisticated cocktail that balances the earthy smokiness of mezcal with the rich complexity of our Roasted Corn & Smoked Chili Bitters. The sweetness of agave nectar and corn liqueur creates a foundation that allows the subtle heat and savory notes to shine through. Finished with a touch of lime for brightness, this cocktail is a celebration of Mesoamerican flavors in a glass.',
+      name: 'Maiz à Trois',
+      description: 'The Maiz à Trois celebrates the heart of Mexican culture with an intriguing combination of smoky, earthy, and subtly sweet flavors. Nixta Corn Liqueur provides a rich, corn-forward sweetness, balanced by the deep, bold character of Maiz Nation Mexican Whiskey. The Pox adds an extra layer of complexity, while the Roasted Corn and Chipotle Bitters introduce smoky heat and a touch of spice. The garnish of pickled baby corn, flambéed with aromatic salt, adds a touch of acidity and drama, enhancing the cocktail\'s overall depth. This drink is both a visual and flavorful experience, perfect for those who appreciate bold, nuanced flavors with a hint of flair.',
       ingredients: [
-        '5cl Mezcal',
-        '2cl Corn Liqueur',
-        '1cl Agave Syrup',
-        '1cl Fresh lime juice',
-        '4 dashes Roasted Corn & Smoked Chili Bitters'
+        '3cl Nixta Corn Liqueur',
+        '1cl Pox',
+        '2cl Maiz Nation Mexican Whiskey',
+        '3 dashes Roasted Corn & Smoked Chili Bitters'
       ],
       garnish: [
-        'Charred Corn Husk',
-        'Dried Chili Thread',
-        'Smoked Salt Rim (partial)'
+        'Pickled baby corn, flambéed for dramatic effect',
+        'A sprinkle of homemade aromatic salt (smoked paprika, chili flakes, and sea salt)'
       ],
       imagePath: '/placeholder.svg'
     },
