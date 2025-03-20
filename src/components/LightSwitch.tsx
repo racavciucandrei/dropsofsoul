@@ -98,22 +98,35 @@ const LightSwitch = () => {
     
     // Only check for pattern after we have enough toggles
     if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern)) {
-      showWarning();
+      showDivineWarning();
     }
   };
 
-  const showWarning = () => {
+  const showDivineWarning = () => {
     // Add a small delay to ensure the warning comes after the toggle sound
     setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
-      utterance.rate = 1.0;
-      utterance.pitch = 1.0;
+      const utterance = new SpeechSynthesisUtterance("Cease thy meddling with the sacred switch!");
+      utterance.rate = 0.9;
+      utterance.pitch = 1.2;
       utterance.volume = 1.0;
+      
+      // Set a deeper, more reverberant voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const deepVoice = voices.find(voice => 
+        voice.name.includes('Male') || 
+        voice.name.toLowerCase().includes('deep') || 
+        voice.name.includes('Daniel')
+      );
+      
+      if (deepVoice) {
+        utterance.voice = deepVoice;
+      }
+      
       window.speechSynthesis.speak(utterance);
       
       toast({
-        title: "Stop that!",
-        description: "Hey, don't play with that switch!",
+        title: "Divine Warning",
+        description: "Cease thy meddling with the sacred switch!",
         variant: "destructive",
       });
     }, 100);
