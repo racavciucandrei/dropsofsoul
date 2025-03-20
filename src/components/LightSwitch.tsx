@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { playAudio } from '@/utils/soundUtils';
@@ -6,11 +7,14 @@ import { useLightSwitchEffects } from '@/hooks/useLightSwitchEffects';
 import SwitchButton from '@/components/SwitchButton';
 import SwitchMessage from '@/components/SwitchMessage';
 import { useSeductiveVoice } from '@/hooks/useSeductiveVoice';
+import { useToast } from '@/hooks/use-toast';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
   const switchButtonRef = useRef<HTMLDivElement>(null);
   const lastToggleTimeRef = useRef(0);
+  const patternDetectedRef = useRef(false);
+  const { toast } = useToast();
   
   const { 
     showMessage, 
@@ -76,8 +80,21 @@ const LightSwitch = () => {
     // Call the context's toggle function
     toggleLight();
     
-    // We're keeping the pattern detection code but not doing anything with it
-    // This makes it easier to add something different in the future if desired
+    // Check for special pattern and show toast if needed
+    if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern) && !patternDetectedRef.current) {
+      toast({
+        title: "Stop playing with the switch!",
+        description: "What are you, five years old? This isn't a toy!",
+        variant: "destructive",
+        duration: 5000,
+      });
+      patternDetectedRef.current = true;
+      
+      // Reset the pattern detection after some time
+      setTimeout(() => {
+        patternDetectedRef.current = false;
+      }, 10000); // Reset after 10 seconds
+    }
   };
 
   return (
