@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 
 interface Droplet {
@@ -31,20 +30,20 @@ const RainEffect = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Create initial droplets - fewer for subtlety
+    // Create initial droplets - moderate density
     const createDroplets = () => {
-      const dropletCount = Math.floor(window.innerWidth / 25); // Reduced density
+      const dropletCount = Math.floor(window.innerWidth / 15); // Increased density from 25 to 15
       const newDroplets: Droplet[] = [];
 
       for (let i = 0; i < dropletCount; i++) {
-        const size = Math.random() * 1 + 0.5; // Slightly smaller
+        const size = Math.random() * 1 + 0.5; // Keep the same size
         newDroplets.push({
           x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height * -1, // Start above the viewport
+          y: Math.random() * canvas.height * -1,
           size: size,
-          speed: Math.random() * 4 + 3, // Slightly slower
-          opacity: Math.random() * 0.3 + 0.1, // More transparent
-          length: size * (Math.random() * 3 + 3), // Shorter
+          speed: Math.random() * 4 + 3,
+          opacity: Math.random() * 0.3 + 0.1,
+          length: size * (Math.random() * 3 + 3),
         });
       }
 
