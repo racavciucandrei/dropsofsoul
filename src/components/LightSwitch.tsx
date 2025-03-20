@@ -105,25 +105,38 @@ const LightSwitch = () => {
   const showDivineWarning = () => {
     // Add a small delay to ensure the warning comes after the toggle sound
     setTimeout(() => {
+      // Create the divine voice effect
       const utterance = new SpeechSynthesisUtterance("Cease thy meddling with the sacred switch!");
-      utterance.rate = 0.9;
-      utterance.pitch = 1.2;
+      
+      // Slower rate for dramatic effect
+      utterance.rate = 0.7;
+      
+      // Lower pitch for a booming, god-like quality
+      utterance.pitch = 0.6;
+      
+      // Maximum volume
       utterance.volume = 1.0;
       
-      // Set a deeper, more reverberant voice if available
+      // Get all available voices
       const voices = window.speechSynthesis.getVoices();
-      const deepVoice = voices.find(voice => 
-        voice.name.includes('Male') || 
+      
+      // Try to find the deepest, most resonant voice available
+      const divineVoice = voices.find(voice => 
+        voice.name.includes('Bass') || 
         voice.name.toLowerCase().includes('deep') || 
-        voice.name.includes('Daniel')
+        voice.name.includes('Daniel') ||
+        voice.name.includes('James') ||
+        voice.name.toLowerCase().includes('male')
       );
       
-      if (deepVoice) {
-        utterance.voice = deepVoice;
+      if (divineVoice) {
+        utterance.voice = divineVoice;
       }
       
+      // Apply the speech synthesis
       window.speechSynthesis.speak(utterance);
       
+      // Display text message
       toast({
         title: "Divine Warning",
         description: "Cease thy meddling with the sacred switch!",
