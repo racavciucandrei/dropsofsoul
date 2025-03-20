@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -543,31 +542,51 @@ const Product = () => {
                 </div>
               </TabsContent>
               
-              {/* New Signature Cocktail Tab */}
+              {/* Updated Signature Cocktail Tab with Image */}
               {product.signatureCocktail && (
                 <TabsContent value="cocktail" className="mt-4">
                   <div className="space-y-4">
-                    <div>
-                      <h3 className="font-medium text-lg">{product.signatureCocktail.name}</h3>
-                      <p className="text-muted-foreground text-sm mt-1">{product.signatureCocktail.description}</p>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium text-sm">Ingredients:</h4>
-                      <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
-                        {product.signatureCocktail.ingredients.map((ingredient, index) => (
-                          <li key={index}>{ingredient}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium text-sm">Garnish:</h4>
-                      <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
-                        {product.signatureCocktail.garnish.map((item, index) => (
-                          <li key={index}>{item}</li>
-                        ))}
-                      </ul>
+                    <div className="flex flex-col md:flex-row gap-6">
+                      <div className="md:w-1/2">
+                        <h3 className="font-medium text-lg">{product.signatureCocktail.name}</h3>
+                        <p className="text-muted-foreground text-sm mt-1">{product.signatureCocktail.description}</p>
+                        
+                        <div className="mt-4">
+                          <h4 className="font-medium text-sm">Ingredients:</h4>
+                          <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
+                            {product.signatureCocktail.ingredients.map((ingredient, index) => (
+                              <li key={index}>{ingredient}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        
+                        <div className="mt-4">
+                          <h4 className="font-medium text-sm">Garnish:</h4>
+                          <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
+                            {product.signatureCocktail.garnish.map((item, index) => (
+                              <li key={index}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      <div className="md:w-1/2">
+                        <div className="aspect-square rounded-lg overflow-hidden bg-muted">
+                          <img 
+                            src="/assets/tepache-dream-cocktail.jpg" 
+                            alt={`${product.signatureCocktail.name} Cocktail`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "/placeholder.svg";
+                              target.onerror = null;
+                            }}
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2 text-center italic">
+                          {product.signatureCocktail.name} - Made with {product.name}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </TabsContent>
