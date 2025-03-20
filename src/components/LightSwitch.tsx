@@ -16,7 +16,7 @@ const LightSwitch = () => {
       const timer = setTimeout(() => {
         setToggleCount(0);
         setWarningShown(false);
-      }, 10000); // Changed from 30000 to 10000 (10 seconds)
+      }, 10000); // 10 seconds
       
       return () => clearTimeout(timer);
     }
@@ -41,8 +41,9 @@ const LightSwitch = () => {
     // Increment toggle count
     setToggleCount(prev => prev + 1);
     
-    // Check if the user is toggling too much (more than 2 times in a short period)
-    if (toggleCount >= 2 && !warningShown) {
+    // Check if the user is toggling too much (2 or more times)
+    // Now it will trigger immediately after the 2nd toggle
+    if (toggleCount >= 1 && !warningShown) {
       // Play warning using Speech Synthesis
       const utterance = new SpeechSynthesisUtterance("Hey, don't play with that switch!");
       utterance.rate = 1.0;
