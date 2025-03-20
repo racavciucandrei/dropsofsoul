@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Minus, Plus, ShoppingCart, Heart, Share2, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { allProducts } from '@/data/products';
+import { toast } from 'sonner';
 
 const Product = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -33,6 +34,10 @@ const Product = () => {
   const currentCocktail = product.signatureCocktails && product.signatureCocktails.length > 0 
     ? product.signatureCocktails[selectedCocktailIndex] 
     : null;
+
+  const addToCart = () => {
+    toast.success(`Added ${quantity} x ${product.name} to cart`);
+  };
   
   return (
     <div className="min-h-screen pt-24">
@@ -182,6 +187,7 @@ const Product = () => {
               <Button 
                 size="lg" 
                 className="flex-1 rounded-full"
+                onClick={addToCart}
               >
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart
@@ -255,27 +261,25 @@ const Product = () => {
               {/* Signature Cocktail Tab with Image */}
               {product.signatureCocktails && product.signatureCocktails.length > 0 && (
                 <TabsContent value="cocktail" className="mt-4">
-                  {/* Cocktail Selector - Show only if there are multiple cocktails */}
-                  {product.signatureCocktails.length > 1 && (
-                    <div className="mb-6">
-                      <h3 className="text-lg font-medium mb-3">Our Signature Cocktails</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {product.signatureCocktails.map((cocktail, index) => (
-                          <Button
-                            key={index}
-                            variant={selectedCocktailIndex === index ? "default" : "outline"}
-                            onClick={() => {
-                              setSelectedCocktailIndex(index);
-                              setCocktailImageLoaded(false);
-                            }}
-                            className="rounded-full"
-                          >
-                            {cocktail.name}
-                          </Button>
-                        ))}
-                      </div>
+                  {/* Cocktail Selector - Show even if there is only one cocktail */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-medium mb-3">Our Signature Cocktails</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.signatureCocktails.map((cocktail, index) => (
+                        <Button
+                          key={index}
+                          variant={selectedCocktailIndex === index ? "default" : "outline"}
+                          onClick={() => {
+                            setSelectedCocktailIndex(index);
+                            setCocktailImageLoaded(false);
+                          }}
+                          className="rounded-full"
+                        >
+                          {cocktail.name}
+                        </Button>
+                      ))}
                     </div>
-                  )}
+                  </div>
                   
                   {currentCocktail && (
                     <div className="space-y-4">
