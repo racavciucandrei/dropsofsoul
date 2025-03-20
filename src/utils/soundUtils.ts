@@ -52,7 +52,7 @@ const createClickBuffer = async (): Promise<AudioBuffer | null> => {
   
   try {
     // Duration of the click sound (very short)
-    const duration = 0.15; // seconds
+    const duration = 0.1; // Reduced from 0.15 to 0.1 seconds for faster sound
     const sampleRate = audioContext.sampleRate;
     const bufferSize = duration * sampleRate;
     const buffer = audioContext.createBuffer(1, bufferSize, sampleRate);
@@ -62,23 +62,23 @@ const createClickBuffer = async (): Promise<AudioBuffer | null> => {
     for (let i = 0; i < bufferSize; i++) {
       const t = i / sampleRate; // Time in seconds
       
-      // Initial click (metallic impact)
-      const initialClickAmplitude = Math.exp(-t * 80) * 0.5;
+      // Initial click (metallic impact) - made more prominent and faster decay
+      const initialClickAmplitude = Math.exp(-t * 100) * 0.6; // Increased decay rate and amplitude
       const initialClick = (Math.random() * 2 - 1) * initialClickAmplitude;
       
-      // Mechanical thunk (low frequency component)
+      // Mechanical thunk (low frequency component) - faster decay
       const thunkFreq = 80;
-      const thunkAmplitude = Math.exp(-t * 40) * 0.4;
+      const thunkAmplitude = Math.exp(-t * 50) * 0.4; // Increased decay rate
       const thunk = Math.sin(2 * Math.PI * thunkFreq * t) * thunkAmplitude;
       
-      // Spring ting (high frequency damped oscillation)
+      // Spring ting (high frequency damped oscillation) - faster decay
       const tingFreq = 1800 + Math.sin(t * 50) * 100;
-      const tingAmplitude = Math.exp(-t * 60) * 0.15;
+      const tingAmplitude = Math.exp(-t * 80) * 0.15; // Increased decay rate
       const ting = Math.sin(2 * Math.PI * tingFreq * t) * tingAmplitude;
       
-      // Mechanical resonance
+      // Mechanical resonance - faster decay
       const resonanceFreq = 320;
-      const resonanceAmplitude = Math.exp(-t * 30) * 0.1;
+      const resonanceAmplitude = Math.exp(-t * 40) * 0.1; // Increased decay rate
       const resonance = Math.sin(2 * Math.PI * resonanceFreq * t) * resonanceAmplitude;
       
       // Combine all components with heavier weighting on the initial click for immediacy
@@ -109,7 +109,8 @@ export const playAudio = (_audioPath: string): void => {
       const source = audioContext.createBufferSource();
       source.buffer = clickBuffer;
       source.connect(audioContext.destination);
-      source.start(0); // Start immediately at time 0
+      // Use zero scheduling delay - most important for removing perceptible latency
+      source.start(0); 
       
       // Method 2: Generate sound on-the-fly as backup
     } else {
