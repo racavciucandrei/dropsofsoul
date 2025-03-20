@@ -32,17 +32,17 @@ const RainEffect = () => {
 
     // Initialize raindrops
     const initRaindrops = () => {
-      // Sparse, larger raindrops
-      const dropCount = Math.floor(window.innerWidth / 40);
+      // More raindrops for heavier rain effect
+      const dropCount = Math.floor(window.innerWidth / 15);
       const drops: Raindrop[] = [];
 
       for (let i = 0; i < dropCount; i++) {
         drops.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1, // Start above viewport
-          size: Math.random() * 5 + 5, // Larger drops (5-10px)
-          speed: Math.random() * 2 + 2, // Slower fall (2-4px per frame)
-          opacity: Math.random() * 0.3 + 0.6, // Higher opacity (0.6-0.9)
+          size: Math.random() * 3 + 3, // Smaller drops (3-6px)
+          speed: Math.random() * 7 + 10, // Much faster fall (10-17px per frame)
+          opacity: Math.random() * 0.3 + 0.5, // Similar opacity (0.5-0.8)
         });
       }
 
@@ -62,7 +62,7 @@ const RainEffect = () => {
       // Draw teardrop shape
       ctx.beginPath();
       
-      // Draw the main teardrop shape
+      // Draw the main teardrop shape (same as before)
       const width = size;
       const height = size * 1.5;
       
@@ -111,6 +111,26 @@ const RainEffect = () => {
       ctx.restore();
     };
 
+    // Add trail effect (optional)
+    const drawRainTrail = (x: number, y: number, size: number, speed: number, opacity: number) => {
+      const trailLength = Math.min(speed * 0.8, 20); // Trail length proportional to speed
+      
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x, y - trailLength);
+      
+      // Create gradient for trail
+      const gradient = ctx.createLinearGradient(x, y, x, y - trailLength);
+      gradient.addColorStop(0, `rgba(200, 240, 255, ${opacity})`);
+      gradient.addColorStop(1, `rgba(200, 240, 255, 0)`);
+      
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = size * 0.5;
+      ctx.stroke();
+      ctx.restore();
+    };
+
     // Animation loop
     const animate = () => {
       // Clear canvas
@@ -118,18 +138,26 @@ const RainEffect = () => {
       
       // Update and draw raindrops
       raindrops.current.forEach(drop => {
+        // Draw trail for faster drops
+        if (drop.speed > 12) {
+          drawRainTrail(drop.x, drop.y, drop.size, drop.speed, drop.opacity);
+        }
+        
         // Draw raindrop
         drawRaindrop(drop.x, drop.y, drop.size, drop.opacity);
         
         // Update position
         drop.y += drop.speed;
         
+        // Add some wind effect (slight horizontal movement)
+        drop.x += Math.sin(Date.now() / 2000 + drop.y / 100) * 0.3;
+        
         // Reset when offscreen
         if (drop.y > canvas.height) {
           drop.y = -drop.size * 2;
           drop.x = Math.random() * canvas.width;
           // Slightly randomize speed on reset
-          drop.speed = Math.random() * 2 + 2;
+          drop.speed = Math.random() * 7 + 10;
         }
       });
       
