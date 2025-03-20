@@ -105,14 +105,14 @@ const LightSwitch = () => {
   const showDivineWarning = () => {
     // Add a small delay to ensure the warning comes after the toggle sound
     setTimeout(() => {
-      // Create the divine voice effect
+      // Create a demonic/satanic divine voice effect
       const utterance = new SpeechSynthesisUtterance("Cease thy meddling with the sacred switch!");
       
-      // Slower rate for dramatic effect
-      utterance.rate = 0.7;
+      // Extremely slow rate for a demonic, otherworldly effect
+      utterance.rate = 0.6;
       
-      // Lower pitch for a booming, god-like quality
-      utterance.pitch = 0.6;
+      // Very low pitch for a deep, satanic quality
+      utterance.pitch = 0.3;
       
       // Maximum volume
       utterance.volume = 1.0;
@@ -120,8 +120,8 @@ const LightSwitch = () => {
       // Get all available voices
       const voices = window.speechSynthesis.getVoices();
       
-      // Try to find the deepest, most resonant voice available
-      const divineVoice = voices.find(voice => 
+      // Try to find the deepest, most resonant voice available for a satanic effect
+      const demonicVoice = voices.find(voice => 
         voice.name.includes('Bass') || 
         voice.name.toLowerCase().includes('deep') || 
         voice.name.includes('Daniel') ||
@@ -129,14 +129,17 @@ const LightSwitch = () => {
         voice.name.toLowerCase().includes('male')
       );
       
-      if (divineVoice) {
-        utterance.voice = divineVoice;
+      if (demonicVoice) {
+        utterance.voice = demonicVoice;
       }
+      
+      // Apply distortion effect through speech parameters
+      // The extremely low pitch and slow rate creates a demonic quality
       
       // Apply the speech synthesis
       window.speechSynthesis.speak(utterance);
       
-      // Display text message
+      // Display text message with the warning
       toast({
         title: "Divine Warning",
         description: "Cease thy meddling with the sacred switch!",
