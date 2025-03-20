@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { initAudio, playAudio } from '@/utils/soundUtils';
-import { Switch } from '@/components/ui/switch';
 
 const LightSwitch = () => {
   const { isLightOn, toggleLight } = useLight();
@@ -14,15 +13,32 @@ const LightSwitch = () => {
   
   useEffect(() => {
     // Initialize audio immediately
-    initAudio();
-    audioInitializedRef.current = true;
+    if (!audioInitializedRef.current) {
+      initAudio();
+      audioInitializedRef.current = true;
+    }
     
-    // Force audio initialization for iOS/Safari
+    // Force audio initialization for mobile devices
     const forceInit = () => {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      audioContext.resume().catch(() => {});
-      // Manual audio trigger to unblock audio on iOS
-      playAudio('/click.mp3');
+      try {
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioContextClass) {
+          const audioContext = new AudioContextClass();
+          audioContext.resume().then(() => {
+            console.log("Audio context initialized and resumed by user interaction");
+            // Trigger a silent sound to unblock audio on iOS
+            const oscillator = audioContext.createOscillator();
+            oscillator.connect(audioContext.destination);
+            oscillator.start(0);
+            oscillator.stop(0.001);
+            
+            // Try playing the sound directly
+            playAudio('/click.mp3');
+          }).catch(e => console.error("Failed to resume audio context:", e));
+        }
+      } catch (e) {
+        console.error("Error during audio initialization:", e);
+      }
       
       document.removeEventListener('click', forceInit);
       document.removeEventListener('touchstart', forceInit);
@@ -81,17 +97,19 @@ const LightSwitch = () => {
   };
 
   const handleToggle = () => {
+    // Prevent rapid clicks to avoid audio glitches
     const now = Date.now();
     if (now - lastToggleTimeRef.current < 300) {
       return;
     }
     lastToggleTimeRef.current = now;
     
+    // Play sound directly here before toggling the light state
+    playAudio('/click.mp3');
+    console.log("Toggle button clicked, playing sound directly");
+    
     const newCount = toggleCount + 1;
     setToggleCount(newCount);
-    
-    // Play sound directly here as well for redundancy
-    playAudio('/click.mp3');
     
     toggleLight();
     

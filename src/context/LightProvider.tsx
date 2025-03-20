@@ -44,21 +44,20 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     // Initialize audio system immediately on load
     initAudio();
     
-    // Setup event listeners to ensure audio can play on iOS/Safari
+    // Setup event listeners to ensure audio can play on mobile browsers
     const unlockAudio = () => {
-      // Force immediate audio initialization
-      const silentContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      silentContext.resume().catch(() => {});
-      
-      // Try to play a silent sound to unlock audio
-      const silentSource = silentContext.createBufferSource();
-      const buffer = silentContext.createBuffer(1, 1, 22050);
-      silentSource.buffer = buffer;
-      silentSource.connect(silentContext.destination);
-      silentSource.start(0);
-      
-      initAudio();
-      playAudio('/click.mp3'); // Try to play sound once to unlock audio
+      // Try to create and resume audio context to unlock audio
+      const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioContextClass) {
+        const audioCtx = new AudioContextClass();
+        audioCtx.resume().then(() => {
+          console.log("Audio context resumed by user interaction");
+          initAudio();
+          playAudio('/click.mp3');
+        }).catch(err => {
+          console.error("Failed to resume audio context:", err);
+        });
+      }
       
       document.removeEventListener('click', unlockAudio);
       document.removeEventListener('touchstart', unlockAudio);

@@ -5,7 +5,6 @@
 let audioContext: AudioContext | null = null;
 let isAudioInitialized = false;
 let clickBuffer: AudioBuffer | null = null;
-let clickAudio: HTMLAudioElement | null = null;
 
 // Initialize audio system with preemptive loading
 export const initAudio = (): void => {
@@ -23,10 +22,6 @@ export const initAudio = (): void => {
     
     audioContext = new AudioContextClass({ latencyHint: 'interactive' });
     audioContext.resume().catch((e) => console.error("Failed to resume audio context:", e));
-    
-    // Pre-load the MP3 file
-    clickAudio = new Audio('/click.mp3');
-    clickAudio.load();
     
     // Pre-generate the click buffer to avoid generation delay later
     createClickBuffer().then(buffer => {
@@ -96,55 +91,23 @@ const createClickBuffer = async (): Promise<AudioBuffer | null> => {
   }
 };
 
-// Multi-strategy approach for ultra-low-latency audio playback
+// Simplified audio playback implementation focusing on Web Audio API
 export const playAudio = (_audioPath: string): void => {
   console.log("Attempting to play audio...");
   
   try {
-    // Strategy 1: Use HTML5 Audio API (most compatible)
-    if (clickAudio) {
-      // Clone the audio to allow overlapping sounds
-      const audioClone = clickAudio.cloneNode() as HTMLAudioElement;
-      audioClone.volume = 1.0;
-      audioClone.play().catch(e => {
-        console.warn("HTML5 Audio playback failed:", e);
-        // Fall back to Web Audio API
-        playWithWebAudio();
-      });
-    } else {
-      // No preloaded audio, create a new one
-      const audio = new Audio(_audioPath);
-      audio.volume = 1.0;
-      audio.play().catch(e => {
-        console.warn("HTML5 Audio playback failed:", e);
-        // Fall back to Web Audio API
-        playWithWebAudio();
-      });
-    }
-    
-    // Also try Web Audio API in parallel for better reliability
-    playWithWebAudio();
-    
-  } catch (error) {
-    console.warn("Audio playback failed:", error);
-    // Attempt fallback
-    playWithWebAudio();
-  }
-};
-
-// Web Audio API playback strategy
-const playWithWebAudio = (): void => {
-  try {
+    // Force resume the audio context if suspended (mobile browsers often require this)
     if (!audioContext) {
-      // Emergency initialization if context doesn't exist
       initAudio();
       if (!audioContext) return;
     }
     
-    // Force resume the audio context in case it's suspended
-    audioContext.resume().catch(() => {});
+    audioContext.resume().catch(() => {
+      console.log("Failed to resume audio context, retrying with createVintageMechanicalClick");
+      createVintageMechanicalClick();
+    });
     
-    // Strategy 2: Use pre-generated buffer for instant playback (Web Audio API)
+    // Use pre-generated buffer for instant playback if available
     if (clickBuffer) {
       const source = audioContext.createBufferSource();
       source.buffer = clickBuffer;
@@ -158,22 +121,23 @@ const playWithWebAudio = (): void => {
       
       // Use zero scheduling delay - most important for removing perceptible latency
       source.start(0);
+      console.log("Playing audio from pre-generated buffer");
     } else {
-      // Strategy 3: Generate sound on-the-fly as backup
+      // Generate sound on-the-fly as backup
       createVintageMechanicalClick();
     }
   } catch (error) {
     // Fallback to synthetic sound generation if buffer playback fails
-    createVintageMechanicalClick();
     console.warn("Buffer playback failed, using synthetic sound:", error);
+    createVintageMechanicalClick();
   }
 };
 
-// Emergency backup method: generate sound directly for zero-latency
+// Generate sound directly using Web Audio API oscillators and nodes
 const createVintageMechanicalClick = (): void => {
   try {
+    // Create context on demand if it doesn't exist
     if (!audioContext) {
-      // Create context on demand if it doesn't exist
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       if (!AudioContextClass) return;
       audioContext = new AudioContextClass({ latencyHint: 'interactive' });
@@ -236,6 +200,7 @@ const createVintageMechanicalClick = (): void => {
     thunkOsc.stop(startTime + 0.05); // Shortened from 0.1
     tingOsc.stop(startTime + 0.05); // Shortened from 0.1
     
+    console.log("Created vintage mechanical click sound with Web Audio API");
   } catch (error) {
     console.error("Failed to create synthetic click:", error);
   }
