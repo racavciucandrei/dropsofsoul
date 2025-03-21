@@ -1,4 +1,3 @@
-
 import { Product } from './types';
 
 // Cordials collection
@@ -159,5 +158,51 @@ export const cordials: Product[] = [
     related: [9, 11, 15],
     rating: 4.9,
     reviews: 16,
+  },
+  {
+    id: 24,
+    name: 'Coco & Lime Cordial',
+    category: 'cordials',
+    price: 23.95,
+    images: ['/assets/product-10.jpg', '/assets/product-10-alt.jpg', '/assets/product-10-detail.jpg'],
+    slug: 'coco-lime-cordial',
+    description: 'The refreshing combination of crisp lime and rich coconut creates a harmonious balance in this cordial. Using the finest coconut water and toasted coconut flakes, we\'ve created a smooth, tropical experience with a zesty lime punch. This cordial is carefully cold-infused to preserve its natural flavors and ensure a fresh, vibrant taste in every sip. The result is a versatile ingredient that\'s perfect for both spirited drinks and refreshing mocktails or as a tropical accent to any drink.',
+    details: {
+      ingredients: 'Water, cane sugar, lime extract, coconut water, toasted coconut flakes, natural flavors, citric acid.',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
+      usage: '15-30ml per drink',
+      flavorProfile: 'A refreshing balance of tropical coconut with bright, zesty lime notes for a vibrant and exotic flavor profile.'
+    },
+    signatureCocktails: [
+      {
+        name: 'Ti-Coco',
+        description: 'A tropical cocktail that showcases the refreshing combination of our Coco & Lime Cordial with the distinctive character of white rum Agricole. The fresh lime pieces provide a natural citrus punch that complements the cordial\'s coconut notes perfectly. The coconut chips garnish enhances the tropical aroma and adds textural contrast to this refreshing island-inspired drink.',
+        ingredients: [
+          '5cl white rum Agricole',
+          '3cl Coco & Lime Cordial',
+          '2 pieces fresh lime'
+        ],
+        garnish: [
+          'Coconut Chips'
+        ],
+        imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Coco Verde',
+        description: 'A sophisticated non-alcoholic option that pairs the tropical essence of our Coco & Lime Cordial with the fresh green notes of cucumber juice. The effervescent finish from non-alcoholic sparkling wine or sparkling yuzu adds a celebratory touch, making this a perfect choice for those seeking a refined alcohol-free experience. The cucumber ribbon garnish adds visual elegance while enhancing the garden-fresh aroma.',
+        ingredients: [
+          '3cl Coco & Lime Cordial',
+          '5cl fresh cucumber juice',
+          'Top with Non-Alcoholic Sparkling Wine/ Sparkling Yuzu (LOW)'
+        ],
+        garnish: [
+          'Cucumber ribbon'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
+    related: [10, 11, 23],
+    rating: 4.7,
+    reviews: 18,
   },
 ];
