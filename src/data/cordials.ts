@@ -137,6 +137,23 @@ export const cordials: Product[] = [
           'Coconut & Rose Isomalt Candy'
         ],
         imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Crush on You',
+        description: 'A refreshing non-alcoholic mocktail that showcases the vibrant flavor of our Raspberry & Lychee Cordial. Fresh muddled raspberries provide a lush fruity base, while the non-alcoholic gin brings botanical complexity without the alcohol. The splash of lime adds brightness, and the rose lemonade creates a delicate floral finish. Served over crushed ice in a can-style glass, this visually stunning drink offers a perfect alcohol-free option that doesn\'t compromise on flavor or presentation.',
+        ingredients: [
+          '4 fresh Raspberries, muddled',
+          '4cl Raspberry & Lychee Cordial',
+          '5cl 0% Gin',
+          '1cl fresh lime juice/Verjus',
+          'Rose lemonade to top'
+        ],
+        garnish: [
+          'Lychee half',
+          'Mint sprig',
+          'Dried raspberry powder'
+        ],
+        imagePath: '/placeholder.svg'
       }
     ],
     related: [9, 11, 15],
