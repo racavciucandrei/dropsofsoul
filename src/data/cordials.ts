@@ -150,6 +150,38 @@ export const cordials: Product[] = [
           'Lemongrass stalk'
         ],
         imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Thai Ramos',
+        description: 'A sophisticated twist on the classic Ramos Gin Fizz, utilizing our Lemongrass & Verbena Cordial to create an exotic, Southeast Asian-inspired experience. The lemongrass-infused gin pairs perfectly with the cordial, while the cream adds luxurious texture. Demerara syrup brings depth, fresh lime provides brightness, and the orange blossom water and vegan foaming bitters create that signature frothy texture. Topped with yuzu lemonade for a refreshing finish, this elegant cocktail is garnished with lemon verbena and a dusting of matcha powder for visual appeal and aromatic complexity.',
+        ingredients: [
+          '5cl lemongrass-infused gin',
+          '3cl Lemongrass & Verbena Cordial',
+          '3cl cream',
+          '1cl demerara syrup',
+          '1cl fresh lime juice',
+          '3 dashes orange blossom water',
+          '3 dashes vegan foaming bitters',
+          'Top with soda/Yuzu limonade'
+        ],
+        garnish: [
+          'Lemon verbena sprig',
+          'Matcha powder'
+        ],
+        imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Temple Tonic',
+        description: 'A serene, alcohol-free refresher that showcases the bright, herbal notes of our Lemongrass & Verbena Cordial. The cold-brewed green tea adds gentle complexity and subtle tannins, while the tonic water brings effervescence and a touch of bitterness that balances the cordial\'s sweetness. Garnished with a lemongrass stalk that doubles as a stirrer, this sophisticated mocktail offers a zen-like drinking experience with layers of herbal complexity and refreshing brightness.',
+        ingredients: [
+          '3cl Lemongrass & Verbena Cordial',
+          '6cl fresh green tea (cold brew)',
+          'Top with tonic water'
+        ],
+        garnish: [
+          'Lemongrass stalk'
+        ],
+        imagePath: '/placeholder.svg'
       }
     ],
     related: [23, 24],
