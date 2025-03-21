@@ -1,4 +1,3 @@
-
 import { Product } from './types';
 
 // Cordials collection
@@ -71,7 +70,7 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [24, 25],
+    related: [24, 25, 26],
     rating: 4.9,
     reviews: 16,
   },
@@ -117,7 +116,7 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [23, 25],
+    related: [23, 25, 26],
     rating: 4.7,
     reviews: 18,
   },
@@ -136,21 +135,6 @@ export const cordials: Product[] = [
       flavorProfile: 'A vibrant and refreshing blend of citrusy lemongrass and aromatic lemon verbena, creating a bright, herbaceous profile with subtle citrus undertones.'
     },
     signatureCocktails: [
-      {
-        name: 'Herbal Breeze',
-        description: 'A refreshing and aromatic cocktail that highlights the bright, citrusy notes of our Lemongrass & Verbena Cordial. The botanical gin provides a perfect base, while the touch of elderflower liqueur adds subtle floral complexity. Fresh lime juice brings brightness, and the cucumber ribbon garnish adds a cooling aroma that complements the herbal profile of the cordial.',
-        ingredients: [
-          '5cl botanical gin',
-          '3cl Lemongrass & Verbena Cordial',
-          '1.5cl elderflower liqueur',
-          '1.5cl fresh lime juice'
-        ],
-        garnish: [
-          'Cucumber ribbon',
-          'Lemongrass stalk'
-        ],
-        imagePath: '/placeholder.svg'
-      },
       {
         name: 'Thai Ramos',
         description: 'A sophisticated twist on the classic Ramos Gin Fizz, utilizing our Lemongrass & Verbena Cordial to create an exotic, Southeast Asian-inspired experience. The lemongrass-infused gin pairs perfectly with the cordial, while the cream adds luxurious texture. Demerara syrup brings depth, fresh lime provides brightness, and the orange blossom water and vegan foaming bitters create that signature frothy texture. Topped with yuzu lemonade for a refreshing finish, this elegant cocktail is garnished with lemon verbena and a dusting of matcha powder for visual appeal and aromatic complexity.',
@@ -184,8 +168,59 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [23, 24],
+    related: [23, 24, 26],
     rating: 4.8,
     reviews: 12,
+  },
+  {
+    id: 26,
+    name: 'Shiso & Cucumber Cordial',
+    category: 'cordials',
+    price: 25.50,
+    images: ['/assets/product-4.jpg', '/assets/product-4-alt.jpg', '/assets/product-4-detail.jpg'],
+    slug: 'shiso-cucumber-cordial',
+    description: 'A unique blend of aromatic shiso leaves and cool cucumber, this cordial offers a refreshing and herbaceous profile. The infusion process captures the clean, fresh notes of cucumber and the minty flavor of shiso, creating a sophisticated and smooth product that shines in cocktails or sparkling mocktails. The perfect balance of refreshing and aromatic, it adds elegance to any drink seeking an invigorating twist.',
+    details: {
+      ingredients: 'Water, cane sugar, shiso leaf extract, cucumber extract, citric acid, natural flavors.',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
+      usage: '15-30ml per drink',
+      flavorProfile: 'A refreshing blend of aromatic shiso with cool cucumber notes, creating a sophisticated, herbaceous profile with clean, bright undertones.'
+    },
+    signatureCocktails: [
+      {
+        name: 'Kyoto Spritz',
+        description: 'An elegant, refreshing cocktail that highlights the herbaceous character of our Shiso & Cucumber Cordial. The delicate sake provides a clean base, while the rice gin adds botanical complexity. Fresh yuzu juice brings citrusy brightness, and the dry sparkling wine adds effervescence and subtle acidity. Garnished with a shiso leaf and cucumber ribbon, this sophisticated spritz offers a perfect balance of refreshing flavors with a Japanese-inspired twist.',
+        ingredients: [
+          '3cl sake',
+          '3cl Rice gin (or Hendrick\'s Cucumber edition)',
+          '3cl Shiso & Cucumber Cordial',
+          '1cl fresh yuzu juice',
+          'Top with dry sparkling wine'
+        ],
+        garnish: [
+          'Shiso leaf',
+          'Cucumber ribbon'
+        ],
+        imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Zen Cooler',
+        description: 'A refreshing non-alcoholic option that showcases the clean, herbaceous profile of our Shiso & Cucumber Cordial. The exotic carambola (star fruit) juice adds subtle sweetness and unique flavor, complemented by a touch of honey syrup for depth. Topped with soda water for effervescence, this sophisticated mocktail is garnished with a shiso leaf and carambola slice for visual appeal and aromatic complexity, offering a perfectly balanced and revitalizing drinking experience.',
+        ingredients: [
+          '3cl Shiso & Cucumber Cordial',
+          '5cl Fresh Carambola juice',
+          '1cl Honey syrup',
+          'Top with soda water'
+        ],
+        garnish: [
+          'Shiso leaf',
+          'Carambola slice'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
+    related: [23, 24, 25],
+    rating: 4.7,
+    reviews: 8,
   }
 ];
