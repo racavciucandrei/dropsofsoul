@@ -1,92 +1,8 @@
+
 import { Product } from './types';
 
 // Cordials collection
 export const cordials: Product[] = [
-  {
-    id: 9,
-    name: 'Elderflower Cordial',
-    category: 'cordials',
-    price: 22.50,
-    images: ['/assets/product-2.jpg', '/assets/product-2-alt.jpg', '/assets/product-2-detail.jpg'],
-    slug: 'elderflower-cordial',
-    description: 'Our Elderflower Cordial captures the delicate floral sweetness of elderflower blossoms. This versatile cordial can be mixed with sparkling water, added to cocktails, or used in desserts for a subtle floral complexity.',
-    details: {
-      ingredients: 'Water, cane sugar, elderflower extract, citric acid, natural flavors.',
-      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
-      usage: '15-30ml per drink',
-    },
-    related: [10, 11, 12],
-    rating: 4.8,
-    reviews: 42,
-  },
-  {
-    id: 10,
-    name: 'Ginger Cordial',
-    category: 'cordials',
-    price: 21.95,
-    images: ['/assets/product-5.jpg', '/assets/product-5-alt.jpg', '/assets/product-5-detail.jpg'],
-    slug: 'ginger-cordial',
-    description: 'Our Ginger Cordial balances the warmth and spice of fresh ginger with subtle sweetness. This cordial adds a spicy kick to Moscow Mules, can be mixed with hot water for a warming drink, or adds complexity to many cocktails.',
-    details: {
-      ingredients: 'Water, cane sugar, fresh ginger extract, lemon, natural flavors.',
-      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
-      usage: '15-30ml per drink',
-    },
-    related: [9, 11, 14],
-    rating: 4.6,
-    reviews: 28,
-  },
-  {
-    id: 11,
-    name: 'Lavender Cordial',
-    category: 'cordials',
-    price: 24.95,
-    images: ['/assets/product-8.jpg', '/assets/product-8-alt.jpg', '/assets/product-8-detail.jpg'],
-    slug: 'lavender-cordial',
-    description: 'Our Lavender Cordial features the elegant floral notes of lavender balanced with a touch of citrus. This cordial pairs beautifully with gin, vodka, or simply mixed with sparkling water for a refreshing non-alcoholic drink.',
-    details: {
-      ingredients: 'Water, cane sugar, lavender extract, lemon, natural flavors.',
-      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
-      usage: '15-30ml per drink',
-    },
-    related: [9, 12, 13],
-    rating: 4.7,
-    reviews: 36,
-  },
-  {
-    id: 12,
-    name: 'Rose Cordial',
-    category: 'cordials',
-    price: 23.95,
-    images: ['/assets/product-13.jpg', '/assets/product-13-alt.jpg', '/assets/product-13-detail.jpg'],
-    slug: 'rose-cordial',
-    description: 'Our Rose Cordial captures the delicate essence of rose petals with subtle sweetness. This elegant cordial adds a floral dimension to cocktails, can be mixed with champagne, or diluted with water for a refreshing drink.',
-    details: {
-      ingredients: 'Water, cane sugar, rose extract, lemon, natural flavors.',
-      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
-      usage: '15-30ml per drink',
-    },
-    related: [9, 11, 13],
-    rating: 4.9,
-    reviews: 33,
-  },
-  {
-    id: 13,
-    name: 'Hibiscus Cordial',
-    category: 'cordials',
-    price: 25.95,
-    images: ['/assets/product-14.jpg', '/assets/product-14-alt.jpg', '/assets/product-14-detail.jpg'],
-    slug: 'hibiscus-cordial',
-    description: 'Our Hibiscus Cordial features the vibrant, tart flavor of hibiscus flowers with subtle sweetness. This bright red cordial adds striking color and flavor to cocktails, can be mixed with sparkling water, or used in desserts.',
-    details: {
-      ingredients: 'Water, cane sugar, hibiscus extract, natural flavors.',
-      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
-      usage: '15-30ml per drink',
-    },
-    related: [12, 9, 15],
-    rating: 4.8,
-    reviews: 39,
-  },
   {
     id: 23,
     name: 'Raspberry & Lychee Cordial',
@@ -155,7 +71,7 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [9, 11, 15],
+    related: [24, 25],
     rating: 4.9,
     reviews: 16,
   },
@@ -201,8 +117,43 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [10, 11, 23],
+    related: [23, 25],
     rating: 4.7,
     reviews: 18,
   },
+  {
+    id: 25,
+    name: 'Lemongrass & Verbena Cordial',
+    category: 'cordials',
+    price: 24.50,
+    images: ['/assets/product-4.jpg', '/assets/product-4-alt.jpg', '/assets/product-4-detail.jpg'],
+    slug: 'lemongrass-verbena-cordial',
+    description: 'This invigorating cordial showcases the crisp, citrusy essence of lemongrass alongside the delicate fragrance of lemon verbena. Expertly prepared to extract and preserve the aromatic qualities of the herbs, the result is a vibrant and refreshing taste. Perfectly balanced acidity and herbal undertones elevate this cordial, making it ideal for both light and complex beverages.',
+    details: {
+      ingredients: 'Water, cane sugar, lemongrass extract, lemon verbena extract, citric acid, natural flavors.',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
+      usage: '15-30ml per drink',
+      flavorProfile: 'A vibrant and refreshing blend of citrusy lemongrass and aromatic lemon verbena, creating a bright, herbaceous profile with subtle citrus undertones.'
+    },
+    signatureCocktails: [
+      {
+        name: 'Herbal Breeze',
+        description: 'A refreshing and aromatic cocktail that highlights the bright, citrusy notes of our Lemongrass & Verbena Cordial. The botanical gin provides a perfect base, while the touch of elderflower liqueur adds subtle floral complexity. Fresh lime juice brings brightness, and the cucumber ribbon garnish adds a cooling aroma that complements the herbal profile of the cordial.',
+        ingredients: [
+          '5cl botanical gin',
+          '3cl Lemongrass & Verbena Cordial',
+          '1.5cl elderflower liqueur',
+          '1.5cl fresh lime juice'
+        ],
+        garnish: [
+          'Cucumber ribbon',
+          'Lemongrass stalk'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
+    related: [23, 24],
+    rating: 4.8,
+    reviews: 12,
+  }
 ];

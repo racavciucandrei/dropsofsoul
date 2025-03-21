@@ -17,12 +17,12 @@ const products = [
     slug: 'tepache-bitters',
   },
   {
-    id: 8,
-    name: 'Elderflower Cordial',
+    id: 23,
+    name: 'Raspberry & Lychee Cordial',
     category: 'Cordials',
-    price: 22.50,
-    image: '/assets/product-2.jpg',
-    slug: 'elderflower-cordial',
+    price: 24.95,
+    image: '/assets/product-7.jpg',
+    slug: 'raspberry-lychee-cordial',
   },
   {
     id: 13,
@@ -33,12 +33,12 @@ const products = [
     slug: 'blackberry-shrub',
   },
   {
-    id: 12,
-    name: 'Hibiscus Cordial',
+    id: 25,
+    name: 'Lemongrass & Verbena Cordial',
     category: 'Cordials',
-    price: 25.95,
-    image: '/assets/product-14.jpg',
-    slug: 'hibiscus-cordial',
+    price: 24.50,
+    image: '/assets/product-4.jpg',
+    slug: 'lemongrass-verbena-cordial',
   },
 ];
 
