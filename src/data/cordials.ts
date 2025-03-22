@@ -70,7 +70,7 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [24, 25, 26],
+    related: [24, 25, 26, 27],
     rating: 4.9,
     reviews: 16,
   },
@@ -116,7 +116,7 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [23, 25, 26],
+    related: [23, 25, 26, 27],
     rating: 4.7,
     reviews: 18,
   },
@@ -168,7 +168,7 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [23, 24, 26],
+    related: [23, 24, 26, 27],
     rating: 4.8,
     reviews: 12,
   },
@@ -219,8 +219,60 @@ export const cordials: Product[] = [
         imagePath: '/placeholder.svg'
       }
     ],
-    related: [23, 24, 25],
+    related: [23, 24, 25, 27],
     rating: 4.7,
     reviews: 8,
+  },
+  {
+    id: 27,
+    name: 'Masala Chai Cordial',
+    category: 'cordials',
+    price: 25.95,
+    images: ['/assets/product-4.jpg', '/assets/product-4-alt.jpg', '/assets/product-4-detail.jpg'],
+    slug: 'masala-chai-cordial',
+    description: 'Warm, aromatic, and full of depth, this Masala Chai Cordial blends the traditional spices of Indian chai—cinnamon, cloves, cardamom, and ginger—infused through an intricate process, into a rich base that\'s both comforting and complex. Using a slow cold extraction method, the blend of spices is allowed to steep and develop its bold flavour. Perfect for creating spiced cocktails, or enjoyed on its own with a touch of warm milk for a cozy drink.',
+    details: {
+      ingredients: 'Water, cane sugar, black tea extract, cinnamon, cardamom, cloves, ginger, black pepper, natural flavors.',
+      size: '500ml (16.9 fl oz) - Larger quantities (3L, 5L) available upon request',
+      usage: '15-30ml per drink',
+      flavorProfile: 'A warm, aromatic blend of traditional Indian chai spices creating a rich, complex profile with comforting depth and subtle sweetness.'
+    },
+    signatureCocktails: [
+      {
+        name: 'Masala Chai Gimlet',
+        description: 'A warming twist on the classic gimlet that showcases the rich, spiced character of our Masala Chai Cordial. The botanical notes of gin provide a perfect canvas for the complex spice blend, while fresh lime juice adds brightness and acidity to balance the sweetness. The curry leaf and tamarind bitters add an extra layer of complexity and depth. Served over a large ice cube and garnished with tamarind and curry powder, this sophisticated cocktail offers a perfect balance of warmth and refreshment.',
+        ingredients: [
+          '5cl gin',
+          '3cl Masala Chai Cordial',
+          '1cl fresh lime juice',
+          '3 dashes of curry leaf and tamarind bitters'
+        ],
+        garnish: [
+          'Tamarind',
+          'Curry powder'
+        ],
+        imagePath: '/placeholder.svg'
+      },
+      {
+        name: 'Fredo Masala Matcha Latte',
+        description: 'A luxurious non-alcoholic option that combines the warmth of our Masala Chai Cordial with the unique character of cascara iced tea. The blend of oat and cashew milks creates a rich, creamy texture that can be enhanced through nitrogenization. The demerara syrup adds depth and sweetness, while the matcha espuma provides a visually stunning and flavor-enhancing top layer. Garnished with an anis star and a dusting of cinnamon and matcha, this sophisticated mocktail offers a multi-layered experience of complementary flavors.',
+        ingredients: [
+          '3cl Masala Chai Cordial',
+          '5cl Rotte Rakette Cascara Iced Tea',
+          '4cl Oat milk',
+          '4cl Cashew milk',
+          '1cl Demerara syrup',
+          'Matcha espuma'
+        ],
+        garnish: [
+          'Anis Star',
+          'Cinnamon and matcha dust'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
+    related: [23, 24, 25, 26],
+    rating: 4.8,
+    reviews: 10,
   }
 ];
