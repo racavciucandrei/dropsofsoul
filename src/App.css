@@ -67,3 +67,18 @@
 .animate-pulse {
   animation: switch-pulse 0.3s ease-in-out;
 }
+
+/* Logo special effects */
+.company-logo-container img {
+  filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.5));
+  transition: filter 0.3s ease;
+}
+
+.company-logo-container:hover img {
+  filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.8));
+}
+
+/* Logo glow effect for dark mode */
+body:has(.dark-mode) .company-logo-container img {
+  filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.8));
+}

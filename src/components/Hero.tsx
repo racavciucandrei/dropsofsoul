@@ -13,10 +13,12 @@ const images = [
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
+const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   const { isLightOn } = useLight();
   
   useEffect(() => {
@@ -34,6 +36,11 @@ const Hero = () => {
       return img;
     });
     
+    // Preload logo
+    const logo = new Image();
+    logo.src = logoImage;
+    logo.onload = () => setLogoLoaded(true);
+    
     // Initialize loaded state array
     setLoadedImages(new Array(images.length).fill(false));
     
@@ -47,6 +54,7 @@ const Hero = () => {
       imageObjects.forEach(img => {
         img.onload = null;
       });
+      logo.onload = null;
     };
   }, []);
 
@@ -78,6 +86,23 @@ const Hero = () => {
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
+            {/* Logo display */}
+            <div className="flex justify-center mb-8">
+              <div 
+                className={cn(
+                  "w-52 md:w-64 lg:w-72 transition-opacity duration-500 filter drop-shadow-lg",
+                  logoLoaded ? "opacity-100" : "opacity-0"
+                )}
+              >
+                <img 
+                  src={logoImage} 
+                  alt="Drops of Soul Logo" 
+                  className="w-full h-auto"
+                  onLoad={() => setLogoLoaded(true)}
+                />
+              </div>
+            </div>
+            
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 backdrop-blur-sm text-primary-foreground/90 rounded-full">
                 Craft Cocktail Essentials

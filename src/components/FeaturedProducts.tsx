@@ -9,14 +9,14 @@ import { allProducts } from '@/data/products';
 
 // Select featured products from the current product collection
 const featuredProducts = [
-  // Bitters
+  // Bitters - Tepache Bitters
   allProducts.find(p => p.slug === 'tepache-bitters'),
-  // Cordials
+  // Cordials - Raspberry & Lychee Cordial
   allProducts.find(p => p.slug === 'raspberry-lychee-cordial'),
-  // Shrubs - choose from current shrubs collection
+  // Shrubs - Grapefruit & Rosemary Shrub
   allProducts.find(p => p.slug === 'grapefruit-rosemary-shrub'),
-  // Another cordial
-  allProducts.find(p => p.slug === 'lemongrass-verbena-cordial'),
+  // Shrubs - Cherry Bark & Marzipan Shrub (one of the new ones)
+  allProducts.find(p => p.slug === 'cherry-bark-marzipan-shrub'),
 ].filter(Boolean);
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgc3R5bGU9ImZpbGw6I2VlZTtzdHJva2U6I2NjYztzdHJva2Utd2lkdGg6MiIvPjwvc3ZnPg==';

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -40,9 +41,12 @@ const navLinks = [
   { name: 'About', path: '/about' },
 ];
 
+const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
   const location = useLocation();
   const { isLightOn } = useLight();
 
@@ -69,12 +73,25 @@ const Navbar = () => {
       )}
     >
       <div className="container-custom flex items-center justify-between">
-        {/* Company name with special glow effect when lights are off */}
+        {/* Logo with company name - visible when lights are on or off */}
         <Link 
           to="/" 
-          className="relative z-10 font-serif text-2xl font-bold tracking-tight company-name"
+          className="relative z-10 flex items-center gap-3 company-logo-container"
         >
-          Drops of Soul
+          <div className={cn(
+            "h-9 w-auto transition-opacity duration-300",
+            logoLoaded ? "opacity-100" : "opacity-0"
+          )}>
+            <img 
+              src={logoImage} 
+              alt="Drops of Soul Logo" 
+              className="h-full w-auto object-contain"
+              onLoad={() => setLogoLoaded(true)}
+            />
+          </div>
+          <span className="font-serif text-2xl font-bold tracking-tight company-name">
+            Drops of Soul
+          </span>
         </Link>
         
         {/* Desktop navigation links */}
@@ -167,7 +184,10 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <SheetHeader className="mb-4">
-                <SheetTitle className="text-left font-serif">Drops of Soul</SheetTitle>
+                <div className="flex items-center gap-3">
+                  <img src={logoImage} alt="Drops of Soul Logo" className="h-8 w-auto" />
+                  <SheetTitle className="text-left font-serif">Drops of Soul</SheetTitle>
+                </div>
               </SheetHeader>
               <div className="flex flex-col py-6">
                 <Link 
