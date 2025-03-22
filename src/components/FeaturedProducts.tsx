@@ -5,47 +5,24 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Heart } from 'lucide-react';
+import { allProducts } from '@/data/products';
 
-// Featured product selection
-const products = [
-  {
-    id: 1,
-    name: 'Tepache Bitters',
-    category: 'Bitters',
-    price: 26.00,
-    image: '/assets/product-1.jpg',
-    slug: 'tepache-bitters',
-  },
-  {
-    id: 23,
-    name: 'Raspberry & Lychee Cordial',
-    category: 'Cordials',
-    price: 24.95,
-    image: '/assets/product-7.jpg',
-    slug: 'raspberry-lychee-cordial',
-  },
-  {
-    id: 13,
-    name: 'Blackberry Shrub',
-    category: 'Shrubs',
-    price: 24.95,
-    image: '/assets/product-3.jpg',
-    slug: 'blackberry-shrub',
-  },
-  {
-    id: 25,
-    name: 'Lemongrass & Verbena Cordial',
-    category: 'Cordials',
-    price: 24.50,
-    image: '/assets/product-4.jpg',
-    slug: 'lemongrass-verbena-cordial',
-  },
-];
+// Select featured products from the current product collection
+const featuredProducts = [
+  // Bitters
+  allProducts.find(p => p.slug === 'tepache-bitters'),
+  // Cordials
+  allProducts.find(p => p.slug === 'raspberry-lychee-cordial'),
+  // Shrubs - choose from current shrubs collection
+  allProducts.find(p => p.slug === 'grapefruit-rosemary-shrub'),
+  // Another cordial
+  allProducts.find(p => p.slug === 'lemongrass-verbena-cordial'),
+].filter(Boolean);
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgc3R5bGU9ImZpbGw6I2VlZTtzdHJva2U6I2NjYztzdHJva2Utd2lkdGg6MiIvPjwvc3ZnPg==';
 
 interface ProductCardProps {
-  product: typeof products[0];
+  product: typeof allProducts[0];
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
@@ -68,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             )}
           >
             <img
-              src={product.image}
+              src={product.images[0]}
               alt={product.name}
               className={cn(
                 "w-full h-full object-cover transition-opacity duration-500",
@@ -151,7 +128,7 @@ const FeaturedProducts = () => {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
