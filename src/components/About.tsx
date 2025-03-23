@@ -1,10 +1,18 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 const About = () => {
+  const navigate = useNavigate();
+  
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
   return (
     <section className="py-24 bg-secondary/30">
       <div className="container-custom">
@@ -66,7 +74,10 @@ const About = () => {
               asChild 
               className="mt-4 group"
             >
-              <Link to="/about">
+              <Link 
+                to="/about"
+                onClick={(e) => handleNavigation(e, '/about')}
+              >
                 Discover My Story
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>

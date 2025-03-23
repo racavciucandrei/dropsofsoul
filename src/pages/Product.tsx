@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,8 +8,12 @@ import { Minus, Plus, ShoppingCart, Heart, Share2, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { allProducts } from '@/data/products';
 import { toast } from 'sonner';
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 const Product = () => {
+  // Use the scroll to top hook
+  useScrollToTop();
+  
   const { slug } = useParams<{ slug: string }>();
   const [quantity, setQuantity] = useState(1);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -22,6 +26,15 @@ const Product = () => {
   
   // Related products
   const relatedProducts = product.related.map(id => allProducts.find(p => p.id === id)).filter(Boolean);
+  
+  // Reset state when slug changes
+  useEffect(() => {
+    setSelectedImageIndex(0);
+    setIsImageLoaded(false);
+    setQuantity(1);
+    setSelectedCocktailIndex(0);
+    setCocktailImageLoaded(false);
+  }, [slug]);
   
   const handleQuantityChange = (amount: number) => {
     const newQuantity = quantity + amount;
