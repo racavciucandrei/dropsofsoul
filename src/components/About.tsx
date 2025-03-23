@@ -28,7 +28,7 @@ const About = () => {
           <div className="space-y-6">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full">
-                New Beginnings
+                Hand-Crafted Excellence
               </span>
             </div>
             
@@ -38,10 +38,10 @@ const About = () => {
             
             <div className="space-y-4 text-muted-foreground">
               <p>
-                At Drops of Soul, we believe that the purest ingredients create the most soulful drinking experiences. Our journey is just beginning, but our passion for crafting unique flavors is already transforming cocktails and beverages.
+                At Drops of Soul, I believe that the purest ingredients create the most soulful drinking experiences. My journey is just beginning, but my passion for crafting unique flavors is already transforming cocktails and beverages.
               </p>
               <p>
-                Each of our products is handcrafted in small batches using carefully selected ingredients. Coming soon: mobile cocktail catering for weddings, corporate events, and private parties.
+                Each product is handcrafted in small batches using carefully selected ingredients. Coming soon: mobile cocktail catering for weddings, corporate events, and private parties.
               </p>
             </div>
             
@@ -67,7 +67,7 @@ const About = () => {
               className="mt-4 group"
             >
               <Link to="/about">
-                Discover Our Story
+                Discover My Story
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
