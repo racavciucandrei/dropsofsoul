@@ -8,8 +8,16 @@ export const handleImageError = (
   event: React.SyntheticEvent<HTMLImageElement, Event>,
   fallbackSrc: string = "/placeholder.svg"
 ) => {
-  console.error("Failed to load image:", (event.target as HTMLImageElement).src);
-  (event.target as HTMLImageElement).src = fallbackSrc;
+  const target = event.target as HTMLImageElement;
+  console.error("Failed to load image:", target.src);
+  
+  // Prevent infinite error loop if fallback also fails
+  if (!target.src.includes(fallbackSrc)) {
+    target.src = fallbackSrc;
+  }
+  
+  // Add a class to indicate fallback is being used
+  target.classList.add('image-fallback');
 };
 
 /**
@@ -18,9 +26,28 @@ export const handleImageError = (
  * @returns Optimized image path
  */
 export const getOptimizedImagePath = (path: string): string => {
+  // Handle empty or undefined paths
+  if (!path) return "/placeholder.svg";
+  
   // Add cache-busting parameter for uploaded images
   if (path.includes('/lovable-uploads/')) {
-    return `${path}?v=${Date.now()}`;
+    // Use a static timestamp to avoid regenerating the URL on each render
+    const timestamp = new Date().toDateString();
+    return `${path}?v=${encodeURIComponent(timestamp)}`;
   }
   return path;
+};
+
+/**
+ * Checks if an image exists and is accessible
+ * @param url - Image URL to check
+ * @returns Promise resolving to boolean indicating if image exists
+ */
+export const checkImageExists = (url: string): Promise<boolean> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
 };

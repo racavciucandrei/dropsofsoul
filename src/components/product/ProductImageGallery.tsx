@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { handleImageError, getOptimizedImagePath } from '@/utils/imageUtils';
 
 interface ProductImageGalleryProps {
   images: string[];
@@ -10,6 +11,13 @@ interface ProductImageGalleryProps {
 const ProductImageGallery = ({ images, productName }: ProductImageGalleryProps) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  
+  // Reset loading state when selected image changes
+  useEffect(() => {
+    setIsImageLoaded(false);
+  }, [selectedImageIndex]);
+  
+  const optimizedImagePath = getOptimizedImagePath(images[selectedImageIndex]);
   
   return (
     <div className="space-y-4">
@@ -21,13 +29,17 @@ const ProductImageGallery = ({ images, productName }: ProductImageGalleryProps) 
         )}
       >
         <img
-          src={images[selectedImageIndex]}
+          src={optimizedImagePath}
           alt={productName}
           className={cn(
             "h-full w-full object-cover transition-opacity duration-500",
             isImageLoaded ? "opacity-100" : "opacity-0"
           )}
           onLoad={() => setIsImageLoaded(true)}
+          onError={(e) => {
+            handleImageError(e);
+            setIsImageLoaded(true); // Still mark as loaded even with fallback
+          }}
         />
       </div>
       
@@ -49,9 +61,10 @@ const ProductImageGallery = ({ images, productName }: ProductImageGalleryProps) 
               )}
             >
               <img
-                src={image}
+                src={getOptimizedImagePath(image)}
                 alt={`${productName} - view ${index + 1}`}
                 className="h-full w-full object-cover"
+                onError={handleImageError}
               />
             </button>
           ))}

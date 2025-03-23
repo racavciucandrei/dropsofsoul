@@ -69,7 +69,7 @@ export const bitters: Product[] = [
           'Pickled baby corn, flambéed for dramatic effect',
           'A sprinkle of homemade aromatic salt (smoked paprika, chili flakes, and sea salt)'
         ],
-        imagePath: '/lovable-uploads/e3635f63-21d9-426f-b768-b93fdb8a3e54.png'
+        imagePath: '/placeholder.svg' // Temporarily setting to placeholder until image is fixed
       }
     ],
     related: [1, 18, 19],

@@ -1,16 +1,8 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { getOptimizedImagePath, handleImageError } from '@/utils/imageUtils';
-
-interface CocktailIngredient {
-  name: string;
-}
-
-interface CocktailGarnish {
-  name: string;
-}
 
 interface Cocktail {
   name: string;
@@ -28,12 +20,20 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
   const [selectedCocktailIndex, setSelectedCocktailIndex] = useState(0);
   const [cocktailImageLoaded, setCocktailImageLoaded] = useState(false);
   
+  // Reset image loaded state when cocktail changes
+  useEffect(() => {
+    setCocktailImageLoaded(false);
+  }, [selectedCocktailIndex]);
+  
   // Get current cocktail
   const currentCocktail = cocktails && cocktails.length > 0 
     ? cocktails[selectedCocktailIndex] 
     : null;
     
   if (!currentCocktail) return null;
+  
+  // Get optimized image path with cache busting
+  const optimizedImagePath = getOptimizedImagePath(currentCocktail.imagePath);
   
   return (
     <div className="space-y-4">
@@ -89,14 +89,18 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                 cocktailImageLoaded ? "" : "shimmer"
               )}>
                 <img 
-                  src={getOptimizedImagePath(currentCocktail.imagePath)}
+                  key={optimizedImagePath} // Force re-render with new URL
+                  src={optimizedImagePath}
                   alt={`${currentCocktail.name} Cocktail`}
                   className={cn(
                     "w-full h-full object-cover transition-opacity duration-500",
                     cocktailImageLoaded ? "opacity-100" : "opacity-0"
                   )}
                   onLoad={() => setCocktailImageLoaded(true)}
-                  onError={(e) => handleImageError(e)}
+                  onError={(e) => {
+                    handleImageError(e);
+                    setCocktailImageLoaded(true); // Mark as loaded even with fallback
+                  }}
                 />
               </div>
               <p className="text-xs text-muted-foreground mt-2 text-center italic">
