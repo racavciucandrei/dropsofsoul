@@ -21,26 +21,30 @@ export const handleImageError = (
 };
 
 /**
- * Get an optimized image path, potentially with caching parameters
+ * Get an optimized image path, ensuring freshness with a unique timestamp
  * @param path - Original image path
- * @returns Optimized image path
+ * @returns Optimized image path with cache-busting parameters
  */
 export const getOptimizedImagePath = (path: string): string => {
   // Handle empty or undefined paths
   if (!path) return "/placeholder.svg";
   
-  // Generate a unique timestamp based on current time (to milliseconds)
-  // This ensures a truly unique URL each time
-  const timestamp = Date.now().toString();
+  // Fixed path for known problematic images
+  if (path.includes('Maiz') || path.includes('maiz')) {
+    // Direct link to the fixed image path to ensure it loads
+    return "/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png?v=" + Date.now();
+  }
   
-  // Add cache-busting parameter for all images to ensure fresh loading
-  // Use a different parameter name for different types of images
+  // Generate a unique timestamp to prevent caching
+  const timestamp = Date.now();
+  
+  // Add cache-busting parameter for all images
   if (path.includes('/lovable-uploads/')) {
     return `${path}?upload_v=${timestamp}`;
   } else if (path.includes('/assets/')) {
     return `${path}?asset_v=${timestamp}`;
   } else if (path.includes('/placeholder.svg')) {
-    return path; // Don't add params to placeholder to ensure it works as fallback
+    return path; // Don't add params to placeholder
   } else {
     // For any other image type
     return `${path}?v=${timestamp}`;
@@ -86,13 +90,40 @@ export const preloadImage = (src: string): Promise<HTMLImageElement> => {
     
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () => {
-      console.error(`Failed to preload image: ${src}`);
+    img.onerror = (e) => {
+      console.error(`Failed to preload image: ${src}`, e);
       reject(new Error(`Failed to preload image: ${src}`));
     };
+    
+    // Apply cache-busting and optimizations
     img.src = getOptimizedImagePath(src);
     
     // Set a timeout to prevent hanging
     setTimeout(() => reject(new Error('Image preload timeout')), 5000);
+  });
+};
+
+/**
+ * Force reload an image by creating a new Image object with a unique timestamp
+ * @param imagePath - Path to the image that needs to be reloaded
+ * @returns Promise that resolves with the path including cache-busting parameter
+ */
+export const forceReloadImage = (imagePath: string): Promise<string> => {
+  return new Promise((resolve) => {
+    const timestamp = Date.now();
+    const newPath = imagePath.includes('?') 
+      ? `${imagePath}&reload=${timestamp}` 
+      : `${imagePath}?reload=${timestamp}`;
+    
+    const img = new Image();
+    img.onload = () => resolve(newPath);
+    img.onerror = () => {
+      console.error(`Force reload failed for: ${imagePath}`);
+      resolve('/placeholder.svg');
+    };
+    img.src = newPath;
+    
+    // Always resolve after a timeout to prevent hanging
+    setTimeout(() => resolve(newPath), 1000);
   });
 };

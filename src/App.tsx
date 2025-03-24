@@ -1,22 +1,21 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Index from "./pages/Index";
-import Products from "./pages/Products";
-import Product from "./pages/Product";
-import About from "./pages/About";
-import NotFound from "./pages/NotFound";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { BrowserRouter } from "react-router-dom";
 import RainEffect from "./components/RainEffect";
 import { LightProvider } from "./context/LightProvider";
-import LightSwitch from "./components/LightSwitch";
+import ToastProvider from "./components/providers/ToastProvider";
 import AppRoutes from "./routes/AppRoutes";
 
-const queryClient = new QueryClient();
+// Create a client for react-query
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -47,12 +46,12 @@ const App = () => (
             }
           `}
         </style>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <RainEffect />
-          <AppRoutes />
-        </BrowserRouter>
+        <ToastProvider>
+          <BrowserRouter>
+            <RainEffect />
+            <AppRoutes />
+          </BrowserRouter>
+        </ToastProvider>
       </LightProvider>
     </TooltipProvider>
   </QueryClientProvider>

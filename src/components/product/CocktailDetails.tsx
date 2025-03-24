@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { getOptimizedImagePath, handleImageError, preloadImage } from '@/utils/imageUtils';
+import { getOptimizedImagePath, handleImageError, preloadImage, forceReloadImage } from '@/utils/imageUtils';
 
 interface Cocktail {
   name: string;
@@ -19,23 +19,41 @@ interface CocktailDetailsProps {
 const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
   const [selectedCocktailIndex, setSelectedCocktailIndex] = useState(0);
   const [cocktailImageLoaded, setCocktailImageLoaded] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [imageKey, setImageKey] = useState(Date.now());
+  const [currentImageUrl, setCurrentImageUrl] = useState('');
   
-  // Reset image loaded state when cocktail changes
+  // Reset image loaded state when cocktail changes or retry is triggered
   useEffect(() => {
-    setCocktailImageLoaded(false);
-    setImageKey(Date.now()); // Force re-render with new key
-    
-    // Preload the selected cocktail image
-    if (cocktails && cocktails.length > 0 && cocktails[selectedCocktailIndex]?.imagePath) {
-      preloadImage(cocktails[selectedCocktailIndex].imagePath)
-        .then(() => setCocktailImageLoaded(true))
-        .catch(() => {
-          console.error("Failed to preload cocktail image");
+    const loadCocktailImage = async () => {
+      setCocktailImageLoaded(false);
+      setImageKey(Date.now()); // Force re-render with new key
+      
+      // Ensure we have valid cocktails data
+      if (cocktails && cocktails.length > 0 && cocktails[selectedCocktailIndex]?.imagePath) {
+        try {
+          // Special handling for Maiz à Trois image
+          const imagePath = cocktails[selectedCocktailIndex].name.includes('Maiz') 
+            ? '/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png' 
+            : cocktails[selectedCocktailIndex].imagePath;
+            
+          // Get optimized path with cache busting
+          const optimizedPath = getOptimizedImagePath(imagePath);
+          setCurrentImageUrl(optimizedPath);
+          
+          // Attempt to preload the image
+          await preloadImage(optimizedPath);
+          setCocktailImageLoaded(true);
+        } catch (error) {
+          console.error("Failed to preload cocktail image:", error);
           setCocktailImageLoaded(true); // Still mark as loaded to show fallback
-        });
-    }
-  }, [selectedCocktailIndex, cocktails]);
+          setCurrentImageUrl('/placeholder.svg');
+        }
+      }
+    };
+    
+    loadCocktailImage();
+  }, [selectedCocktailIndex, cocktails, retryCount]);
   
   // Get current cocktail with safety check
   const currentCocktail = cocktails && cocktails.length > 0 
@@ -44,12 +62,25 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
     
   if (!currentCocktail) return null;
   
-  // Get optimized image path with timestamp to prevent caching
-  const optimizedImagePath = getOptimizedImagePath(currentCocktail.imagePath);
-  
-  const handleRetryImage = () => {
+  const handleRetryImage = async () => {
     setCocktailImageLoaded(false);
-    setImageKey(Date.now()); // Force re-render of the image
+    setRetryCount(prev => prev + 1);
+    
+    try {
+      // Check if this is the Maiz à Trois cocktail that needs special handling
+      const imagePath = currentCocktail.name.includes('Maiz') 
+        ? '/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png' 
+        : currentCocktail.imagePath;
+        
+      // Force reload the image with fresh cache-busting
+      const freshUrl = await forceReloadImage(imagePath);
+      setCurrentImageUrl(freshUrl);
+      setImageKey(Date.now());
+    } catch (error) {
+      console.error("Retry failed:", error);
+      // Fallback to placeholder if all else fails
+      setCurrentImageUrl('/placeholder.svg');
+    }
   };
   
   return (
@@ -60,7 +91,7 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
         <div className="flex flex-wrap gap-2">
           {cocktails.map((cocktail, index) => (
             <Button
-              key={index}
+              key={`cocktail-btn-${index}`}
               variant={selectedCocktailIndex === index ? "default" : "outline"}
               onClick={() => {
                 setSelectedCocktailIndex(index);
@@ -85,7 +116,7 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                 <h4 className="font-medium text-sm">Ingredients:</h4>
                 <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
                   {currentCocktail.ingredients.map((ingredient, index) => (
-                    <li key={index}>{ingredient}</li>
+                    <li key={`ingredient-${index}`}>{ingredient}</li>
                   ))}
                 </ul>
               </div>
@@ -94,7 +125,7 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                 <h4 className="font-medium text-sm">Garnish:</h4>
                 <ul className="list-disc list-inside text-muted-foreground text-sm mt-1 space-y-1">
                   {currentCocktail.garnish.map((item, index) => (
-                    <li key={index}>{item}</li>
+                    <li key={`garnish-${index}`}>{item}</li>
                   ))}
                 </ul>
               </div>
@@ -106,8 +137,8 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                 cocktailImageLoaded ? "" : "shimmer"
               )}>
                 <img 
-                  key={imageKey} // Force re-render when key changes
-                  src={optimizedImagePath}
+                  key={`cocktail-image-${imageKey}`}
+                  src={currentImageUrl}
                   alt={`${currentCocktail.name} Cocktail`}
                   className={cn(
                     "w-full h-full object-cover transition-opacity duration-500",
@@ -115,7 +146,7 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                   )}
                   onLoad={() => setCocktailImageLoaded(true)}
                   onError={(e) => {
-                    console.error("Cocktail image error:", optimizedImagePath);
+                    console.error("Cocktail image error:", currentImageUrl);
                     handleImageError(e);
                     setCocktailImageLoaded(true); // Mark as loaded even with fallback
                   }}
@@ -125,15 +156,17 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                 {currentCocktail.name}
               </p>
               
-              {/* Retry button for failed images */}
-              {cocktailImageLoaded && optimizedImagePath.includes('placeholder.svg') && (
+              {/* Retry button for failed images - made more prominent */}
+              {cocktailImageLoaded && currentImageUrl.includes('placeholder.svg') && (
                 <div className="flex justify-center mt-2">
-                  <button 
+                  <Button 
+                    variant="secondary"
+                    size="sm"
                     onClick={handleRetryImage}
-                    className="bg-primary/80 text-white px-2 py-1 rounded text-xs"
+                    className="mt-2"
                   >
                     Retry Image
-                  </button>
+                  </Button>
                 </div>
               )}
             </div>
