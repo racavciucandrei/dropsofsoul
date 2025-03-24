@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
@@ -14,8 +14,36 @@ import NotFound from "./pages/NotFound";
 import RainEffect from "./components/RainEffect";
 import { LightProvider } from "./context/LightProvider";
 import LightSwitch from "./components/LightSwitch";
+import { useScrollToTop } from "./hooks/useScrollToTop";
 
 const queryClient = new QueryClient();
+
+// ScrollToTop component to ensure all route changes scroll to top
+const ScrollToTop = () => {
+  useScrollToTop();
+  return null;
+};
+
+const AppRoutes = () => {
+  return (
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <LightSwitch />
+      <main className="transition-all duration-500 content-visibility">
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/:category" element={<Products />} />
+          <Route path="/product/:slug" element={<Product />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+      <Footer />
+    </>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -50,19 +78,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <RainEffect />
-          <Navbar />
-          <LightSwitch />
-          <main className="transition-all duration-500 content-visibility">
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/products/:category" element={<Products />} />
-              <Route path="/product/:slug" element={<Product />} />
-              <Route path="/about" element={<About />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
+          <AppRoutes />
         </BrowserRouter>
       </LightProvider>
     </TooltipProvider>

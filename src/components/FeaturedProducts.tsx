@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -28,6 +27,13 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  
+  const handleProductClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
+    e.preventDefault();
+    navigate(`/product/${slug}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
   
   return (
     <Card 
@@ -35,7 +41,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Link to={`/product/${product.slug}`}>
+      <Link 
+        to={`/product/${product.slug}`}
+        onClick={(e) => handleProductClick(e, product.slug)}
+      >
         <div className="aspect-square relative overflow-hidden rounded-xl mb-4">
           {/* Product Image */}
           <div 
@@ -99,7 +108,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </Link>
       
       <CardContent className="p-2">
-        <Link to={`/product/${product.slug}`} className="block group-hover:text-primary transition-colors">
+        <Link 
+          to={`/product/${product.slug}`} 
+          className="block group-hover:text-primary transition-colors"
+          onClick={(e) => handleProductClick(e, product.slug)}
+        >
           <h3 className="font-medium line-clamp-1">{product.name}</h3>
         </Link>
         
