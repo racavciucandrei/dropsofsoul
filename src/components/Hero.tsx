@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
+import { getOptimizedImagePath, preloadImage } from '@/utils/imageUtils';
 
 const images = [
   '/assets/hero-1.jpg',
@@ -13,19 +14,21 @@ const images = [
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
+// Use optimized path for logo with cache busting
+const logoImage = getOptimizedImagePath('/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png');
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const [logoLoaded, setLogoLoaded] = useState(false);
+  const [logoKey, setLogoKey] = useState(Date.now()); // Key for forcing logo reload
   const { isLightOn } = useLight();
   
   useEffect(() => {
     // Preload all images and track which ones have loaded
     const imageObjects = images.map((src, index) => {
       const img = new Image();
-      img.src = src;
+      img.src = getOptimizedImagePath(src);
       img.onload = () => {
         setLoadedImages(prev => {
           const newState = [...prev];
@@ -36,10 +39,14 @@ const Hero = () => {
       return img;
     });
     
-    // Preload logo
-    const logo = new Image();
-    logo.src = logoImage;
-    logo.onload = () => setLogoLoaded(true);
+    // Preload logo with improved error handling
+    setLogoLoaded(false);
+    preloadImage(logoImage)
+      .then(() => setLogoLoaded(true))
+      .catch(() => {
+        console.error("Failed to load hero logo:", logoImage);
+        setLogoLoaded(true); // Still mark as loaded
+      });
     
     // Initialize loaded state array
     setLoadedImages(new Array(images.length).fill(false));
@@ -54,9 +61,13 @@ const Hero = () => {
       imageObjects.forEach(img => {
         img.onload = null;
       });
-      logo.onload = null;
     };
   }, []);
+  
+  const handleLogoError = () => {
+    console.error("Hero logo loading error, attempting to reload");
+    setLogoKey(Date.now());
+  };
 
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
@@ -86,20 +97,31 @@ const Hero = () => {
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
-            {/* Logo display */}
+            {/* Logo display with error handling */}
             <div className="flex justify-center mb-8">
               <div 
                 className={cn(
-                  "w-52 md:w-64 lg:w-72 transition-opacity duration-500 filter drop-shadow-lg",
+                  "w-52 md:w-64 lg:w-72 transition-opacity duration-500 filter drop-shadow-lg relative",
                   logoLoaded ? "opacity-100" : "opacity-0"
                 )}
               >
                 <img 
+                  key={logoKey}
                   src={logoImage} 
                   alt="Drops of Soul Logo" 
                   className="w-full h-auto"
                   onLoad={() => setLogoLoaded(true)}
+                  onError={(e) => {
+                    handleLogoError();
+                    // Fallback to placeholder if logo fails
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder.svg";
+                    setLogoLoaded(true);
+                  }}
                 />
+                {!logoLoaded && (
+                  <div className="absolute inset-0 bg-muted/30 shimmer rounded-md"></div>
+                )}
               </div>
             </div>
             

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { getOptimizedImagePath, handleImageError } from '@/utils/imageUtils';
+import { getOptimizedImagePath, handleImageError, preloadImage } from '@/utils/imageUtils';
 
 interface Cocktail {
   name: string;
@@ -19,21 +19,38 @@ interface CocktailDetailsProps {
 const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
   const [selectedCocktailIndex, setSelectedCocktailIndex] = useState(0);
   const [cocktailImageLoaded, setCocktailImageLoaded] = useState(false);
+  const [imageKey, setImageKey] = useState(Date.now());
   
   // Reset image loaded state when cocktail changes
   useEffect(() => {
     setCocktailImageLoaded(false);
-  }, [selectedCocktailIndex]);
+    setImageKey(Date.now()); // Force re-render with new key
+    
+    // Preload the selected cocktail image
+    if (cocktails && cocktails.length > 0 && cocktails[selectedCocktailIndex]?.imagePath) {
+      preloadImage(cocktails[selectedCocktailIndex].imagePath)
+        .then(() => setCocktailImageLoaded(true))
+        .catch(() => {
+          console.error("Failed to preload cocktail image");
+          setCocktailImageLoaded(true); // Still mark as loaded to show fallback
+        });
+    }
+  }, [selectedCocktailIndex, cocktails]);
   
-  // Get current cocktail
+  // Get current cocktail with safety check
   const currentCocktail = cocktails && cocktails.length > 0 
     ? cocktails[selectedCocktailIndex] 
     : null;
     
   if (!currentCocktail) return null;
   
-  // Get optimized image path with cache busting
+  // Get optimized image path with timestamp to prevent caching
   const optimizedImagePath = getOptimizedImagePath(currentCocktail.imagePath);
+  
+  const handleRetryImage = () => {
+    setCocktailImageLoaded(false);
+    setImageKey(Date.now()); // Force re-render of the image
+  };
   
   return (
     <div className="space-y-4">
@@ -89,7 +106,7 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                 cocktailImageLoaded ? "" : "shimmer"
               )}>
                 <img 
-                  key={optimizedImagePath} // Force re-render with new URL
+                  key={imageKey} // Force re-render when key changes
                   src={optimizedImagePath}
                   alt={`${currentCocktail.name} Cocktail`}
                   className={cn(
@@ -98,6 +115,7 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
                   )}
                   onLoad={() => setCocktailImageLoaded(true)}
                   onError={(e) => {
+                    console.error("Cocktail image error:", optimizedImagePath);
                     handleImageError(e);
                     setCocktailImageLoaded(true); // Mark as loaded even with fallback
                   }}
@@ -106,6 +124,18 @@ const CocktailDetails = ({ cocktails }: CocktailDetailsProps) => {
               <p className="text-xs text-muted-foreground mt-2 text-center italic">
                 {currentCocktail.name}
               </p>
+              
+              {/* Retry button for failed images */}
+              {cocktailImageLoaded && optimizedImagePath.includes('placeholder.svg') && (
+                <div className="flex justify-center mt-2">
+                  <button 
+                    onClick={handleRetryImage}
+                    className="bg-primary/80 text-white px-2 py-1 rounded text-xs"
+                  >
+                    Retry Image
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

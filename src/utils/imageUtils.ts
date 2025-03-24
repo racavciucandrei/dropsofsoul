@@ -29,13 +29,22 @@ export const getOptimizedImagePath = (path: string): string => {
   // Handle empty or undefined paths
   if (!path) return "/placeholder.svg";
   
-  // Add cache-busting parameter for uploaded images
+  // Generate a unique timestamp based on current time (to milliseconds)
+  // This ensures a truly unique URL each time
+  const timestamp = Date.now().toString();
+  
+  // Add cache-busting parameter for all images to ensure fresh loading
+  // Use a different parameter name for different types of images
   if (path.includes('/lovable-uploads/')) {
-    // Use a static timestamp to avoid regenerating the URL on each render
-    const timestamp = new Date().toDateString();
-    return `${path}?v=${encodeURIComponent(timestamp)}`;
+    return `${path}?upload_v=${timestamp}`;
+  } else if (path.includes('/assets/')) {
+    return `${path}?asset_v=${timestamp}`;
+  } else if (path.includes('/placeholder.svg')) {
+    return path; // Don't add params to placeholder to ensure it works as fallback
+  } else {
+    // For any other image type
+    return `${path}?v=${timestamp}`;
   }
-  return path;
 };
 
 /**
@@ -45,9 +54,45 @@ export const getOptimizedImagePath = (path: string): string => {
  */
 export const checkImageExists = (url: string): Promise<boolean> => {
   return new Promise((resolve) => {
+    // Don't try to check placeholder images
+    if (url.includes('placeholder.svg')) {
+      resolve(true);
+      return;
+    }
+    
     const img = new Image();
     img.onload = () => resolve(true);
     img.onerror = () => resolve(false);
-    img.src = url;
+    
+    // Add a cache-busting parameter for this check
+    img.src = `${url}?check=${Date.now()}`;
+    
+    // Set a timeout to prevent hanging
+    setTimeout(() => resolve(false), 5000);
+  });
+};
+
+/**
+ * Preloads an image to ensure it's in the browser cache
+ * @param src - Image source URL
+ * @returns Promise that resolves when image is loaded
+ */
+export const preloadImage = (src: string): Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    if (!src || src.includes('placeholder.svg')) {
+      resolve(new Image()); // Return empty image for placeholders
+      return;
+    }
+    
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => {
+      console.error(`Failed to preload image: ${src}`);
+      reject(new Error(`Failed to preload image: ${src}`));
+    };
+    img.src = getOptimizedImagePath(src);
+    
+    // Set a timeout to prevent hanging
+    setTimeout(() => reject(new Error('Image preload timeout')), 5000);
   });
 };
