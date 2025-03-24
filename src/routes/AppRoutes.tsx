@@ -18,7 +18,7 @@ const AppRoutes = () => {
     <>
       <Navbar />
       <LightSwitch />
-      <main className="transition-all duration-500 content-visibility">
+      <main className="transition-opacity duration-300 ease-in-out content-visibility">
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/products" element={<Products />} />

@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { playAudio } from '@/utils/soundUtils';
@@ -43,7 +42,7 @@ const LightSwitch = () => {
   };
 
   const handleToggle = () => {
-    // Animation effect on the switch
+    // Simple animation effect on the switch
     if (switchButtonRef.current) {
       switchButtonRef.current.classList.add('animate-pulse');
       setTimeout(() => {
@@ -64,14 +63,6 @@ const LightSwitch = () => {
     // Play sound
     playAudio('/click.mp3');
     
-    // Also try direct HTML5 Audio as fallback
-    try {
-      const clickSound = new Audio('/click.mp3');
-      clickSound.play().catch(e => console.error("Direct click sound failed:", e));
-    } catch (e) {
-      console.error("Error creating click sound:", e);
-    }
-    
     // Update toggle state
     const newCount = toggleCount + 1;
     const newPattern = [...togglePattern, !isLightOn];
@@ -80,20 +71,20 @@ const LightSwitch = () => {
     // Call the context's toggle function
     toggleLight();
     
-    // Check for special pattern and show toast if needed
+    // Check for special pattern
     if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern) && !patternDetectedRef.current) {
       toast({
         title: "Stop playing with the switch!",
         description: "What are you, five years old? This isn't a toy!",
         variant: "destructive",
-        duration: 5000,
+        duration: 3000,
       });
       patternDetectedRef.current = true;
       
       // Reset the pattern detection after some time
       setTimeout(() => {
         patternDetectedRef.current = false;
-      }, 10000); // Reset after 10 seconds
+      }, 10000);
     }
   };
 

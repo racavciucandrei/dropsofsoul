@@ -29,20 +29,21 @@ const App = () => (
             }
             
             .animate-fade-in {
-              animation: fadeIn 0.8s ease-in-out forwards;
+              animation: fadeIn 0.5s ease-in forwards;
             }
             
             @keyframes slideIn {
-              from { transform: translateY(20px); opacity: 0; }
+              from { transform: translateY(10px); opacity: 0; }
               to { transform: translateY(0); opacity: 1; }
             }
             
             .animate-slide-in {
-              animation: slideIn 0.8s ease-out forwards;
+              animation: slideIn 0.5s ease-out forwards;
             }
             
             .content-reveal .reveal-item {
-              animation: fadeIn 1.5s ease forwards;
+              transition: opacity 0.5s ease;
+              opacity: 1;
             }
           `}
         </style>

@@ -17,41 +17,36 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
   const toggleLight = () => {
     console.log("Toggle light called, current state:", isLightOn);
     
-    // Play sound before visual update (with more aggressive sound triggering)
-    // We use direct sound playing here to avoid any delays
+    // Play sound before visual update
     playAudio('/click.mp3');
     
-    // Also try to play using standard HTML5 Audio as fallback
-    try {
-      const clickSound = new Audio('/click.mp3');
-      clickSound.volume = 1.0;
-      clickSound.play().catch(e => console.error("Direct Audio play failed:", e));
-    } catch (e) {
-      console.error("Error creating Audio element:", e);
-    }
-    
-    // Update state immediately
+    // Update state with a simple toggle - no extra operations here
     setIsLightOn(prevState => !prevState);
   };
 
-  // Apply light effect to the entire page
+  // Apply light effect to the entire page with smoother transitions
   useEffect(() => {
     console.log("Light state changed:", isLightOn);
     
-    if (isLightOn) {
-      document.documentElement.classList.remove("lights-off");
-      document.body.classList.remove("lights-off");
-      
-      // Add animation classes for content reveal
-      document.documentElement.classList.add("content-reveal");
-    } else {
-      document.documentElement.classList.add("lights-off");
-      document.body.classList.add("lights-off");
-      document.documentElement.classList.remove("content-reveal");
-    }
+    // Use requestAnimationFrame for smoother class changes
+    requestAnimationFrame(() => {
+      if (isLightOn) {
+        document.documentElement.classList.remove("lights-off");
+        document.body.classList.remove("lights-off");
+        
+        // Delay adding animation classes slightly
+        setTimeout(() => {
+          document.documentElement.classList.add("content-reveal");
+        }, 50);
+      } else {
+        document.documentElement.classList.add("lights-off");
+        document.body.classList.add("lights-off");
+        document.documentElement.classList.remove("content-reveal");
+      }
+    });
   }, [isLightOn]);
 
-  // Initial setup - comprehensive audio initialization
+  // Initial setup - streamlined audio initialization
   useEffect(() => {
     console.log("LightProvider mounted, initializing audio and light effects");
     
@@ -59,60 +54,15 @@ export const LightProvider = ({ children }: { children: React.ReactNode }) => {
     document.documentElement.classList.add("lights-off");
     document.body.classList.add("lights-off");
     
-    // Initialize audio system immediately on load
+    // Initialize audio system
     initAudio();
     preloadAudioFormats();
-    
-    // Setup universal audio unlock mechanism
     unlockAudioOnUserInteraction();
     
-    // Additional aggressive audio initialization
-    const initializeAudioAggressively = () => {
-      console.log("Aggressively initializing audio...");
-      
-      // Re-initialize audio system
-      initAudio();
-      
-      // Create and play a silent sound to unlock audio
-      try {
-        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        if (AudioContextClass) {
-          const tempContext = new AudioContextClass();
-          tempContext.resume().then(() => {
-            const oscillator = tempContext.createOscillator();
-            oscillator.connect(tempContext.destination);
-            oscillator.start(0);
-            oscillator.stop(0.001);
-            
-            // Try playing the actual sound file
-            setTimeout(() => {
-              playAudio('/click.mp3');
-              setAudioInitialized(true);
-            }, 100);
-          }).catch(e => console.error("Failed to resume temp audio context:", e));
-        }
-      } catch (e) {
-        console.error("Error during aggressive audio initialization:", e);
-      }
-      
-      // Also try HTML5 Audio directly
-      try {
-        const tempAudio = new Audio('/click.mp3');
-        tempAudio.volume = 0.01; // Very low volume for silent initialization
-        tempAudio.play().then(() => {
-          console.log("Temp audio played successfully");
-          tempAudio.pause();
-          setAudioInitialized(true);
-        }).catch(e => console.error("Failed to play temp audio:", e));
-      } catch (e) {
-        console.error("Error creating temp Audio element:", e);
-      }
-    };
-    
-    // Initialize audio on first user interaction
+    // Initialize audio on first user interaction - simplified
     const userInteractionHandler = () => {
       if (!audioInitialized) {
-        initializeAudioAggressively();
+        initAudio();
         setAudioInitialized(true);
       }
       

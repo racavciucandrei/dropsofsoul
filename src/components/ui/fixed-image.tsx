@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { getOptimizedImagePath, handleImageError, forceReloadImage } from '@/utils/imageUtils';
+import { getOptimizedImagePath, handleImageError } from '@/utils/imageUtils';
+import { imageLogger } from '@/utils/loggerUtils';
 
 interface FixedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   src: string;
@@ -13,7 +14,6 @@ interface FixedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 /**
  * A reliable image component that handles loading states, errors, and retries
- * Specifically designed for problematic images like "Maiz à Trois" and logos
  */
 const FixedImage: React.FC<FixedImageProps> = ({
   src,
@@ -33,34 +33,41 @@ const FixedImage: React.FC<FixedImageProps> = ({
     setIsLoaded(false);
     setHasError(false);
     
-    // Special handling for known problematic images
     let optimizedSrc = src;
     
+    // Direct hardcoded path for known problematic images
     if (src.includes('Maiz') || alt.includes('Maiz') || src.includes('maiz')) {
+      imageLogger.info('Detected Maiz à Trois, using direct path');
       optimizedSrc = '/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png';
     }
     
-    // Apply cache-busting
-    setImageSrc(getOptimizedImagePath(optimizedSrc));
+    const finalSrc = getOptimizedImagePath(optimizedSrc);
+    imageLogger.debug(`Setting image src: ${finalSrc} (from ${src})`);
+    setImageSrc(finalSrc);
   }, [src, alt]);
   
-  const handleRetry = async () => {
+  const handleRetry = () => {
+    imageLogger.info(`Retrying image: ${src}`);
     setIsLoaded(false);
     setHasError(false);
+    setImageKey(Date.now());
     
-    try {
-      const newSrc = await forceReloadImage(src);
-      setImageSrc(newSrc);
-      setImageKey(Date.now());
-    } catch (error) {
-      console.error("Image retry failed:", error);
-      setHasError(true);
-      setImageSrc(fallbackSrc);
+    // For Maiz à Trois, always use the direct path
+    if (src.includes('Maiz') || alt.includes('Maiz') || src.includes('maiz')) {
+      setImageSrc('/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png');
+    } else {
+      setImageSrc(getOptimizedImagePath(src) + `?retry=${Date.now()}`);
     }
   };
   
   return (
     <div className="relative">
+      {!isLoaded && !hasError && (
+        <div className="absolute inset-0 bg-muted rounded-md flex items-center justify-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
+      
       <img
         key={`fixed-img-${imageKey}`}
         src={imageSrc}
@@ -71,21 +78,24 @@ const FixedImage: React.FC<FixedImageProps> = ({
           className
         )}
         onLoad={() => {
+          imageLogger.info(`Image loaded successfully: ${imageSrc}`);
           setIsLoaded(true);
           setHasError(false);
         }}
         onError={(e) => {
-          console.error(`Image failed to load: ${imageSrc}`);
+          imageLogger.error(`Image failed to load: ${imageSrc}`);
           setHasError(true);
           setIsLoaded(true);
-          handleImageError(e, fallbackSrc);
+          
+          // For Maiz à Trois, try the hardcoded path again
+          if (src.includes('Maiz') || alt.includes('Maiz') || src.includes('maiz')) {
+            setImageSrc('/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png');
+          } else {
+            handleImageError(e, fallbackSrc);
+          }
         }}
         {...props}
       />
-      
-      {!isLoaded && (
-        <div className="absolute inset-0 bg-muted shimmer rounded-md"></div>
-      )}
       
       {hasError && showRetry && (
         <button
