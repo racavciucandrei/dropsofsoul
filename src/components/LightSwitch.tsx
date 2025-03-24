@@ -3,7 +3,6 @@ import React, { useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { playAudio } from '@/utils/soundUtils';
 import { useLightSwitchState } from '@/hooks/useLightSwitchState';
-import { useLightSwitchEffects } from '@/hooks/useLightSwitchEffects';
 import SwitchButton from '@/components/SwitchButton';
 import SwitchMessage from '@/components/SwitchMessage';
 import { useToast } from '@/hooks/use-toast';
@@ -21,9 +20,6 @@ const LightSwitch = () => {
     togglePattern, 
     updateToggleState 
   } = useLightSwitchState();
-  
-  // Initialize audio effects
-  useLightSwitchEffects();
 
   const handleToggle = () => {
     // Prevent rapid clicks

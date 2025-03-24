@@ -39,20 +39,14 @@ export const useLightSwitchState = () => {
     }
   }, []);
   
-  // Save toggle state - but less frequently
-  useEffect(() => {
-    const saveTimer = setTimeout(() => {
-      localStorage.setItem('toggleCount', toggleCount.toString());
-      localStorage.setItem('togglePattern', JSON.stringify(togglePattern));
-    }, 500);
-    
-    return () => clearTimeout(saveTimer);
-  }, [toggleCount, togglePattern]);
-
   // Update toggle state
   const updateToggleState = (newCount: number, newPattern: boolean[]) => {
     setToggleCount(newCount);
     setTogglePattern(newPattern);
+    
+    // Save to localStorage
+    localStorage.setItem('toggleCount', newCount.toString());
+    localStorage.setItem('togglePattern', JSON.stringify(newPattern));
   };
 
   return {

@@ -1,6 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { playAudio, initAudio, unlockAudioOnUserInteraction, preloadAudioFormats } from "../utils/soundUtils";
+import { playAudio } from "../utils/soundUtils";
 
 type LightContextType = {
   isLightOn: boolean;
@@ -12,73 +12,49 @@ const LightContext = createContext<LightContextType | undefined>(undefined);
 export const LightProvider = ({ children }: { children: React.ReactNode }) => {
   // Start with lights off by default
   const [isLightOn, setIsLightOn] = useState(false);
-  const [audioInitialized, setAudioInitialized] = useState(false);
 
   const toggleLight = () => {
-    console.log("Toggle light called, current state:", isLightOn);
-    
     // Play sound before visual update
     playAudio('/click.mp3');
     
-    // Update state with a simple toggle - no extra operations here
+    // Simple toggle without extra operations
     setIsLightOn(prevState => !prevState);
   };
 
-  // Apply light effect to the entire page with smoother transitions
+  // Apply light effect with minimal DOM operations
   useEffect(() => {
-    console.log("Light state changed:", isLightOn);
-    
-    // Use requestAnimationFrame for smoother class changes
-    requestAnimationFrame(() => {
-      if (isLightOn) {
-        document.documentElement.classList.remove("lights-off");
-        document.body.classList.remove("lights-off");
-        
-        // Delay adding animation classes slightly
-        setTimeout(() => {
-          document.documentElement.classList.add("content-reveal");
-        }, 50);
-      } else {
-        document.documentElement.classList.add("lights-off");
-        document.body.classList.add("lights-off");
-        document.documentElement.classList.remove("content-reveal");
-      }
-    });
+    if (isLightOn) {
+      document.documentElement.classList.remove("lights-off");
+      document.documentElement.classList.add("content-reveal");
+    } else {
+      document.documentElement.classList.add("lights-off");
+      document.documentElement.classList.remove("content-reveal");
+    }
   }, [isLightOn]);
 
-  // Initial setup - streamlined audio initialization
+  // Initial setup
   useEffect(() => {
-    console.log("LightProvider mounted, initializing audio and light effects");
-    
     // Set initial light state
     document.documentElement.classList.add("lights-off");
-    document.body.classList.add("lights-off");
     
-    // Initialize audio system
-    initAudio();
-    preloadAudioFormats();
-    unlockAudioOnUserInteraction();
-    
-    // Initialize audio on first user interaction - simplified
-    const userInteractionHandler = () => {
-      if (!audioInitialized) {
-        initAudio();
-        setAudioInitialized(true);
-      }
+    // Setup one-time audio initialization
+    const initAudioOnUserInteraction = () => {
+      // Play a silent sound to unlock audio
+      const audio = new Audio('/click.mp3');
+      audio.volume = 0.01;
+      audio.play().catch(() => {});
       
-      document.removeEventListener('click', userInteractionHandler);
-      document.removeEventListener('touchstart', userInteractionHandler);
-      document.removeEventListener('keydown', userInteractionHandler);
+      // Clean up event listeners
+      document.removeEventListener('click', initAudioOnUserInteraction);
+      document.removeEventListener('touchstart', initAudioOnUserInteraction);
     };
     
-    document.addEventListener('click', userInteractionHandler);
-    document.addEventListener('touchstart', userInteractionHandler);
-    document.addEventListener('keydown', userInteractionHandler);
+    document.addEventListener('click', initAudioOnUserInteraction, { once: true });
+    document.addEventListener('touchstart', initAudioOnUserInteraction, { once: true });
     
     return () => {
-      document.removeEventListener('click', userInteractionHandler);
-      document.removeEventListener('touchstart', userInteractionHandler);
-      document.removeEventListener('keydown', userInteractionHandler);
+      document.removeEventListener('click', initAudioOnUserInteraction);
+      document.removeEventListener('touchstart', initAudioOnUserInteraction);
     };
   }, []);
 
