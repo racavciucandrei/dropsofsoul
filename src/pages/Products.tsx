@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { ShoppingCart } from 'lucide-react';
 import { allProducts } from '@/data/products';
-import { handleImageError } from '@/utils/imageUtils';
 
 const Products = () => {
   const { category } = useParams<{ category: string }>();
@@ -80,7 +79,10 @@ const Products = () => {
                   src={product.images[0]}
                   alt={product.name}
                   className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-                  onError={(e) => handleImageError(e)}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder.svg";
+                  }}
                 />
               </Link>
               

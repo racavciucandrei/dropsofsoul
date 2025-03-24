@@ -1,24 +1,6 @@
 
 import { Product } from './types';
 
-// Update this part of the bitters data file with fixed image path
-const roastedCornCocktail = {
-  name: 'Maiz à Trois',
-  description: 'The Maiz à Trois celebrates the heart of Mexican culture with an intriguing combination of smoky, earthy, and subtly sweet flavors. Nixta Corn Liqueur provides a rich, corn-forward sweetness, balanced by the deep, bold character of Maiz Nation Mexican Whiskey. The Pox adds an extra layer of complexity, while the Roasted Corn and Chipotle Bitters introduce smoky heat and a touch of spice. The garnish of pickled baby corn, flambéed with aromatic salt, adds a touch of acidity and drama, enhancing the cocktail\'s overall depth. This drink is both a visual and flavorful experience, perfect for those who appreciate bold, nuanced flavors with a hint of flair.',
-  ingredients: [
-    '3cl Nixta Corn Liqueur',
-    '1cl Pox',
-    '2cl Maiz Nation Mexican Whiskey',
-    '3 dashes Roasted Corn & Smoked Chili Bitters'
-  ],
-  garnish: [
-    'Pickled baby corn, flambéed for dramatic effect',
-    'A sprinkle of homemade aromatic salt (smoked paprika, chili flakes, and sea salt)'
-  ],
-  // Fixed image path with explicit path to public folder
-  imagePath: '/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png'
-};
-
 // Bitters collection
 export const bitters: Product[] = [
   {
@@ -73,7 +55,23 @@ export const bitters: Product[] = [
       usage: '2-3 dashes per cocktail',
       flavorProfile: 'Savoury, smoky, and earthy, with hints of natural sweetness from roasted corn and a subtle heat from smoked chilies like pasilla or guajillo.'
     },
-    signatureCocktails: [roastedCornCocktail],
+    signatureCocktails: [
+      {
+        name: 'Maiz à Trois',
+        description: 'The Maiz à Trois celebrates the heart of Mexican culture with an intriguing combination of smoky, earthy, and subtly sweet flavors. Nixta Corn Liqueur provides a rich, corn-forward sweetness, balanced by the deep, bold character of Maiz Nation Mexican Whiskey. The Pox adds an extra layer of complexity, while the Roasted Corn and Chipotle Bitters introduce smoky heat and a touch of spice. The garnish of pickled baby corn, flambéed with aromatic salt, adds a touch of acidity and drama, enhancing the cocktail\'s overall depth. This drink is both a visual and flavorful experience, perfect for those who appreciate bold, nuanced flavors with a hint of flair.',
+        ingredients: [
+          '3cl Nixta Corn Liqueur',
+          '1cl Pox',
+          '2cl Maiz Nation Mexican Whiskey',
+          '3 dashes Roasted Corn & Smoked Chili Bitters'
+        ],
+        garnish: [
+          'Pickled baby corn, flambéed for dramatic effect',
+          'A sprinkle of homemade aromatic salt (smoked paprika, chili flakes, and sea salt)'
+        ],
+        imagePath: '/placeholder.svg'
+      }
+    ],
     related: [1, 18, 19],
     rating: 4.9,
     reviews: 18,
@@ -257,4 +255,3 @@ export const bitters: Product[] = [
     reviews: 5,
   },
 ];
-

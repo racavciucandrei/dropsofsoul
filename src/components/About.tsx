@@ -1,18 +1,10 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 const About = () => {
-  const navigate = useNavigate();
-  
-  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    e.preventDefault();
-    navigate(path);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  
   return (
     <section className="py-24 bg-secondary/30">
       <div className="container-custom">
@@ -36,7 +28,7 @@ const About = () => {
           <div className="space-y-6">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full">
-                Hand-Crafted Excellence
+                New Beginnings
               </span>
             </div>
             
@@ -46,10 +38,10 @@ const About = () => {
             
             <div className="space-y-4 text-muted-foreground">
               <p>
-                At Drops of Soul, I believe that the purest ingredients create the most soulful drinking experiences. My journey is just beginning, but my passion for crafting unique flavors is already transforming cocktails and beverages.
+                At Drops of Soul, we believe that the purest ingredients create the most soulful drinking experiences. Our journey is just beginning, but our passion for crafting unique flavors is already transforming cocktails and beverages.
               </p>
               <p>
-                Each product is handcrafted in small batches using carefully selected ingredients. Coming soon: mobile cocktail catering for weddings, corporate events, and private parties.
+                Each of our products is handcrafted in small batches using carefully selected ingredients. Coming soon: mobile cocktail catering for weddings, corporate events, and private parties.
               </p>
             </div>
             
@@ -74,11 +66,8 @@ const About = () => {
               asChild 
               className="mt-4 group"
             >
-              <Link 
-                to="/about"
-                onClick={(e) => handleNavigation(e, '/about')}
-              >
-                Discover My Story
+              <Link to="/about">
+                Discover Our Story
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>

@@ -1,25 +1,48 @@
 
 import { useEffect, useRef } from 'react';
-import { playAudio } from '@/utils/soundUtils';
+import { initAudio, playAudio } from '@/utils/soundUtils';
 
 export const useLightSwitchEffects = () => {
   const audioInitializedRef = useRef(false);
   
   useEffect(() => {
-    // Initialize audio only once
+    console.log("LightSwitch component mounted");
+    
+    // Initialize audio immediately
     if (!audioInitializedRef.current) {
-      // Try to unblock audio with a silent sound
-      const unblockAudio = () => {
-        playAudio('/click.mp3', 0.01);
-        document.removeEventListener('click', unblockAudio);
-      };
-      
-      document.addEventListener('click', unblockAudio, { once: true });
+      console.log("Initializing audio from LightSwitch component");
+      initAudio();
       audioInitializedRef.current = true;
       
-      return () => {
-        document.removeEventListener('click', unblockAudio);
-      };
+      // Try to play a silent sound to unblock audio
+      try {
+        const temp = new Audio('/click.mp3');
+        temp.volume = 0;
+        temp.play().then(() => {
+          console.log("Silent audio played successfully");
+          temp.pause();
+        }).catch(e => console.log("Silent audio play failed:", e));
+      } catch (e) {
+        console.error("Error creating silent audio:", e);
+      }
     }
+    
+    // Create a forced click sound when the component loads
+    setTimeout(() => {
+      console.log("Playing initial sound to ensure audio is working");
+      playAudio('/click.mp3');
+    }, 1000);
+    
+    // Additional event listener for audio unblocking
+    const unblockAudio = () => {
+      console.log("Unblocking audio from user interaction in LightSwitch");
+      playAudio('/click.mp3');
+      document.removeEventListener('click', unblockAudio);
+    };
+    document.addEventListener('click', unblockAudio, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', unblockAudio);
+    };
   }, []);
 };

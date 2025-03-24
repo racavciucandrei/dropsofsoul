@@ -12,19 +12,17 @@ const images = [
   '/assets/hero-3.jpg',
 ];
 
-// Hard-coded logo path
+const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
 const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
-const placeholderImage = '/placeholder.svg';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const [logoLoaded, setLogoLoaded] = useState(false);
-  const [logoKey] = useState(Date.now()); // Key for cache busting
   const { isLightOn } = useLight();
   
   useEffect(() => {
-    // Set up image preloading
+    // Preload all images and track which ones have loaded
     const imageObjects = images.map((src, index) => {
       const img = new Image();
       img.src = src;
@@ -38,19 +36,25 @@ const Hero = () => {
       return img;
     });
     
+    // Preload logo
+    const logo = new Image();
+    logo.src = logoImage;
+    logo.onload = () => setLogoLoaded(true);
+    
     // Initialize loaded state array
     setLoadedImages(new Array(images.length).fill(false));
     
-    // Set up slideshow timer - reduced frequency
+    // Set up slideshow timer
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 8000);
+    }, 6000);
     
     return () => {
       clearInterval(interval);
       imageObjects.forEach(img => {
         img.onload = null;
       });
+      logo.onload = null;
     };
   }, []);
 
@@ -59,7 +63,7 @@ const Hero = () => {
       {/* Background Slideshow */}
       <div className={cn(
         "absolute inset-0 z-0 transition-opacity duration-500",
-        isLightOn ? "opacity-100" : "opacity-5"
+        isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
       )}>
         {images.map((src, index) => (
           <div
@@ -81,27 +85,21 @@ const Hero = () => {
       {/* Content */}
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="space-y-6">
-            {/* Logo display with simplified error handling */}
+          <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
+            {/* Logo display */}
             <div className="flex justify-center mb-8">
-              <div className="w-52 md:w-64 lg:w-72 relative">
+              <div 
+                className={cn(
+                  "w-52 md:w-64 lg:w-72 transition-opacity duration-500 filter drop-shadow-lg",
+                  logoLoaded ? "opacity-100" : "opacity-0"
+                )}
+              >
                 <img 
-                  key={logoKey}
-                  src={`${logoImage}?v=${logoKey}`}
+                  src={logoImage} 
                   alt="Drops of Soul Logo" 
                   className="w-full h-auto"
                   onLoad={() => setLogoLoaded(true)}
-                  onError={(e) => {
-                    console.error("Logo load error in Hero");
-                    // Fallback
-                    const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder.svg";
-                    setLogoLoaded(true);
-                  }}
                 />
-                {!logoLoaded && (
-                  <div className="absolute inset-0 bg-muted/30 rounded-md"></div>
-                )}
               </div>
             </div>
             
@@ -123,11 +121,11 @@ const Hero = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="text-base rounded-full"
+                className="text-base rounded-full transition-all duration-500 hover:translate-y-[-2px] hover:shadow-lg group"
               >
                 <Link to="/products">
                   Explore Our Collection
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
               
@@ -135,7 +133,7 @@ const Hero = () => {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="text-base bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full"
+                className="text-base bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full transition-all duration-500 hover:translate-y-[-2px]"
               >
                 <Link to="/about">
                   Our Story
@@ -162,6 +160,11 @@ const Hero = () => {
           ))}
         </div>
       </div>
+      
+      {/* Light effect when light is on */}
+      {isLightOn && (
+        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/30 to-transparent pointer-events-none"></div>
+      )}
     </section>
   );
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -179,21 +178,21 @@ const About = () => {
                   <div className="border-l-4 border-primary pl-4 py-2">
                     <h3 className="font-semibold mb-1">Our Workshop</h3>
                     <p className="text-muted-foreground text-sm">
-                      I've established a small artisanal workshop where I handcraft products with care and precision, using only the finest ingredients.
+                      We've established our first artisanal workshop where we handcraft our products with care and precision, using only the finest ingredients.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
                     <h3 className="font-semibold mb-1">Our Launch</h3>
                     <p className="text-muted-foreground text-sm">
-                      I'm excited to introduce this collection to cocktail enthusiasts and home bartenders who appreciate quality ingredients and unique flavors.
+                      We're excited to introduce our collection to cocktail enthusiasts and home bartenders who appreciate quality ingredients and unique flavors.
                     </p>
                   </div>
                   
                   <div className="border-l-4 border-primary pl-4 py-2">
                     <h3 className="font-semibold mb-1">Looking Forward</h3>
                     <p className="text-muted-foreground text-sm">
-                      Though we're just beginning, my commitment to quality and craftsmanship guides everything I do. I look forward to growing alongside a community of flavor enthusiasts.
+                      Though we're just beginning, our commitment to quality and craftsmanship guides everything we do. We look forward to growing alongside our community of flavor enthusiasts.
                     </p>
                   </div>
                 </div>
@@ -221,67 +220,65 @@ const About = () => {
         </div>
       </section>
       
-      {/* The Founder Section - Updated for single founder */}
+      {/* Team Section */}
       <section className="py-20">
         <div className="container-custom">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
-              The Founder
+              Our Team
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Meet The Creator
+              Meet the Founders
             </h2>
             <p className="text-muted-foreground">
-              Drops of Soul is the creation of an experienced bartender with a passion for exceptional flavors.
+              Our small but passionate team brings together expertise in herbalism, mixology, and culinary arts.
             </p>
           </div>
           
-          <div className="flex flex-col md:flex-row gap-12 items-center">
-            <div className="md:w-1/3">
-              <div className="aspect-square overflow-hidden rounded-lg mb-4 max-w-[350px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="aspect-square overflow-hidden rounded-full mb-4 max-w-[250px] mx-auto">
                 <img 
                   src="/assets/team-1.jpg" 
-                  alt="Andrei Racavciuc" 
+                  alt="Sarah Johnson" 
                   className="w-full h-full object-cover"
                 />
               </div>
+              <h3 className="text-xl font-bold">Sarah Johnson</h3>
+              <p className="text-primary font-medium mb-2">Founder & Flavor Artist</p>
+              <p className="text-muted-foreground text-sm">
+                With a background in herbalism and mixology, Sarah brings a unique perspective to crafting complex and balanced flavors.
+              </p>
             </div>
             
-            <div className="md:w-2/3 space-y-6">
-              <h3 className="text-2xl font-bold">Andrei Racavciuc</h3>
-              <p className="text-primary font-medium mb-2">Founder & Master Mixologist</p>
-              
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  As an experienced bartender with a profound enthusiasm for both alcoholic and non-alcoholic cocktails, I've dedicated my career to understanding the intricate balance of flavors that create exceptional drinking experiences.
-                </p>
-                <p>
-                  My journey into creating Drops of Soul came from recognizing an opportunity to complement what other similar companies had already accomplished. I saw a chance to bring new, innovative flavor profiles to the market that would elevate both professional and home bartending.
-                </p>
-                <p>
-                  Every product in the Drops of Soul collection is handcrafted with attention to detail, using only premium ingredients that deliver authentic, complex flavors. My goal is to provide bartenders and cocktail enthusiasts with tools that inspire creativity and enhance their drinks.
-                </p>
-                <p>
-                  While Drops of Soul is currently a one-person operation, it represents the beginning of a vision I'm passionate about growing and sharing with the cocktail community.
-                </p>
+            <div className="text-center">
+              <div className="aspect-square overflow-hidden rounded-full mb-4 max-w-[250px] mx-auto">
+                <img 
+                  src="/assets/team-2.jpg" 
+                  alt="Marcus Lee" 
+                  className="w-full h-full object-cover"
+                />
               </div>
-              
-              <div className="flex flex-wrap gap-4 pt-4">
-                <div className="px-4 py-2 bg-white rounded-lg shadow-sm text-center">
-                  <span className="block text-lg font-bold text-primary">10+ Years</span>
-                  <span className="text-sm text-muted-foreground">Bartending Experience</span>
-                </div>
-                
-                <div className="px-4 py-2 bg-white rounded-lg shadow-sm text-center">
-                  <span className="block text-lg font-bold text-primary">100%</span>
-                  <span className="text-sm text-muted-foreground">Handcrafted Products</span>
-                </div>
-                
-                <div className="px-4 py-2 bg-white rounded-lg shadow-sm text-center">
-                  <span className="block text-lg font-bold text-primary">∞</span>
-                  <span className="text-sm text-muted-foreground">Passion for Flavor</span>
-                </div>
+              <h3 className="text-xl font-bold">Marcus Lee</h3>
+              <p className="text-primary font-medium mb-2">Co-Founder & Production Lead</p>
+              <p className="text-muted-foreground text-sm">
+                Marcus oversees our workshop operations, ensuring that every batch meets our exacting standards of quality.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="aspect-square overflow-hidden rounded-full mb-4 max-w-[250px] mx-auto">
+                <img 
+                  src="/assets/team-3.jpg" 
+                  alt="Elena Rodriguez" 
+                  className="w-full h-full object-cover"
+                />
               </div>
+              <h3 className="text-xl font-bold">Elena Rodriguez</h3>
+              <p className="text-primary font-medium mb-2">Co-Founder & Creative Director</p>
+              <p className="text-muted-foreground text-sm">
+                Elena brings her expertise in flavor development and botanical sourcing to create our unique product lineup.
+              </p>
             </div>
           </div>
         </div>
@@ -315,3 +312,4 @@ const About = () => {
 };
 
 export default About;
+

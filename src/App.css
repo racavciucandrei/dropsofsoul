@@ -72,8 +72,6 @@
 .company-logo-container img {
   filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.5));
   transition: filter 0.3s ease;
-  max-width: 100%;
-  height: auto;
 }
 
 .company-logo-container:hover img {
@@ -83,28 +81,4 @@
 /* Logo glow effect for dark mode */
 body:has(.dark-mode) .company-logo-container img {
   filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.8));
-}
-
-/* Ensure logo fits properly */
-.hero-logo {
-  max-width: 300px;
-  margin: 0 auto 2rem;
-  position: relative;
-  z-index: 10;
-}
-
-.nav-logo {
-  max-height: 50px;
-  width: auto;
-}
-
-/* Make sure the About page looks good on all screens */
-@media (max-width: 768px) {
-  .hero-logo {
-    max-width: 200px;
-  }
-  
-  .nav-logo {
-    max-height: 40px;
-  }
 }

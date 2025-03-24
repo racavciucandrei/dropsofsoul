@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { ShoppingCart, Menu, ChevronDown } from 'lucide-react';
+import { ShoppingCart, Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLight } from '@/context/LightProvider';
-import { preloadImage, getOptimizedImagePath } from '@/utils/imageUtils';
 import {
   Sheet,
   SheetContent,
@@ -21,6 +20,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -36,28 +41,14 @@ const navLinks = [
   { name: 'About', path: '/about' },
 ];
 
-// Change to optimized path with cache busting
-const logoImage = getOptimizedImagePath('/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png');
+const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
-  const [logoKey, setLogoKey] = useState(Date.now()); // Key for forcing logo reload
   const location = useLocation();
   const { isLightOn } = useLight();
-
-  // Preload the logo image
-  useEffect(() => {
-    setLogoLoaded(false);
-    
-    preloadImage(logoImage)
-      .then(() => setLogoLoaded(true))
-      .catch(() => {
-        console.error("Failed to load logo image:", logoImage);
-        setLogoLoaded(true); // Still mark as loaded to prevent perpetual loading state
-      });
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,11 +62,6 @@ const Navbar = () => {
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
-  
-  const handleLogoError = () => {
-    console.error("Logo loading error, attempting to reload");
-    setLogoKey(Date.now());
-  };
 
   return (
     <header 
@@ -93,26 +79,15 @@ const Navbar = () => {
           className="relative z-10 flex items-center gap-3 company-logo-container"
         >
           <div className={cn(
-            "h-9 w-auto transition-opacity duration-300 relative",
+            "h-9 w-auto transition-opacity duration-300",
             logoLoaded ? "opacity-100" : "opacity-0"
           )}>
             <img 
-              key={logoKey}
               src={logoImage} 
               alt="Drops of Soul Logo" 
               className="h-full w-auto object-contain"
               onLoad={() => setLogoLoaded(true)}
-              onError={(e) => {
-                handleLogoError();
-                // Fallback to placeholder if logo fails
-                const target = e.target as HTMLImageElement;
-                target.src = "/placeholder.svg";
-                setLogoLoaded(true);
-              }}
             />
-            {!logoLoaded && (
-              <div className="absolute inset-0 bg-muted shimmer rounded-md"></div>
-            )}
           </div>
           <span className="font-serif text-2xl font-bold tracking-tight company-name">
             Drops of Soul
@@ -210,16 +185,7 @@ const Navbar = () => {
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <SheetHeader className="mb-4">
                 <div className="flex items-center gap-3">
-                  <img 
-                    src={logoImage} 
-                    alt="Drops of Soul Logo" 
-                    className="h-8 w-auto"
-                    onError={(e) => {
-                      // Fallback to placeholder if logo fails
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/placeholder.svg";
-                    }}
-                  />
+                  <img src={logoImage} alt="Drops of Soul Logo" className="h-8 w-auto" />
                   <SheetTitle className="text-left font-serif">Drops of Soul</SheetTitle>
                 </div>
               </SheetHeader>

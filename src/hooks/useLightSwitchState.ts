@@ -8,6 +8,26 @@ export const useLightSwitchState = () => {
   const [toggleCount, setToggleCount] = useState(0);
   const [togglePattern, setTogglePattern] = useState<boolean[]>([]);
 
+  // Load stored toggle state
+  useEffect(() => {
+    const storedCount = localStorage.getItem('toggleCount');
+    const storedPattern = localStorage.getItem('togglePattern');
+    
+    if (storedCount) {
+      setToggleCount(parseInt(storedCount, 10));
+    }
+    
+    if (storedPattern) {
+      setTogglePattern(JSON.parse(storedPattern));
+    }
+  }, []);
+  
+  // Save toggle state
+  useEffect(() => {
+    localStorage.setItem('toggleCount', toggleCount.toString());
+    localStorage.setItem('togglePattern', JSON.stringify(togglePattern));
+  }, [toggleCount, togglePattern]);
+  
   // Show message when light is turned on
   useEffect(() => {
     if (isLightOn) {
@@ -20,33 +40,10 @@ export const useLightSwitchState = () => {
     }
   }, [isLightOn]);
 
-  // Load stored toggle state
-  useEffect(() => {
-    const storedCount = localStorage.getItem('toggleCount');
-    const storedPattern = localStorage.getItem('togglePattern');
-    
-    if (storedCount) {
-      setToggleCount(parseInt(storedCount, 10));
-    }
-    
-    if (storedPattern) {
-      try {
-        setTogglePattern(JSON.parse(storedPattern));
-      } catch (e) {
-        // Reset if invalid
-        setTogglePattern([]);
-      }
-    }
-  }, []);
-  
   // Update toggle state
   const updateToggleState = (newCount: number, newPattern: boolean[]) => {
     setToggleCount(newCount);
     setTogglePattern(newPattern);
-    
-    // Save to localStorage
-    localStorage.setItem('toggleCount', newCount.toString());
-    localStorage.setItem('togglePattern', JSON.stringify(newPattern));
   };
 
   return {
