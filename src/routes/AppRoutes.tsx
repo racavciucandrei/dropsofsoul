@@ -11,14 +11,14 @@ import NotFound from "@/pages/NotFound";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 
 const AppRoutes = () => {
-  // Use the enhanced scroll to top hook with default options
+  // Use the scroll to top hook with default options
   useScrollToTop();
   
   return (
     <>
       <Navbar />
       <LightSwitch />
-      <main className="transition-opacity duration-300 ease-in-out content-visibility">
+      <main>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/products" element={<Products />} />

@@ -7,7 +7,7 @@ import { LightProvider } from "./context/LightProvider";
 import ToastProvider from "./components/providers/ToastProvider";
 import AppRoutes from "./routes/AppRoutes";
 
-// Create a client for react-query
+// Create a client for react-query with simpler configuration
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -39,11 +39,6 @@ const App = () => (
             
             .animate-slide-in {
               animation: slideIn 0.5s ease-out forwards;
-            }
-            
-            .content-reveal .reveal-item {
-              transition: opacity 0.5s ease;
-              opacity: 1;
             }
           `}
         </style>

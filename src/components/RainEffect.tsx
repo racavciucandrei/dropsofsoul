@@ -23,7 +23,7 @@ const RainEffect = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas to full viewport size
+    // Set canvas size once
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -32,18 +32,18 @@ const RainEffect = () => {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // Initialize raindrops - reduced count for better performance
+    // Initialize fewer raindrops
     const initRaindrops = () => {
-      const dropCount = Math.floor(window.innerWidth / 30); // Reduced by half
+      const dropCount = Math.floor(window.innerWidth / 40);
       const drops: Raindrop[] = [];
 
       for (let i = 0; i < dropCount; i++) {
         drops.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height * -1,
-          size: Math.random() * 2 + 2, // Smaller drops
-          speed: Math.random() * 5 + 8, // Slightly slower
-          opacity: Math.random() * 0.2 + 0.3, // Lower opacity
+          size: Math.random() * 2 + 1,
+          speed: Math.random() * 3 + 5,
+          opacity: Math.random() * 0.2 + 0.2,
         });
       }
 
@@ -52,46 +52,32 @@ const RainEffect = () => {
 
     initRaindrops();
 
-    // Simplified raindrop drawing
+    // Simplified drop drawing
     const drawRaindrop = (x: number, y: number, size: number, opacity: number) => {
+      if (!ctx) return;
+      
       ctx.save();
       ctx.globalAlpha = opacity;
-      
-      // Simpler teardrop shape
+      ctx.fillStyle = 'rgba(200, 240, 255, 0.5)';
       ctx.beginPath();
-      const width = size;
-      const height = size * 1.5;
-      
-      ctx.moveTo(x, y);
-      ctx.bezierCurveTo(
-        x + width / 2, y + height / 3,
-        x + width, y + height / 2,
-        x, y + height
-      );
-      ctx.bezierCurveTo(
-        x - width, y + height / 2,
-        x - width / 2, y + height / 3,
-        x, y
-      );
-      
-      ctx.fillStyle = 'rgba(200, 240, 255, 0.6)';
+      ctx.arc(x, y, size, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
     };
 
-    // Animation loop with throttling
+    // Animation with lower framerate
     let lastFrameTime = 0;
-    const targetFPS = 30; // Lower FPS for better performance
+    const targetFPS = 24;
     const frameInterval = 1000 / targetFPS;
     
     const animate = (currentTime: number) => {
       if (!isLightOn) {
-        // Don't render rain when lights are off to save resources
+        // Don't render when lights are off
         animationFrameId.current = requestAnimationFrame(animate);
         return;
       }
       
-      // Throttle rendering
+      // Frame limiting
       if (currentTime - lastFrameTime < frameInterval) {
         animationFrameId.current = requestAnimationFrame(animate);
         return;
@@ -99,19 +85,12 @@ const RainEffect = () => {
       
       lastFrameTime = currentTime;
       
-      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Update and draw raindrops
       raindrops.current.forEach(drop => {
-        // Draw raindrop
         drawRaindrop(drop.x, drop.y, drop.size, drop.opacity);
-        
-        // Update position
         drop.y += drop.speed;
-        
-        // Simpler wind effect
-        drop.x += Math.sin(Date.now() / 3000) * 0.2;
         
         // Reset when offscreen
         if (drop.y > canvas.height) {
@@ -120,14 +99,12 @@ const RainEffect = () => {
         }
       });
       
-      // Continue animation
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
     // Start animation
     animationFrameId.current = requestAnimationFrame(animate);
 
-    // Cleanup
     return () => {
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
@@ -140,7 +117,7 @@ const RainEffect = () => {
     <canvas
       ref={canvasRef}
       className="fixed top-0 left-0 w-full h-full pointer-events-none z-50"
-      style={{ opacity: 0.4 }} // Reduced opacity
+      style={{ opacity: 0.3 }}
     />
   );
 };

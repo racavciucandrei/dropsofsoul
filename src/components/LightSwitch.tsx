@@ -1,3 +1,4 @@
+
 import React, { useRef } from 'react';
 import { useLight } from '@/context/LightProvider';
 import { playAudio } from '@/utils/soundUtils';
@@ -5,7 +6,6 @@ import { useLightSwitchState } from '@/hooks/useLightSwitchState';
 import { useLightSwitchEffects } from '@/hooks/useLightSwitchEffects';
 import SwitchButton from '@/components/SwitchButton';
 import SwitchMessage from '@/components/SwitchMessage';
-import { useSeductiveVoice } from '@/hooks/useSeductiveVoice';
 import { useToast } from '@/hooks/use-toast';
 
 const LightSwitch = () => {
@@ -22,40 +22,13 @@ const LightSwitch = () => {
     updateToggleState 
   } = useLightSwitchState();
   
-  // Initialize audio and manage effects
+  // Initialize audio effects
   useLightSwitchEffects();
-  
-  // Keep the reference but we won't actually use the voice functionality
-  const { voicePlayedRef } = useSeductiveVoice();
-
-  const isOnOffOnOffOnPattern = (pattern: boolean[]) => {
-    if (pattern.length < 5) return false;
-    
-    const lastFive = pattern.slice(-5);
-    return (
-      lastFive[0] === true && 
-      lastFive[1] === false && 
-      lastFive[2] === true && 
-      lastFive[3] === false && 
-      lastFive[4] === true
-    );
-  };
 
   const handleToggle = () => {
-    // Simple animation effect on the switch
-    if (switchButtonRef.current) {
-      switchButtonRef.current.classList.add('animate-pulse');
-      setTimeout(() => {
-        if (switchButtonRef.current) {
-          switchButtonRef.current.classList.remove('animate-pulse');
-        }
-      }, 300);
-    }
-    
-    // Prevent rapid clicks to avoid audio glitches
+    // Prevent rapid clicks
     const now = Date.now();
     if (now - lastToggleTimeRef.current < 300) {
-      console.log("Ignoring rapid click");
       return;
     }
     lastToggleTimeRef.current = now;
@@ -71,20 +44,28 @@ const LightSwitch = () => {
     // Call the context's toggle function
     toggleLight();
     
-    // Check for special pattern
-    if (newPattern.length >= 5 && isOnOffOnOffOnPattern(newPattern) && !patternDetectedRef.current) {
-      toast({
-        title: "Stop playing with the switch!",
-        description: "What are you, five years old? This isn't a toy!",
-        variant: "destructive",
-        duration: 3000,
-      });
-      patternDetectedRef.current = true;
-      
-      // Reset the pattern detection after some time
-      setTimeout(() => {
-        patternDetectedRef.current = false;
-      }, 10000);
+    // Check for special pattern - simplified
+    if (newPattern.length >= 5 && !patternDetectedRef.current) {
+      const lastFive = newPattern.slice(-5);
+      if (
+        lastFive[0] === true && 
+        lastFive[1] === false && 
+        lastFive[2] === true && 
+        lastFive[3] === false && 
+        lastFive[4] === true
+      ) {
+        toast({
+          title: "Stop playing with the switch!",
+          description: "What are you, five years old? This isn't a toy!",
+          variant: "destructive",
+          duration: 3000,
+        });
+        patternDetectedRef.current = true;
+        
+        setTimeout(() => {
+          patternDetectedRef.current = false;
+        }, 10000);
+      }
     }
   };
 

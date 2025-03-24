@@ -1,10 +1,8 @@
 
 import { useState, useEffect } from 'react';
-import { getOptimizedImagePath, forceReloadImage } from '@/utils/imageUtils';
 
 /**
- * Hook for reliable image loading with proper loading states,
- * error handling and retry capabilities
+ * Hook for reliable image loading with minimal overhead
  */
 export const useImage = (
   src: string,
@@ -20,11 +18,9 @@ export const useImage = (
   const [retry, setRetry] = useState<number>(0);
   
   const fallbackSrc = options?.fallbackSrc || '/placeholder.svg';
-  const loadingDelay = options?.loadingDelay || 0;
-  const retryOnError = options?.retryOnError !== undefined ? options.retryOnError : true;
   
   // Reload the image with a fresh URL
-  const reloadImage = async () => {
+  const reloadImage = () => {
     setIsLoading(true);
     setError(null);
     setRetry(prev => prev + 1);
@@ -32,19 +28,8 @@ export const useImage = (
   
   useEffect(() => {
     let mounted = true;
-    let timeoutId: number | null = null;
     
     const loadImage = async () => {
-      // Add a small delay to avoid too many concurrent image loads
-      if (loadingDelay > 0) {
-        timeoutId = window.setTimeout(() => {
-          if (!mounted) return;
-          setIsLoading(true);
-        }, loadingDelay);
-      } else {
-        setIsLoading(true);
-      }
-      
       try {
         // Special handling for known problem images
         let optimizedSrc = src;
@@ -53,12 +38,13 @@ export const useImage = (
           throw new Error('Empty image source');
         }
         
+        // Hardcoded path for Maiz à Trois
         if (src.includes('Maiz') || src.includes('maiz')) {
           optimizedSrc = '/lovable-uploads/0d0bdbcb-f301-475f-bbbc-33e40d2d9fef.png';
         }
         
-        // Get a fresh URL with cache busting
-        const freshUrl = await forceReloadImage(optimizedSrc);
+        // Add cache-busting parameter
+        const freshUrl = `${optimizedSrc}?v=${Date.now()}`;
         
         if (!mounted) return;
         
@@ -72,13 +58,6 @@ export const useImage = (
         setError(err instanceof Error ? err : new Error('Failed to load image'));
         setImageSrc(fallbackSrc);
         setIsLoading(false);
-        
-        // Auto-retry once on error
-        if (retryOnError && retry === 0) {
-          setTimeout(() => {
-            if (mounted) setRetry(1);
-          }, 1000);
-        }
       }
     };
     
@@ -86,9 +65,8 @@ export const useImage = (
     
     return () => {
       mounted = false;
-      if (timeoutId) window.clearTimeout(timeoutId);
     };
-  }, [src, retry, fallbackSrc, loadingDelay, retryOnError]);
+  }, [src, retry, fallbackSrc]);
   
   return { 
     imageSrc, 

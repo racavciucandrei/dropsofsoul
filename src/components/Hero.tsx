@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
-import { getOptimizedImagePath, preloadImage } from '@/utils/imageUtils';
 
 const images = [
   '/assets/hero-1.jpg',
@@ -13,22 +12,22 @@ const images = [
   '/assets/hero-3.jpg',
 ];
 
-const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-// Use optimized path for logo with cache busting
-const logoImage = getOptimizedImagePath('/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png');
+// Hard-coded logo path
+const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
+const placeholderImage = '/placeholder.svg';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const [logoLoaded, setLogoLoaded] = useState(false);
-  const [logoKey, setLogoKey] = useState(Date.now()); // Key for forcing logo reload
+  const [logoKey] = useState(Date.now()); // Key for cache busting
   const { isLightOn } = useLight();
   
   useEffect(() => {
-    // Preload all images and track which ones have loaded
+    // Set up image preloading
     const imageObjects = images.map((src, index) => {
       const img = new Image();
-      img.src = getOptimizedImagePath(src);
+      img.src = src;
       img.onload = () => {
         setLoadedImages(prev => {
           const newState = [...prev];
@@ -39,22 +38,13 @@ const Hero = () => {
       return img;
     });
     
-    // Preload logo with improved error handling
-    setLogoLoaded(false);
-    preloadImage(logoImage)
-      .then(() => setLogoLoaded(true))
-      .catch(() => {
-        console.error("Failed to load hero logo:", logoImage);
-        setLogoLoaded(true); // Still mark as loaded
-      });
-    
     // Initialize loaded state array
     setLoadedImages(new Array(images.length).fill(false));
     
-    // Set up slideshow timer
+    // Set up slideshow timer - reduced frequency
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 6000);
+    }, 8000);
     
     return () => {
       clearInterval(interval);
@@ -63,18 +53,13 @@ const Hero = () => {
       });
     };
   }, []);
-  
-  const handleLogoError = () => {
-    console.error("Hero logo loading error, attempting to reload");
-    setLogoKey(Date.now());
-  };
 
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
       {/* Background Slideshow */}
       <div className={cn(
         "absolute inset-0 z-0 transition-opacity duration-500",
-        isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
+        isLightOn ? "opacity-100" : "opacity-5"
       )}>
         {images.map((src, index) => (
           <div
@@ -96,31 +81,26 @@ const Hero = () => {
       {/* Content */}
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
-            {/* Logo display with error handling */}
+          <div className="space-y-6">
+            {/* Logo display with simplified error handling */}
             <div className="flex justify-center mb-8">
-              <div 
-                className={cn(
-                  "w-52 md:w-64 lg:w-72 transition-opacity duration-500 filter drop-shadow-lg relative",
-                  logoLoaded ? "opacity-100" : "opacity-0"
-                )}
-              >
+              <div className="w-52 md:w-64 lg:w-72 relative">
                 <img 
                   key={logoKey}
-                  src={logoImage} 
+                  src={`${logoImage}?v=${logoKey}`}
                   alt="Drops of Soul Logo" 
                   className="w-full h-auto"
                   onLoad={() => setLogoLoaded(true)}
                   onError={(e) => {
-                    handleLogoError();
-                    // Fallback to placeholder if logo fails
+                    console.error("Logo load error in Hero");
+                    // Fallback
                     const target = e.target as HTMLImageElement;
                     target.src = "/placeholder.svg";
                     setLogoLoaded(true);
                   }}
                 />
                 {!logoLoaded && (
-                  <div className="absolute inset-0 bg-muted/30 shimmer rounded-md"></div>
+                  <div className="absolute inset-0 bg-muted/30 rounded-md"></div>
                 )}
               </div>
             </div>
@@ -143,11 +123,11 @@ const Hero = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="text-base rounded-full transition-all duration-500 hover:translate-y-[-2px] hover:shadow-lg group"
+                className="text-base rounded-full"
               >
                 <Link to="/products">
                   Explore Our Collection
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               
@@ -155,7 +135,7 @@ const Hero = () => {
                 asChild 
                 variant="outline" 
                 size="lg" 
-                className="text-base bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full transition-all duration-500 hover:translate-y-[-2px]"
+                className="text-base bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:text-white rounded-full"
               >
                 <Link to="/about">
                   Our Story
@@ -182,11 +162,6 @@ const Hero = () => {
           ))}
         </div>
       </div>
-      
-      {/* Light effect when light is on */}
-      {isLightOn && (
-        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/30 to-transparent pointer-events-none"></div>
-      )}
     </section>
   );
 };
