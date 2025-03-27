@@ -13,6 +13,7 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Shop from "./pages/Shop";
+import QRGenerator from "./pages/QRGenerator";
 import RainEffect from "./components/RainEffect";
 import { LightProvider } from "./context/LightProvider";
 import { AuthProvider } from "./context/AuthProvider";
@@ -42,6 +43,7 @@ const AppRoutes = () => {
           <Route path="/about" element={<About />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/qr-generator" element={<QRGenerator />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

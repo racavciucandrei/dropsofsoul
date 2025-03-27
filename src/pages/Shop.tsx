@@ -1,12 +1,11 @@
 
 import React from 'react';
 import ProductList from '@/components/ProductList';
-import QRCode from '@/components/QRCode';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { QrCode } from 'lucide-react';
 
 const Shop = () => {
-  // Get the current website URL
-  const websiteUrl = window.location.origin;
-  
   return (
     <div className="min-h-screen">
       <div className="py-10 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-800 to-slate-900 text-white">
@@ -15,23 +14,17 @@ const Shop = () => {
           <p className="mt-4 text-xl">
             Discover our collection of handcrafted elixirs to enrich your soul.
           </p>
+          <Button asChild variant="outline" className="mt-6">
+            <Link to="/qr-generator">
+              <QrCode className="mr-2 h-4 w-4" />
+              Generate Product QR Codes
+            </Link>
+          </Button>
         </div>
       </div>
       
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
-            <ProductList />
-          </div>
-          <div className="md:col-span-1">
-            <div className="sticky top-24">
-              <QRCode 
-                url={websiteUrl} 
-                title="Scan to shop on mobile" 
-              />
-            </div>
-          </div>
-        </div>
+        <ProductList />
       </div>
     </div>
   );

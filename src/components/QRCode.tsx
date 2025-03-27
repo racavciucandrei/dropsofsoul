@@ -9,13 +9,17 @@ interface QRCodeProps {
   size?: number;
   title?: string;
   downloadEnabled?: boolean;
+  logoUrl?: string;
+  productId?: string;
 }
 
 const QRCode = ({ 
   url, 
   size = 200, 
-  title = "Scan to visit our website", 
-  downloadEnabled = true 
+  title = "Scan to visit Drops of Soul", 
+  downloadEnabled = true,
+  logoUrl,
+  productId
 }: QRCodeProps) => {
   const downloadQRCode = () => {
     const svg = document.getElementById('qr-code-svg');
@@ -33,7 +37,7 @@ const QRCode = ({
       const pngFile = canvas.toDataURL('image/png');
       
       const downloadLink = document.createElement('a');
-      downloadLink.download = 'drops-of-soul-qrcode.png';
+      downloadLink.download = productId ? `drops-of-soul-${productId}.png` : 'drops-of-soul-qrcode.png';
       downloadLink.href = pngFile;
       downloadLink.click();
     };
@@ -51,6 +55,14 @@ const QRCode = ({
           size={size}
           level="H" // High error correction capability
           includeMargin={true}
+          imageSettings={logoUrl ? {
+            src: logoUrl,
+            x: undefined,
+            y: undefined,
+            height: 24,
+            width: 24,
+            excavate: true,
+          } : undefined}
         />
       </div>
       {downloadEnabled && (
@@ -64,7 +76,7 @@ const QRCode = ({
         </Button>
       )}
       <p className="text-sm text-muted-foreground mt-3 text-center">
-        Scan this code with your smartphone camera to visit our website
+        Scan to visit our website{productId ? ` and discover ${productId}` : ''}
       </p>
     </div>
   );
