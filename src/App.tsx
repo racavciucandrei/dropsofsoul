@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,7 +12,7 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Shop from "./pages/Shop";
-import QRGenerator from "./pages/QRGenerator";
+import Marketing from "./pages/Marketing";
 import RainEffect from "./components/RainEffect";
 import { LightProvider } from "./context/LightProvider";
 import { AuthProvider } from "./context/AuthProvider";
@@ -22,7 +21,6 @@ import { useScrollToTop } from "./hooks/useScrollToTop";
 
 const queryClient = new QueryClient();
 
-// ScrollToTop component to ensure all route changes scroll to top
 const ScrollToTop = () => {
   useScrollToTop();
   return null;
@@ -43,7 +41,7 @@ const AppRoutes = () => {
           <Route path="/about" element={<About />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/shop" element={<Shop />} />
-          <Route path="/qr-generator" element={<QRGenerator />} />
+          <Route path="/marketing" element={<Marketing />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

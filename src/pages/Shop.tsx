@@ -15,9 +15,9 @@ const Shop = () => {
             Discover our collection of handcrafted elixirs to enrich your soul.
           </p>
           <Button asChild variant="outline" className="mt-6">
-            <Link to="/qr-generator">
+            <Link to="/marketing">
               <QrCode className="mr-2 h-4 w-4" />
-              Generate Product QR Codes
+              Marketing QR Code
             </Link>
           </Button>
         </div>
