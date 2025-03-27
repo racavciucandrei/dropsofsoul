@@ -5,6 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { QrCode } from 'lucide-react';
 
+// Same simple authorization check as in Marketing.tsx
+const isAuthorized = () => {
+  return localStorage.getItem('isAdmin') === 'true';
+};
+
 const Shop = () => {
   return (
     <div className="min-h-screen">
@@ -14,12 +19,14 @@ const Shop = () => {
           <p className="mt-4 text-xl">
             Discover our collection of handcrafted elixirs to enrich your soul.
           </p>
-          <Button asChild variant="outline" className="mt-6">
-            <Link to="/marketing">
-              <QrCode className="mr-2 h-4 w-4" />
-              Marketing QR Code
-            </Link>
-          </Button>
+          {isAuthorized() && (
+            <Button asChild variant="outline" className="mt-6">
+              <Link to="/marketing">
+                <QrCode className="mr-2 h-4 w-4" />
+                Marketing QR Code
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
       
