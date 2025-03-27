@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import QRCode from '@/components/QRCode';
-import { products } from '@/data/products';
+import { allProducts } from '@/data/products';
 
 const QRGenerator = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const QRGenerator = () => {
   
   const getQrTitle = () => {
     if (qrType === 'product' && productId) {
-      const product = products.find(p => p.slug === productId);
+      const product = allProducts.find(p => p.slug === productId);
       return `Scan to discover ${product?.name || productId}`;
     } else if (qrType === 'custom') {
       return 'Scan custom QR code';
@@ -79,7 +79,7 @@ const QRGenerator = () => {
                     <SelectValue placeholder="Select a product" />
                   </SelectTrigger>
                   <SelectContent>
-                    {products.map(product => (
+                    {allProducts.map(product => (
                       <SelectItem key={product.slug} value={product.slug}>
                         {product.name}
                       </SelectItem>
