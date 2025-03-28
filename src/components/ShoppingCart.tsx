@@ -10,6 +10,7 @@ import {
   DrawerTitle, 
   DrawerTrigger 
 } from '@/components/ui/drawer';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ShoppingCart as CartIcon, Plus, Minus, X, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartProvider';
 import { Badge } from '@/components/ui/badge';
@@ -38,7 +39,7 @@ export const ShoppingCart = () => {
           )}
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-h-[85vh] overflow-y-auto">
+      <DrawerContent className="max-h-[85vh]">
         <DrawerHeader>
           <DrawerTitle>Your Shopping Cart</DrawerTitle>
         </DrawerHeader>
@@ -56,70 +57,72 @@ export const ShoppingCart = () => {
           </div>
         ) : (
           <>
-            <div className="px-4">
-              {items.map((item) => (
-                <div 
-                  key={item.product.id} 
-                  className="flex items-center gap-4 py-4 border-b last:border-b-0"
-                >
-                  <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-100">
-                    {item.product.images && item.product.images[0] ? (
-                      <img 
-                        src={item.product.images[0]} 
-                        alt={item.product.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full">
-                        <span className="text-muted-foreground text-xs">No image</span>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex-1">
-                    <h4 className="font-medium">{item.product.name}</h4>
-                    <p className="text-sm text-muted-foreground">
-                      ${item.product.price.toFixed(2)} each
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-7 w-7"
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    
-                    <span className="w-6 text-center">{item.quantity}</span>
-                    
-                    <Button 
-                      variant="outline" 
-                      size="icon" 
-                      className="h-7 w-7"
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  
-                  <div className="text-right w-20 font-medium">
-                    ${(item.product.price * item.quantity).toFixed(2)}
-                  </div>
-                  
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-7 w-7"
-                    onClick={() => removeItem(item.product.id)}
+            <ScrollArea className="h-[50vh] px-4">
+              <div className="pr-4">
+                {items.map((item) => (
+                  <div 
+                    key={item.product.id} 
+                    className="flex items-center gap-4 py-4 border-b last:border-b-0"
                   >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+                    <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-100">
+                      {item.product.images && item.product.images[0] ? (
+                        <img 
+                          src={item.product.images[0]} 
+                          alt={item.product.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <span className="text-muted-foreground text-xs">No image</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h4 className="font-medium">{item.product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        ${item.product.price.toFixed(2)} each
+                      </p>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        className="h-7 w-7"
+                        onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                      >
+                        <Minus className="h-3 w-3" />
+                      </Button>
+                      
+                      <span className="w-6 text-center">{item.quantity}</span>
+                      
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        className="h-7 w-7"
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                      >
+                        <Plus className="h-3 w-3" />
+                      </Button>
+                    </div>
+                    
+                    <div className="text-right w-20 font-medium">
+                      ${(item.product.price * item.quantity).toFixed(2)}
+                    </div>
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-7 w-7"
+                      onClick={() => removeItem(item.product.id)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
             
             <div className="p-4 border-t">
               <div className="flex justify-between py-2">
