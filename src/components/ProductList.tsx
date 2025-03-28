@@ -4,13 +4,15 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { allProducts } from '@/data/products';
 import { toast } from 'sonner';
+import { useCart } from '@/context/CartProvider';
 
 const ProductList = () => {
   const [loading, setLoading] = useState(false);
   const products = allProducts;
+  const { addItem } = useCart();
 
   const handleAddToCart = (product: any) => {
-    // In a real application, this would add the product to a cart state or storage
+    addItem(product);
     toast.success(`Added ${product.name} to cart`);
   };
 
