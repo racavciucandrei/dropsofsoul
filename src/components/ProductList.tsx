@@ -1,50 +1,12 @@
 
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image_url: string;
-  category: string;
-}
+import { allProducts } from '@/data/products';
 
 const ProductList = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('products')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          throw error;
-        }
-
-        setProducts(data || []);
-      } catch (error: any) {
-        toast({
-          title: 'Error fetching products',
-          description: error.message || 'Could not load products',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [toast]);
+  const [loading, setLoading] = useState(false);
+  const products = allProducts;
 
   if (loading) {
     return (
@@ -83,9 +45,9 @@ const ProductList = () => {
         {products.map((product) => (
           <Card key={product.id} className="overflow-hidden flex flex-col">
             <div className="h-48 bg-slate-100 relative overflow-hidden">
-              {product.image_url ? (
+              {product.images && product.images[0] ? (
                 <img
-                  src={product.image_url}
+                  src={product.images[0]}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />
