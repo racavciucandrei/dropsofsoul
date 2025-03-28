@@ -3,10 +3,16 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { allProducts } from '@/data/products';
+import { toast } from 'sonner';
 
 const ProductList = () => {
   const [loading, setLoading] = useState(false);
   const products = allProducts;
+
+  const handleAddToCart = (product: any) => {
+    // In a real application, this would add the product to a cart state or storage
+    toast.success(`Added ${product.name} to cart`);
+  };
 
   if (loading) {
     return (
@@ -72,7 +78,12 @@ const ProductList = () => {
               )}
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Add to Cart</Button>
+              <Button 
+                className="w-full"
+                onClick={() => handleAddToCart(product)}
+              >
+                Add to Cart
+              </Button>
             </CardFooter>
           </Card>
         ))}
