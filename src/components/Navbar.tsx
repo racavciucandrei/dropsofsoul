@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
+import { ShoppingCart } from './ShoppingCart';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,11 +57,13 @@ const Navbar = () => {
             </div>
           </div>
           
-          <div className="hidden md:flex items-center">
+          <div className="hidden md:flex items-center gap-4">
+            <ShoppingCart />
             <AuthNavItems />
           </div>
           
-          <div className="flex items-center md:hidden">
+          <div className="flex items-center md:hidden gap-2">
+            <ShoppingCart />
             <Button
               variant="ghost"
               size="sm"
