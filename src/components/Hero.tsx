@@ -83,7 +83,7 @@ const Hero = () => {
       </div>
       
       {/* Content */}
-      <div className="container-custom relative z-10 pt-28 pb-16">
+      <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
             {/* Logo display */}

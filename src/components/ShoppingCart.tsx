@@ -1,139 +1,155 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button"
-import { ShoppingCart as ShoppingCartIcon, Trash } from 'lucide-react';
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
+
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { 
+  Drawer, 
+  DrawerClose, 
+  DrawerContent, 
+  DrawerFooter, 
+  DrawerHeader, 
+  DrawerTitle, 
+  DrawerTrigger 
+} from '@/components/ui/drawer';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { ShoppingCart as CartIcon, Plus, Minus, X, ArrowRight } from 'lucide-react';
 import { useCart } from '@/context/CartProvider';
+import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
-const ShoppingCart = () => {
-  const { cartItems, removeItem, clearCart } = useCart();
-  const [isOpen, setIsOpen] = useState(false);
-  const [subtotal, setSubtotal] = useState(0);
-  const [total, setTotal] = useState(0);
-  const shippingCost = 5;
-
-  useEffect(() => {
-    // Calculate subtotal whenever cartItems change
-    const newSubtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    setSubtotal(newSubtotal);
-  }, [cartItems]);
-
-  useEffect(() => {
-    // Calculate total whenever subtotal changes
-    setTotal(subtotal + shippingCost);
-  }, [subtotal]);
-
-  const handleRemove = (itemId: number) => {
-    removeItem(itemId);
-  };
-
-  const handleClearCart = () => {
+export const ShoppingCart = () => {
+  const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  
+  const handleCheckout = () => {
+    toast.success('Checkout functionality would go here!');
     clearCart();
-    setIsOpen(false);
   };
-
+  
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline" className="relative">
-          <ShoppingCartIcon className="h-5 w-5" />
-          <span className="sr-only">Shopping Cart</span>
-          {cartItems.length > 0 && (
-            <Badge className="absolute -top-2 -right-2 rounded-full px-2 py-0.5 text-xs">
-              {cartItems.length}
+        <Button variant="outline" size="icon" className="relative">
+          <CartIcon className="h-5 w-5" />
+          {totalItems > 0 && (
+            <Badge 
+              className="absolute -top-2 -right-2 px-1.5 py-0.5 min-w-5 h-5 flex items-center justify-center"
+              variant="destructive"
+            >
+              {totalItems}
             </Badge>
           )}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="max-h-[85vh]">
         <DrawerHeader>
-          <DrawerTitle>Shopping Cart</DrawerTitle>
-          <DrawerDescription>
-            {cartItems.length > 0 ? 'Review your items and proceed to checkout.' : 'Your cart is empty.'}
-          </DrawerDescription>
+          <DrawerTitle>Your Shopping Cart</DrawerTitle>
         </DrawerHeader>
-        <div className="flex flex-col space-y-4">
-          {cartItems.length > 0 ? (
-            <ScrollArea className="h-[400px] px-4">
-              <div className="divide-y divide-border">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="flex py-4 relative">
-                    <div className="mr-4">
-                      <img
-                        src={item.images[0]}
-                        alt={item.name}
-                        className="h-16 w-16 rounded object-cover"
-                      />
+        
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-8">
+            <CartIcon className="h-16 w-16 text-muted-foreground mb-4" />
+            <p className="text-lg font-medium">Your cart is empty</p>
+            <p className="text-muted-foreground">Add some items to get started</p>
+            <DrawerClose asChild>
+              <Button variant="outline" className="mt-4">
+                Continue Shopping
+              </Button>
+            </DrawerClose>
+          </div>
+        ) : (
+          <>
+            <ScrollArea className="h-[50vh] px-4">
+              <div className="pr-4">
+                {items.map((item) => (
+                  <div 
+                    key={item.product.id} 
+                    className="flex items-center gap-4 py-4 border-b last:border-b-0"
+                  >
+                    <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-100">
+                      {item.product.images && item.product.images[0] ? (
+                        <img 
+                          src={item.product.images[0]} 
+                          alt={item.product.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <span className="text-muted-foreground text-xs">No image</span>
+                        </div>
+                      )}
                     </div>
-                    <div className="flex-grow">
-                      <div className="font-medium">{item.name}</div>
-                      <div className="text-sm text-muted-foreground">Quantity: {item.quantity}</div>
-                      <div className="font-medium">${(item.price * item.quantity).toFixed(2)}</div>
+                    
+                    <div className="flex-1">
+                      <h4 className="font-medium">{item.product.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        ${item.product.price.toFixed(2)} each
+                      </p>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="absolute top-2 right-2 hover:bg-secondary rounded-full"
-                      onClick={() => handleRemove(item.id)}
+                    
+                    <div className="flex items-center gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        className="h-7 w-7"
+                        onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                      >
+                        <Minus className="h-3 w-3" />
+                      </Button>
+                      
+                      <span className="w-6 text-center">{item.quantity}</span>
+                      
+                      <Button 
+                        variant="outline" 
+                        size="icon" 
+                        className="h-7 w-7"
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                      >
+                        <Plus className="h-3 w-3" />
+                      </Button>
+                    </div>
+                    
+                    <div className="text-right w-20 font-medium">
+                      ${(item.product.price * item.quantity).toFixed(2)}
+                    </div>
+                    
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-7 w-7"
+                      onClick={() => removeItem(item.product.id)}
                     >
-                      <Trash className="h-4 w-4" />
-                      <span className="sr-only">Remove item</span>
+                      <X className="h-4 w-4" />
                     </Button>
                   </div>
                 ))}
               </div>
             </ScrollArea>
-          ) : (
-            <div className="p-4 text-center text-muted-foreground">
-              Your cart is empty.
-            </div>
-          )}
-        </div>
-        {cartItems.length > 0 && (
-          <>
-            <Separator />
-            <div className="px-4 py-2">
-              <div className="flex justify-between">
-                <div className="text-sm font-medium">Subtotal</div>
-                <div className="font-medium">${(subtotal).toFixed(2)}</div>
+            
+            <div className="p-4 border-t">
+              <div className="flex justify-between py-2">
+                <span>Subtotal</span>
+                <span>${totalPrice.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between mt-2">
-                <div className="text-sm font-medium">Shipping</div>
-                <div className="font-medium">${shippingCost.toFixed(2)}</div>
-              </div>
-              <div className="flex justify-between mt-2">
-                <div className="text-sm font-bold">Total</div>
-                <div className="font-bold">${(total).toFixed(2)}</div>
+              <div className="flex justify-between py-2 font-medium">
+                <span>Total</span>
+                <span>${totalPrice.toFixed(2)}</span>
               </div>
             </div>
+            
+            <DrawerFooter>
+              <Button onClick={handleCheckout} className="w-full">
+                Checkout
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <DrawerClose asChild>
+                <Button variant="outline">Continue Shopping</Button>
+              </DrawerClose>
+              <Button variant="ghost" onClick={clearCart} className="text-destructive">
+                Clear Cart
+              </Button>
+            </DrawerFooter>
           </>
         )}
-        <DrawerFooter>
-          {cartItems.length > 0 ? (
-            <div className="w-full flex justify-between">
-              <Button variant="destructive" onClick={handleClearCart}>Clear Cart</Button>
-              <Button>Checkout</Button>
-            </div>
-          ) : (
-            <DrawerClose asChild>
-              <Button variant="outline" className="w-full">Close</Button>
-            </DrawerClose>
-          )}
-        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
 };
-
-export default ShoppingCart;
