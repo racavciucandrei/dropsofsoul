@@ -6,14 +6,17 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
 
+// Use reliable placeholder images from Unsplash
 const images = [
-  '/assets/hero-1.jpg',
-  '/assets/hero-2.jpg',
-  '/assets/hero-3.jpg',
+  'https://images.unsplash.com/photo-1581339742866-5774b22033e9?q=80&w=1920&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1527661591475-527312dd65f5?q=80&w=1920&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?q=80&w=1920&auto=format&fit=crop',
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
+
+// Use a reliable SVG logo as fallback
+const logoImage = 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=500&auto=format&fit=crop';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

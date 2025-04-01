@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -18,7 +19,8 @@ const featuredProducts = [
   allProducts.find(p => p.slug === 'cherry-bark-marzipan-shrub'),
 ].filter(Boolean);
 
-const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB4PSIyIiB5PSIyIiB3aWR0aD0iNTAwIiBoZWlnaHQ9IjUwMCIgc3R5bGU9ImZpbGw6I2VlZTtzdHJva2U6I2NjYztzdHJva2Utd2lkdGg6MiIvPjwvc3ZnPg==';
+// Fallback placeholder image
+const placeholderImage = 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=500&auto=format&fit=crop';
 
 interface ProductCardProps {
   product: typeof allProducts[0];
@@ -34,6 +36,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     navigate(`/product/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  
+  // Ensure we have a valid image URL
+  const productImage = product.images && product.images[0] 
+    ? product.images[0] 
+    : placeholderImage;
   
   return (
     <Card 
@@ -54,13 +61,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             )}
           >
             <img
-              src={product.images[0]}
+              src={productImage}
               alt={product.name}
               className={cn(
                 "w-full h-full object-cover transition-opacity duration-500",
                 imageLoaded ? "opacity-100" : "opacity-0"
               )}
               onLoad={() => setImageLoaded(true)}
+              onError={() => {
+                // If image fails to load, use placeholder
+                const imgElement = document.createElement('img');
+                imgElement.src = placeholderImage;
+                imgElement.onload = () => setImageLoaded(true);
+              }}
             />
           </div>
           
