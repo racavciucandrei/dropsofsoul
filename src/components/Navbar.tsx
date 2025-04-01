@@ -18,12 +18,38 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-40 w-full backdrop-blur-lg bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/50 dark:border-slate-800/50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Logo row */}
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <span className="text-lg font-bold">Drops of Soul</span>
             </Link>
-            <div className="hidden md:ml-6 md:flex md:space-x-8">
+          </div>
+          
+          <div className="hidden md:flex items-center gap-4">
+            <ShoppingCart />
+            <AuthNavItems />
+          </div>
+          
+          <div className="flex items-center md:hidden gap-2">
+            <ShoppingCart />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-expanded={isOpen}
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
+        </div>
+
+        {/* Full width navigation row */}
+        <div className="hidden md:block border-t border-slate-200/50 dark:border-slate-800/50">
+          <div className="flex justify-center h-12">
+            <div className="flex space-x-8">
               <Link
                 to="/"
                 className={`inline-flex items-center px-1 pt-1 border-b-2 ${
@@ -55,25 +81,6 @@ const Navbar = () => {
                 About
               </Link>
             </div>
-          </div>
-          
-          <div className="hidden md:flex items-center gap-4">
-            <ShoppingCart />
-            <AuthNavItems />
-          </div>
-          
-          <div className="flex items-center md:hidden gap-2">
-            <ShoppingCart />
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-expanded={isOpen}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
-            >
-              <span className="sr-only">{isOpen ? 'Close menu' : 'Open menu'}</span>
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
         </div>
       </div>
