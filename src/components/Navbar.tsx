@@ -6,7 +6,8 @@ import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
 
-const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
+// Update logo path to use the new image
+const logoImage = '/lovable-uploads/8d9a610c-41ea-4a3d-a7e2-9b2d1a0d564e.png';
 const fallbackLogo = '/placeholder.svg';
 
 const Navbar = () => {

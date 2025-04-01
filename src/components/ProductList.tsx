@@ -25,6 +25,9 @@ const ProductList = () => {
             [product.id]: true
           }));
         };
+        img.onerror = () => {
+          console.error(`Failed to load product image: ${product.images?.[0]}`);
+        };
       }
       
       // Preload signature cocktail images if available
@@ -33,6 +36,9 @@ const ProductList = () => {
           if (cocktail.imagePath) {
             const cocktailImg = new Image();
             cocktailImg.src = cocktail.imagePath;
+            cocktailImg.onerror = () => {
+              console.error(`Failed to load cocktail image: ${cocktail.imagePath}`);
+            };
           }
         });
       }
