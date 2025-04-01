@@ -1,11 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { allProducts } from '@/data/products';
+import { useCart } from '@/context/CartProvider';
+import { toast } from 'sonner';
 
 // Select featured products from the current product collection
 const featuredProducts = [
@@ -31,17 +33,47 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
+  const { addToCart } = useCart();
   
   const handleProductClick = (e: React.MouseEvent<HTMLAnchorElement>, slug: string) => {
     e.preventDefault();
     navigate(`/product/${slug}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product);
+    toast.success(`Added ${product.name} to cart`);
+  };
+
+  const handleAddToWishlist = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toast.success(`${product.name} added to wishlist`);
+  };
   
   // Get image URL to display
   const productImage = product.images && product.images.length > 0 && !imageError
     ? product.images[0]
     : placeholderImage;
+
+  // Preload image
+  useEffect(() => {
+    const img = new Image();
+    img.src = productImage;
+    img.onload = () => setImageLoaded(true);
+    img.onerror = () => {
+      setImageError(true);
+      console.error(`Failed to load product image: ${productImage}`);
+    };
+
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [productImage]);
   
   return (
     <Card 
@@ -70,14 +102,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               )}
               onLoad={() => setImageLoaded(true)}
               onError={(e) => {
-                console.error(`Failed to load product image: ${productImage}`);
                 setImageError(true);
+                console.error(`Failed to load product image: ${productImage}`);
                 
                 // Try to load placeholder if not already using it
                 if (productImage !== placeholderImage) {
-                  const fallbackImg = new Image();
-                  fallbackImg.src = placeholderImage;
-                  fallbackImg.onload = () => setImageLoaded(true);
+                  const target = e.target as HTMLImageElement;
+                  target.src = placeholderImage;
                 }
               }}
             />
@@ -94,10 +125,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               size="icon"
               variant="secondary"
               className="rounded-full bg-white shadow-md hover:bg-primary hover:text-white"
-              onClick={(e) => {
-                e.preventDefault();
-                // Add to cart logic here
-              }}
+              onClick={handleAddToCart}
             >
               <ShoppingCart className="h-4 w-4" />
               <span className="sr-only">Add to cart</span>
@@ -107,10 +135,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               size="icon"
               variant="secondary"
               className="rounded-full bg-white shadow-md hover:bg-accent hover:text-white"
-              onClick={(e) => {
-                e.preventDefault();
-                // Add to wishlist logic here
-              }}
+              onClick={handleAddToWishlist}
             >
               <Heart className="h-4 w-4" />
               <span className="sr-only">Add to wishlist</span>
