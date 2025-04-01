@@ -9,19 +9,19 @@ const categoryData = [
   {
     title: 'Bitters',
     description: 'Our artisanal bitters are crafted using traditional methods and carefully selected botanicals. Each drop adds depth, complexity, and a touch of magic to your cocktails.',
-    imageSrc: 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=1000&auto=format&fit=crop',
+    imageSrc: '/assets/category-bitters.jpg',
     link: '/products/bitters',
   },
   {
     title: 'Cordials',
     description: 'Discover our collection of handcrafted cordials, made with fresh fruits, flowers, and spices. Perfect for creating sophisticated cocktails or simply mixing with sparkling water.',
-    imageSrc: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?q=80&w=1000&auto=format&fit=crop',
+    imageSrc: '/assets/category-cordials.jpg',
     link: '/products/cordials',
   },
   {
     title: 'Shrubs',
     description: 'Our tangy and refreshing shrubs combine fruit, sugar, and vinegar to create complex flavor profiles that can elevate any drink. A versatile ingredient for both alcoholic and non-alcoholic beverages.',
-    imageSrc: 'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?q=80&w=1000&auto=format&fit=crop',
+    imageSrc: '/assets/category-shrubs.jpg',
     link: '/products/shrubs',
   },
 ];

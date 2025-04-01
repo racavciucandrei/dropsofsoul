@@ -6,17 +6,16 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
 
-// Use reliable placeholder images from Unsplash
+// Use original image paths but have fallbacks ready
 const images = [
-  'https://images.unsplash.com/photo-1581339742866-5774b22033e9?q=80&w=1920&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1527661591475-527312dd65f5?q=80&w=1920&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?q=80&w=1920&auto=format&fit=crop',
+  '/assets/hero-1.jpg',
+  '/assets/hero-2.jpg',
+  '/assets/hero-3.jpg',
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-
-// Use a reliable SVG logo as fallback
-const logoImage = 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=500&auto=format&fit=crop';
+const logoImage = '/lovable-uploads/d14a3582-8c1c-41e1-a47a-c36651020757.png';
+const fallbackLogo = '/placeholder.svg';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -36,6 +35,9 @@ const Hero = () => {
           return newState;
         });
       };
+      img.onerror = () => {
+        console.error(`Failed to load hero image: ${src}`);
+      };
       return img;
     });
     
@@ -43,6 +45,13 @@ const Hero = () => {
     const logo = new Image();
     logo.src = logoImage;
     logo.onload = () => setLogoLoaded(true);
+    logo.onerror = () => {
+      console.error(`Failed to load logo image: ${logoImage}`);
+      // Try fallback logo
+      const fallbackImg = new Image();
+      fallbackImg.src = fallbackLogo;
+      fallbackImg.onload = () => setLogoLoaded(true);
+    };
     
     // Initialize loaded state array
     setLoadedImages(new Array(images.length).fill(false));
@@ -56,8 +65,10 @@ const Hero = () => {
       clearInterval(interval);
       imageObjects.forEach(img => {
         img.onload = null;
+        img.onerror = null;
       });
       logo.onload = null;
+      logo.onerror = null;
     };
   }, []);
 
@@ -98,10 +109,18 @@ const Hero = () => {
                 )}
               >
                 <img 
-                  src={logoImage} 
+                  src={logoLoaded ? logoImage : fallbackLogo} 
                   alt="Drops of Soul Logo" 
                   className="w-full h-auto"
                   onLoad={() => setLogoLoaded(true)}
+                  onError={(e) => {
+                    console.error("Failed to load logo image");
+                    const target = e.target as HTMLImageElement;
+                    // Set to fallback only if not already trying fallback
+                    if (target.src !== fallbackLogo) {
+                      target.src = fallbackLogo;
+                    }
+                  }}
                 />
               </div>
             </div>

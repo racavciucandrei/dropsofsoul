@@ -20,7 +20,7 @@ const featuredProducts = [
 ].filter(Boolean);
 
 // Fallback placeholder image
-const placeholderImage = 'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?q=80&w=500&auto=format&fit=crop';
+const placeholderImage = '/placeholder.svg';
 
 interface ProductCardProps {
   product: typeof allProducts[0];
@@ -28,6 +28,7 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
   
@@ -37,9 +38,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  // Ensure we have a valid image URL
-  const productImage = product.images && product.images[0] 
-    ? product.images[0] 
+  // Get image URL to display
+  const productImage = product.images && product.images.length > 0 && !imageError
+    ? product.images[0]
     : placeholderImage;
   
   return (
@@ -68,11 +69,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 imageLoaded ? "opacity-100" : "opacity-0"
               )}
               onLoad={() => setImageLoaded(true)}
-              onError={() => {
-                // If image fails to load, use placeholder
-                const imgElement = document.createElement('img');
-                imgElement.src = placeholderImage;
-                imgElement.onload = () => setImageLoaded(true);
+              onError={(e) => {
+                console.error(`Failed to load product image: ${productImage}`);
+                setImageError(true);
+                
+                // Try to load placeholder if not already using it
+                if (productImage !== placeholderImage) {
+                  const fallbackImg = new Image();
+                  fallbackImg.src = placeholderImage;
+                  fallbackImg.onload = () => setImageLoaded(true);
+                }
               }}
             />
           </div>
@@ -155,7 +161,7 @@ const FeaturedProducts = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product?.id} product={product!} />
           ))}
         </div>
         

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -61,7 +60,7 @@ export const ShoppingCart = () => {
               <div className="pr-4">
                 {items.map((item) => (
                   <div 
-                    key={item.product.id} 
+                    key={item.product.id.toString()} 
                     className="flex items-center gap-4 py-4 border-b last:border-b-0"
                   >
                     <div className="w-16 h-16 rounded-md overflow-hidden bg-slate-100">

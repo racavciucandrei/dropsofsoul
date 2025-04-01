@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,30 @@ const ProductCategory: React.FC<ProductCategoryProps> = ({
 }) => {
   // Alternate layout based on index
   const isEven = index % 2 === 0;
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  
+  // Fallback image if the original doesn't load
+  const fallbackImage = '/placeholder.svg';
+  
+  // Handle image preloading
+  React.useEffect(() => {
+    const img = new Image();
+    img.src = imageSrc;
+    img.onload = () => setImageLoaded(true);
+    img.onerror = () => {
+      console.error(`Failed to load category image: ${imageSrc}`);
+      setImageError(true);
+    };
+    
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
+  }, [imageSrc]);
+  
+  // Image source to display (original or fallback)
+  const displayImage = imageError ? fallbackImage : imageSrc;
   
   return (
     <div 
@@ -39,7 +63,7 @@ const ProductCategory: React.FC<ProductCategoryProps> = ({
       >
         <div
           className="w-full h-full bg-cover bg-center transition-transform duration-700 hover:scale-105"
-          style={{ backgroundImage: `url(${imageSrc})` }}
+          style={{ backgroundImage: `url(${displayImage})` }}
         />
       </div>
       
