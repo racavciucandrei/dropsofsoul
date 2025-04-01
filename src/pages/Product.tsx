@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { allProducts } from '@/data/products';
 import { toast } from 'sonner';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
-import { useCart } from '@/hooks/useCart';
+import { useCart } from '@/context/CartProvider';
 
 const Product = () => {
   // Use the scroll to top hook
