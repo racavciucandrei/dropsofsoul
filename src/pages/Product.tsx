@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { allProducts } from '@/data/products';
 import { toast } from 'sonner';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
+import { useCart } from '@/hooks/useCart';
 
 const Product = () => {
   // Use the scroll to top hook
@@ -22,7 +22,8 @@ const Product = () => {
   const [selectedCocktailIndex, setSelectedCocktailIndex] = useState(0);
   
   // Find product by slug
-  const product = allProducts.find(p => p.slug === slug) || allProducts[0]; // Fallback to first product if not found
+  const product = allProducts.find(p => p.slug === slug) || allProducts[0];
+  const { addToCart } = useCart();
   
   // Related products
   const relatedProducts = product.related.map(id => allProducts.find(p => p.id === id)).filter(Boolean);
@@ -48,7 +49,8 @@ const Product = () => {
     ? product.signatureCocktails[selectedCocktailIndex] 
     : null;
 
-  const addToCart = () => {
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
     toast.success(`Added ${quantity} x ${product.name} to cart`);
   };
   
@@ -200,7 +202,7 @@ const Product = () => {
               <Button 
                 size="lg" 
                 className="flex-1 rounded-full"
-                onClick={addToCart}
+                onClick={handleAddToCart}
               >
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart

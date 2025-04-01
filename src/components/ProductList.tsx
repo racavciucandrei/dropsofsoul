@@ -9,10 +9,10 @@ import { useCart } from '@/context/CartProvider';
 const ProductList = () => {
   const [loading, setLoading] = useState(false);
   const products = allProducts;
-  const { addItem } = useCart();
+  const { addToCart } = useCart();
 
   const handleAddToCart = (product: any) => {
-    addItem(product);
+    addToCart(product);
     toast.success(`Added ${product.name} to cart`);
   };
 

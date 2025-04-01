@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -16,7 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 
 export const ShoppingCart = () => {
-  const { items, totalItems, totalPrice, updateQuantity, removeItem, clearCart } = useCart();
+  const { cart, cartCount, cartTotal, updateQuantity, removeFromCart, clearCart } = useCart();
   
   const handleCheckout = () => {
     toast.success('Checkout functionality would go here!');
@@ -28,12 +29,12 @@ export const ShoppingCart = () => {
       <DrawerTrigger asChild>
         <Button variant="outline" size="icon" className="relative">
           <CartIcon className="h-5 w-5" />
-          {totalItems > 0 && (
+          {cartCount > 0 && (
             <Badge 
               className="absolute -top-2 -right-2 px-1.5 py-0.5 min-w-5 h-5 flex items-center justify-center"
               variant="destructive"
             >
-              {totalItems}
+              {cartCount}
             </Badge>
           )}
         </Button>
@@ -43,7 +44,7 @@ export const ShoppingCart = () => {
           <DrawerTitle>Your Shopping Cart</DrawerTitle>
         </DrawerHeader>
         
-        {items.length === 0 ? (
+        {cart.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8">
             <CartIcon className="h-16 w-16 text-muted-foreground mb-4" />
             <p className="text-lg font-medium">Your cart is empty</p>
@@ -58,7 +59,7 @@ export const ShoppingCart = () => {
           <>
             <ScrollArea className="h-[50vh] px-4">
               <div className="pr-4">
-                {items.map((item) => (
+                {cart.map((item) => (
                   <div 
                     key={item.product.id.toString()} 
                     className="flex items-center gap-4 py-4 border-b last:border-b-0"
@@ -114,7 +115,7 @@ export const ShoppingCart = () => {
                       variant="ghost" 
                       size="icon" 
                       className="h-7 w-7"
-                      onClick={() => removeItem(item.product.id)}
+                      onClick={() => removeFromCart(item.product.id)}
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -126,11 +127,11 @@ export const ShoppingCart = () => {
             <div className="p-4 border-t">
               <div className="flex justify-between py-2">
                 <span>Subtotal</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>${cartTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between py-2 font-medium">
                 <span>Total</span>
-                <span>${totalPrice.toFixed(2)}</span>
+                <span>${cartTotal.toFixed(2)}</span>
               </div>
             </div>
             
