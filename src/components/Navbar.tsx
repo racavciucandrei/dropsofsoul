@@ -6,8 +6,8 @@ import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
 
-// Try different image paths to find what works
-const logoImage = '/logo.png'; // Try root path instead of /assets/
+// Use the actual uploaded image path
+const logoImage = '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png';
 const fallbackLogo = '/placeholder.svg';
 
 const Navbar = () => {
@@ -29,7 +29,7 @@ const Navbar = () => {
             <Link to="/" className="flex-shrink-0 flex items-center">
               <div className="h-10 w-auto overflow-hidden mr-2">
                 <img 
-                  src={logoLoaded ? logoImage : fallbackLogo}
+                  src={logoImage}
                   alt="Drops of Soul Logo" 
                   className="h-full w-auto object-contain"
                   onLoad={() => setLogoLoaded(true)}
