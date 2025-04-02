@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -14,8 +13,8 @@ const images = [
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-// Use the actual uploaded image path
-const logoImage = '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png';
+// Use placeholder until proper logo is provided
+const logoImage = '/placeholder.svg';
 const fallbackLogo = '/placeholder.svg';
 
 const Hero = () => {

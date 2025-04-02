@@ -6,8 +6,8 @@ import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
 
-// Use the actual uploaded image path
-const logoImage = '/lovable-uploads/924208b5-f5a2-466d-b7ca-3888563249ef.png';
+// Use placeholder until proper logo is provided
+const logoImage = '/placeholder.svg';
 const fallbackLogo = '/placeholder.svg';
 
 const Navbar = () => {
