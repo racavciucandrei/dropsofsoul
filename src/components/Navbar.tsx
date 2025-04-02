@@ -6,8 +6,8 @@ import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
 
-// Update logo path to use the new image
-const logoImage = '/lovable-uploads/8d9a610c-41ea-4a3d-a7e2-9b2d1a0d564e.png';
+// Fix the logo path to use a public folder image instead of lovable-uploads
+const logoImage = '/assets/logo.png'; 
 const fallbackLogo = '/placeholder.svg';
 
 const Navbar = () => {
@@ -29,15 +29,17 @@ const Navbar = () => {
             <Link to="/" className="flex-shrink-0 flex items-center">
               <div className="h-10 w-auto overflow-hidden mr-2">
                 <img 
-                  src={logoImage} 
+                  src={logoLoaded ? logoImage : fallbackLogo}
                   alt="Drops of Soul Logo" 
                   className="h-full w-auto object-contain"
                   onLoad={() => setLogoLoaded(true)}
                   onError={(e) => {
                     console.error("Failed to load logo image in navbar");
+                    // Try fallback to placeholder after error
                     const target = e.target as HTMLImageElement;
                     if (target.src !== fallbackLogo) {
                       target.src = fallbackLogo;
+                      setLogoLoaded(true);
                     }
                   }}
                 />

@@ -14,8 +14,8 @@ const images = [
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-// Update logo path to use the new image
-const logoImage = '/lovable-uploads/8d9a610c-41ea-4a3d-a7e2-9b2d1a0d564e.png';
+// Fix the logo path to use a public folder image
+const logoImage = '/assets/logo.png';
 const fallbackLogo = '/placeholder.svg';
 
 const Hero = () => {
@@ -110,7 +110,7 @@ const Hero = () => {
                 )}
               >
                 <img 
-                  src={logoImage} 
+                  src={logoLoaded ? logoImage : fallbackLogo}
                   alt="Drops of Soul Logo" 
                   className="w-full h-auto"
                   onLoad={() => setLogoLoaded(true)}
@@ -120,6 +120,7 @@ const Hero = () => {
                     // Set to fallback only if not already trying fallback
                     if (target.src !== fallbackLogo) {
                       target.src = fallbackLogo;
+                      setLogoLoaded(true);
                     }
                   }}
                 />
