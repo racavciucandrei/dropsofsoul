@@ -6,13 +6,8 @@ import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
 
-// Use placeholder until proper logo is provided
-const logoImage = '/placeholder.svg';
-const fallbackLogo = '/placeholder.svg';
-
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [logoLoaded, setLogoLoaded] = useState(false);
   const location = useLocation();
   
   // Close menu when route changes
@@ -27,24 +22,7 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <div className="h-10 w-auto overflow-hidden mr-2">
-                <img 
-                  src={logoImage}
-                  alt="Drops of Soul Logo" 
-                  className="h-full w-auto object-contain"
-                  onLoad={() => setLogoLoaded(true)}
-                  onError={(e) => {
-                    console.error("Failed to load logo image in navbar:", logoImage);
-                    // Try fallback to placeholder after error
-                    const target = e.target as HTMLImageElement;
-                    if (target.src !== fallbackLogo) {
-                      target.src = fallbackLogo;
-                      setLogoLoaded(true);
-                    }
-                  }}
-                />
-              </div>
-              <span className="text-lg font-bold">Drops of Soul</span>
+              <span className="text-2xl font-bold">Drops of Soul</span>
             </Link>
           </div>
           

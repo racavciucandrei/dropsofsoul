@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -13,32 +14,13 @@ const images = [
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-// Use placeholder until proper logo is provided
-const logoImage = '/placeholder.svg';
-const fallbackLogo = '/placeholder.svg';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
-  const [logoLoaded, setLogoLoaded] = useState(false);
   const { isLightOn } = useLight();
   
   useEffect(() => {
-    // Pre-emptively try to load the logo 
-    const logo = new Image();
-    logo.src = logoImage;
-    logo.onload = () => {
-      console.log("Logo loaded successfully:", logoImage);
-      setLogoLoaded(true);
-    };
-    logo.onerror = () => {
-      console.error("Failed to load logo image:", logoImage);
-      // Try fallback logo
-      const fallbackImg = new Image();
-      fallbackImg.src = fallbackLogo;
-      fallbackImg.onload = () => setLogoLoaded(true);
-    };
-    
     // Preload all images and track which ones have loaded
     const imageObjects = images.map((src, index) => {
       const img = new Image();
@@ -67,8 +49,6 @@ const Hero = () => {
         img.onload = null;
         img.onerror = null;
       });
-      logo.onload = null;
-      logo.onerror = null;
     };
   }, []);
 
@@ -100,30 +80,11 @@ const Hero = () => {
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
-            {/* Logo display */}
+            {/* Title instead of logo */}
             <div className="flex justify-center mb-8">
-              <div 
-                className={cn(
-                  "w-52 md:w-64 lg:w-72 transition-opacity duration-500 filter drop-shadow-lg",
-                  logoLoaded ? "opacity-100" : "opacity-0"
-                )}
-              >
-                <img 
-                  src={logoImage}
-                  alt="Drops of Soul Logo" 
-                  className="w-full h-auto"
-                  onLoad={() => setLogoLoaded(true)}
-                  onError={(e) => {
-                    console.error("Failed to load logo image in hero:", logoImage);
-                    const target = e.target as HTMLImageElement;
-                    // Set to fallback only if not already trying fallback
-                    if (target.src !== fallbackLogo) {
-                      target.src = fallbackLogo;
-                      setLogoLoaded(true);
-                    }
-                  }}
-                />
-              </div>
+              <h1 className="text-4xl font-bold text-white drop-shadow-lg">
+                Drops of Soul
+              </h1>
             </div>
             
             <div className="inline-block">
@@ -132,9 +93,9 @@ const Hero = () => {
               </span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-md">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white drop-shadow-md">
               Elevate Your Cocktails with Artisanal Ingredients
-            </h1>
+            </h2>
             
             <p className="text-base md:text-lg text-white/90 drop-shadow-sm">
               Handcrafted bitters, cordials, and shrubs made with organic ingredients and traditional methods.
