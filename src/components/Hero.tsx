@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -14,8 +13,8 @@ const images = [
 ];
 
 const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
-// Fix the logo path to use a public folder image
-const logoImage = '/assets/logo.png';
+// Try different image paths to find what works
+const logoImage = '/logo.png'; // Try root path instead of /assets/
 const fallbackLogo = '/placeholder.svg';
 
 const Hero = () => {
@@ -25,6 +24,21 @@ const Hero = () => {
   const { isLightOn } = useLight();
   
   useEffect(() => {
+    // Pre-emptively try to load the logo 
+    const logo = new Image();
+    logo.src = logoImage;
+    logo.onload = () => {
+      console.log("Logo loaded successfully:", logoImage);
+      setLogoLoaded(true);
+    };
+    logo.onerror = () => {
+      console.error("Failed to load logo image:", logoImage);
+      // Try fallback logo
+      const fallbackImg = new Image();
+      fallbackImg.src = fallbackLogo;
+      fallbackImg.onload = () => setLogoLoaded(true);
+    };
+    
     // Preload all images and track which ones have loaded
     const imageObjects = images.map((src, index) => {
       const img = new Image();
@@ -41,21 +55,6 @@ const Hero = () => {
       };
       return img;
     });
-    
-    // Preload logo
-    const logo = new Image();
-    logo.src = logoImage;
-    logo.onload = () => setLogoLoaded(true);
-    logo.onerror = () => {
-      console.error(`Failed to load logo image: ${logoImage}`);
-      // Try fallback logo
-      const fallbackImg = new Image();
-      fallbackImg.src = fallbackLogo;
-      fallbackImg.onload = () => setLogoLoaded(true);
-    };
-    
-    // Initialize loaded state array
-    setLoadedImages(new Array(images.length).fill(false));
     
     // Set up slideshow timer
     const interval = setInterval(() => {
@@ -115,7 +114,7 @@ const Hero = () => {
                   className="w-full h-auto"
                   onLoad={() => setLogoLoaded(true)}
                   onError={(e) => {
-                    console.error("Failed to load logo image");
+                    console.error("Failed to load logo image in hero:", logoImage);
                     const target = e.target as HTMLImageElement;
                     // Set to fallback only if not already trying fallback
                     if (target.src !== fallbackLogo) {

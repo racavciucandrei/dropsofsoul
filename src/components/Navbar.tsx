@@ -6,8 +6,8 @@ import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
 
-// Fix the logo path to use a public folder image instead of lovable-uploads
-const logoImage = '/assets/logo.png'; 
+// Try different image paths to find what works
+const logoImage = '/logo.png'; // Try root path instead of /assets/
 const fallbackLogo = '/placeholder.svg';
 
 const Navbar = () => {
@@ -34,7 +34,7 @@ const Navbar = () => {
                   className="h-full w-auto object-contain"
                   onLoad={() => setLogoLoaded(true)}
                   onError={(e) => {
-                    console.error("Failed to load logo image in navbar");
+                    console.error("Failed to load logo image in navbar:", logoImage);
                     // Try fallback to placeholder after error
                     const target = e.target as HTMLImageElement;
                     if (target.src !== fallbackLogo) {
