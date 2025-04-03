@@ -76,16 +76,21 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Large logo watermark in background */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <img 
-          src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-          alt="Drops of Soul Logo Background" 
-          className={cn(
-            "w-[80%] max-w-3xl object-contain opacity-15 mix-blend-overlay transition-all duration-500",
-            isLightOn ? "opacity-15" : "opacity-5"
-          )}
-        />
+      {/* Logo overlay that fuses with background */}
+      <div className={cn(
+        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl max-h-96 z-5 transition-opacity duration-500",
+        isLightOn ? "opacity-30" : "opacity-15"
+      )}>
+        <div className="relative w-full h-full flex justify-center items-center">
+          <img 
+            src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
+            alt="Drops of Soul Logo - Background" 
+            className={cn(
+              "absolute w-auto max-w-full h-auto max-h-full object-contain mix-blend-screen",
+              isLightOn ? "filter-none" : "brightness-200"
+            )}
+          />
+        </div>
       </div>
       
       {/* Content */}
@@ -93,7 +98,7 @@ const Hero = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
             {/* Logo - Foreground version */}
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-8 relative">
               <img 
                 src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
                 alt="Drops of Soul Logo" 
