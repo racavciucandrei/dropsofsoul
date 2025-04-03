@@ -5,6 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import AuthNavItems from './AuthNavItems';
 import { ShoppingCart } from './ShoppingCart';
+import { cn } from '@/lib/utils';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +23,14 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold">Drops of Soul</span>
+              <img 
+                src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
+                alt="Drops of Soul Logo" 
+                className={cn(
+                  "h-10 w-auto transition-opacity duration-300",
+                  location.pathname === '/' ? 'opacity-100' : 'opacity-90 hover:opacity-100'
+                )} 
+              />
             </Link>
           </div>
           
