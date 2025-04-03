@@ -1,3 +1,4 @@
+
 import { Product } from './types';
 
 // Bitters collection
@@ -140,7 +141,7 @@ export const bitters: Product[] = [
           'Grapefruit twist',
           '3 Coffee Beans'
         ],
-        imagePath: '/lovable-uploads/c2e8a3b9-d5d9-489b-9e4f-a99c0276d16d.png'
+        imagePath: '/lovable-uploads/90f01dd5-7fe0-46f6-b600-948a60482542.png'
       }
     ],
     related: [1, 18, 20],
