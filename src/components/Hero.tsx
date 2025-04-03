@@ -54,7 +54,7 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
-      {/* Background Slideshow */}
+      {/* Background Slideshow with logo blend */}
       <div className={cn(
         "absolute inset-0 z-0 transition-opacity duration-500",
         isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
@@ -74,20 +74,15 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
           </div>
         ))}
-      </div>
-      
-      {/* Logo overlay that fuses with background */}
-      <div className={cn(
-        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl max-h-96 z-5 transition-opacity duration-500",
-        isLightOn ? "opacity-30" : "opacity-15"
-      )}>
-        <div className="relative w-full h-full flex justify-center items-center">
+        
+        {/* Logo watermark effect */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <img 
             src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
             alt="Drops of Soul Logo - Background" 
             className={cn(
-              "absolute w-auto max-w-full h-auto max-h-full object-contain mix-blend-screen",
-              isLightOn ? "filter-none" : "brightness-200"
+              "w-auto max-w-[60%] h-auto max-h-[60%] object-contain mix-blend-overlay opacity-20 transition-all duration-500",
+              isLightOn ? "opacity-20 brightness-100" : "opacity-10 brightness-200"
             )}
           />
         </div>
@@ -98,7 +93,7 @@ const Hero = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
             {/* Logo - Foreground version */}
-            <div className="flex justify-center mb-8 relative">
+            <div className="flex justify-center mb-8">
               <img 
                 src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
                 alt="Drops of Soul Logo" 
