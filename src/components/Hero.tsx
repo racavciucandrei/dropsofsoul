@@ -76,12 +76,29 @@ const Hero = () => {
         ))}
       </div>
       
+      {/* Logo overlay that fuses with background */}
+      <div className={cn(
+        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl max-h-96 z-5 transition-opacity duration-500",
+        isLightOn ? "opacity-30" : "opacity-15"
+      )}>
+        <div className="relative w-full h-full flex justify-center items-center">
+          <img 
+            src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
+            alt="Drops of Soul Logo - Background" 
+            className={cn(
+              "absolute w-auto max-w-full h-auto max-h-full object-contain mix-blend-screen",
+              isLightOn ? "filter-none" : "brightness-200"
+            )}
+          />
+        </div>
+      </div>
+      
       {/* Content */}
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
-            {/* Logo */}
-            <div className="flex justify-center mb-8">
+            {/* Logo - Foreground version */}
+            <div className="flex justify-center mb-8 relative">
               <img 
                 src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
                 alt="Drops of Soul Logo" 
