@@ -54,7 +54,7 @@ const Hero = () => {
 
   return (
     <section className="relative min-h-screen w-full flex items-center overflow-hidden">
-      {/* Background Slideshow with logo blend */}
+      {/* Background Slideshow */}
       <div className={cn(
         "absolute inset-0 z-0 transition-opacity duration-500",
         isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
@@ -74,18 +74,18 @@ const Hero = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
           </div>
         ))}
-        
-        {/* Logo watermark effect */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <img 
-            src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-            alt="Drops of Soul Logo - Background" 
-            className={cn(
-              "w-auto max-w-[60%] h-auto max-h-[60%] object-contain mix-blend-overlay opacity-20 transition-all duration-500",
-              isLightOn ? "opacity-20 brightness-100" : "opacity-10 brightness-200"
-            )}
-          />
-        </div>
+      </div>
+      
+      {/* Large logo watermark in background */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <img 
+          src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
+          alt="Drops of Soul Logo Background" 
+          className={cn(
+            "w-[80%] max-w-3xl object-contain opacity-15 mix-blend-overlay transition-all duration-500",
+            isLightOn ? "opacity-15" : "opacity-5"
+          )}
+        />
       </div>
       
       {/* Content */}
