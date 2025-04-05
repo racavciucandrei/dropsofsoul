@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { Send, X } from 'lucide-react';
+import { Send, X, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLight } from '@/context/LightProvider';
 
@@ -28,29 +28,20 @@ const ContactTab = () => {
 
   return (
     <>
-      {/* Contact tab that appears at the side of screen */}
+      {/* Modern side tab */}
       <div 
         className={cn(
-          "fixed right-0 top-2/3 transform -translate-y-1/2 z-30 cursor-pointer transition-all duration-300 hover:-translate-x-2",
+          "fixed right-0 top-2/3 transform -translate-y-1/2 z-30 cursor-pointer transition-all duration-300",
           open ? "opacity-0 pointer-events-none" : "opacity-100"
         )}
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "relative flex items-center -rotate-90 origin-right",
-          "bg-secondary border-t border-l border-r border-primary/30 rounded-t-lg shadow-lg",
-          "py-2 px-6 transform -translate-x-[calc(100%-32px)]",
-          isLightOn ? "text-primary" : "text-primary-foreground company-name"
+          "flex items-center gap-2 bg-primary text-primary-foreground py-3 px-5 rounded-l-lg shadow-lg",
+          "transform transition-transform hover:translate-x-[-5px]"
         )}>
-          <span className="font-serif font-bold tracking-wider">Contact Us</span>
-          <div className={cn(
-            "absolute top-0 bottom-0 -right-6 w-6 bg-secondary skew-x-[20deg] border-t border-r border-primary/30",
-            "shadow-lg"
-          )}></div>
-          <div className={cn(
-            "absolute top-0 bottom-0 -left-6 w-6 bg-secondary -skew-x-[20deg] border-t border-l border-primary/30",
-            "shadow-lg"
-          )}></div>
+          <MessageSquare className="h-5 w-5" />
+          <span className="font-medium">Contact</span>
         </div>
       </div>
 
