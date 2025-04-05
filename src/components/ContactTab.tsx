@@ -1,87 +1,75 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
-import { Send, X, MessageSquare } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { X, Mail, Phone, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLight } from '@/context/LightProvider';
 
 const ContactTab = () => {
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
   const { isLightOn } = useLight();
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // In a real app, you would send this data to your backend
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
-    
-    setOpen(false);
-  };
-
   return (
     <>
-      {/* Modern side tab */}
+      {/* Modern vertical side tab */}
       <div 
         className={cn(
-          "fixed right-0 top-2/3 transform -translate-y-1/2 z-30 cursor-pointer transition-all duration-300",
+          "fixed right-0 top-1/3 transform z-30 cursor-pointer transition-all duration-300",
           open ? "opacity-0 pointer-events-none" : "opacity-100"
         )}
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "flex items-center gap-2 bg-primary text-primary-foreground py-3 px-5 rounded-l-lg shadow-lg",
+          "flex flex-col items-center bg-primary text-primary-foreground py-6 px-3 rounded-l-lg shadow-lg",
           "transform transition-transform hover:translate-x-[-5px]"
         )}>
-          <MessageSquare className="h-5 w-5" />
-          <span className="font-medium">Contact</span>
+          <span className="font-medium -rotate-90 whitespace-nowrap mb-16">Contact Info</span>
         </div>
       </div>
 
-      {/* Contact Dialog */}
+      {/* Contact Info Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-serif">Send us a message</DialogTitle>
-            <DialogDescription>
-              Drop us a line and we'll get back to you soon.
-            </DialogDescription>
+            <DialogTitle className="text-2xl font-serif">Contact Information</DialogTitle>
+            <button 
+              className="absolute right-4 top-4 rounded-sm opacity-70 hover:opacity-100 focus:outline-none"
+              onClick={() => setOpen(false)}
+            >
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </button>
           </DialogHeader>
           
-          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-            <div className="space-y-2">
-              <label htmlFor="name" className="text-sm font-medium">Name</label>
-              <Input id="name" placeholder="Your name" required />
+          <div className="space-y-6 mt-4">
+            <div className="flex items-start space-x-4">
+              <Mail className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <h3 className="font-medium">Email</h3>
+                <a href="mailto:office@dropsofsoul.com" className="text-sm hover:underline">
+                  office@dropsofsoul.com
+                </a>
+              </div>
             </div>
             
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium">Email</label>
-              <Input id="email" type="email" placeholder="Your email address" required />
+            <div className="flex items-start space-x-4">
+              <Phone className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <h3 className="font-medium">Phone</h3>
+                <a href="tel:+436703538025" className="text-sm hover:underline">
+                  +43 (0)670 353 8025
+                </a>
+              </div>
             </div>
             
-            <div className="space-y-2">
-              <label htmlFor="message" className="text-sm font-medium">Message</label>
-              <Textarea id="message" placeholder="How can we help you?" rows={4} required />
+            <div className="flex items-start space-x-4">
+              <MapPin className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <h3 className="font-medium">Address</h3>
+                <p className="text-sm">BrigittaPlatz 9</p>
+              </div>
             </div>
-            
-            <div className="flex justify-end gap-2 pt-4">
-              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
-                <X className="mr-2 h-4 w-4" />
-                Cancel
-              </Button>
-              <Button type="submit">
-                <Send className="mr-2 h-4 w-4" />
-                Send Message
-              </Button>
-            </div>
-          </form>
+          </div>
         </DialogContent>
       </Dialog>
     </>
