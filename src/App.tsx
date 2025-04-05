@@ -15,6 +15,7 @@ import Auth from "./pages/Auth";
 import Shop from "./pages/Shop";
 import Marketing from "./pages/Marketing";
 import RainEffect from "./components/RainEffect";
+import ContactTab from "./components/ContactTab";
 import { LightProvider } from "./context/LightProvider";
 import { AuthProvider } from "./context/AuthProvider";
 import { CartProvider } from "./context/CartProvider";
@@ -34,6 +35,7 @@ const AppRoutes = () => {
       <ScrollToTop />
       <Navbar />
       <LightSwitch />
+      <ContactTab />
       <main className="transition-all duration-500 content-visibility">
         <Routes>
           <Route path="/" element={<Index />} />

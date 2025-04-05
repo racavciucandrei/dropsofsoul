@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap');
 
 @tailwind base;
@@ -274,9 +273,24 @@ body:not(.lights-off) .hide-in-dark {
   animation: pullString 0.5s ease-in-out;
 }
 
+/* Contact tab styles */
+@keyframes sway {
+  0% { transform: rotate(-90deg) translateX(0); }
+  50% { transform: rotate(-90deg) translateX(-3px); }
+  100% { transform: rotate(-90deg) translateX(0); }
+}
+
+.contact-tab:hover {
+  animation: sway 1s ease-in-out infinite;
+}
+
 /* Custom blend modes and opacity values */
 .opacity-35 {
   opacity: 0.35;
+}
+
+.opacity-15 {
+  opacity: 0.15;
 }
 
 .opacity-10 {
