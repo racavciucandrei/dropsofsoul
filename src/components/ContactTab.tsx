@@ -28,7 +28,7 @@ const ContactTab = () => {
 
   return (
     <>
-      {/* Book tab that appears at bottom third of screen */}
+      {/* Contact tab that appears at the side of screen */}
       <div 
         className={cn(
           "fixed right-0 top-2/3 transform -translate-y-1/2 z-30 cursor-pointer transition-all duration-300 hover:-translate-x-2",
