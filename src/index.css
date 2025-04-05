@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap');
 
 @tailwind base;
@@ -271,4 +272,17 @@ body:not(.lights-off) .hide-in-dark {
 
 .pull-string-animate {
   animation: pullString 0.5s ease-in-out;
+}
+
+/* Custom blend modes and opacity values */
+.opacity-35 {
+  opacity: 0.35;
+}
+
+.opacity-10 {
+  opacity: 0.1;
+}
+
+.mix-blend-overlay {
+  mix-blend-mode: overlay;
 }

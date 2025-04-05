@@ -76,18 +76,18 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Logo overlay that fuses with background */}
-      <div className={cn(
-        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-3xl max-h-96 z-5 transition-opacity duration-500",
-        isLightOn ? "opacity-30" : "opacity-15"
-      )}>
-        <div className="relative w-full h-full flex justify-center items-center">
+      {/* Logo watermark overlay - this is the main change */}
+      <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none">
+        <div className={cn(
+          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500",
+          isLightOn ? "opacity-35" : "opacity-10"
+        )}>
           <img 
             src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-            alt="Drops of Soul Logo - Background" 
+            alt="Drops of Soul Logo - Watermark"
             className={cn(
-              "absolute w-auto max-w-full h-auto max-h-full object-contain mix-blend-screen",
-              isLightOn ? "filter-none" : "brightness-200"
+              "w-full h-full object-contain mix-blend-overlay",
+              isLightOn ? "filter-none" : "brightness-150"
             )}
           />
         </div>
