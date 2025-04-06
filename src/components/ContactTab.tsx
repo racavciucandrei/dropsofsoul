@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Mail, Phone, MapPin } from 'lucide-react';
@@ -29,7 +30,8 @@ const ContactTab = () => {
       </div>
 
       {/* Contact Info Sheet */}
-      <SheetContent className="max-w-sm border-l-0 border-t border-b bg-background/95 backdrop-blur-sm">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent className="max-w-sm border-l-0 border-t border-b bg-background/95 backdrop-blur-sm">
           <SheetHeader className="mb-6">
             <SheetTitle className="text-2xl font-serif">Get in Touch</SheetTitle>
           </SheetHeader>
