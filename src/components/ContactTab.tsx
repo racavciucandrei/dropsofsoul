@@ -12,7 +12,7 @@ const ContactTab = () => {
   
   return (
     <>
-      {/* Thinner vertical side tab */}
+      {/* Ultra thin vertical side tab */}
       <div 
         className={cn(
           "fixed right-0 top-1/2 transform -translate-y-1/2 z-30 cursor-pointer transition-all duration-300",
@@ -21,7 +21,7 @@ const ContactTab = () => {
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "flex flex-col items-center py-8 px-3 rounded-l-lg shadow-lg",
+          "flex flex-col items-center py-16 px-1.5 rounded-l-lg shadow-lg",
           "bg-primary/90 backdrop-blur-sm text-primary-foreground",
           "transform transition-transform hover:translate-x-[-5px]"
         )}>
