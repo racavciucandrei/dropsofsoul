@@ -1,11 +1,10 @@
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { X, Mail, Phone, MapPin } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Mail, Phone, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useLight } from '@/context/LightProvider';
 import { Separator } from '@/components/ui/separator';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 const ContactTab = () => {
   const [open, setOpen] = useState(false);
@@ -13,7 +12,7 @@ const ContactTab = () => {
   
   return (
     <>
-      {/* Modern vertical side tab */}
+      {/* Thinner vertical side tab */}
       <div 
         className={cn(
           "fixed right-0 top-1/2 transform -translate-y-1/2 z-30 cursor-pointer transition-all duration-300",
@@ -22,11 +21,11 @@ const ContactTab = () => {
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "flex flex-col items-center py-10 px-4 rounded-l-lg shadow-lg",
+          "flex flex-col items-center py-8 px-3 rounded-l-lg shadow-lg",
           "bg-primary/90 backdrop-blur-sm text-primary-foreground",
           "transform transition-transform hover:translate-x-[-5px]"
         )}>
-          <span className="font-medium -rotate-90 whitespace-nowrap tracking-wide uppercase text-xs font-serif">Contact Us</span>
+          <span className="font-medium -rotate-90 whitespace-nowrap tracking-wide text-xs font-serif">Contact@</span>
         </div>
       </div>
 
