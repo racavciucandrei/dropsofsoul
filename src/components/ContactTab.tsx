@@ -31,55 +31,57 @@ const ContactTab = () => {
       </div>
 
       {/* Contact Info Sheet */}
-      <SheetContent className="max-w-sm border-l-0 border-t border-b bg-background/95 backdrop-blur-sm">
-        <SheetHeader className="mb-6">
-          <SheetTitle className="text-2xl font-serif">Get in Touch</SheetTitle>
-        </SheetHeader>
-        
-        <div className="space-y-8">
-          <div className="space-y-6">
-            <div className="flex items-start space-x-4">
-              <div className="bg-primary/10 p-2 rounded-full">
-                <Mail className="h-5 w-5 text-primary" />
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent className="max-w-sm border-l-0 border-t border-b bg-background/95 backdrop-blur-sm">
+          <SheetHeader className="mb-6">
+            <SheetTitle className="text-2xl font-serif">Get in Touch</SheetTitle>
+          </SheetHeader>
+          
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <Mail className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm uppercase tracking-wide text-foreground/70">Email</h3>
+                  <a href="mailto:office@dropsofsoul.com" className="text-foreground hover:text-primary transition-colors">
+                    office@dropsofsoul.com
+                  </a>
+                </div>
               </div>
-              <div>
-                <h3 className="font-medium text-sm uppercase tracking-wide text-foreground/70">Email</h3>
-                <a href="mailto:office@dropsofsoul.com" className="text-foreground hover:text-primary transition-colors">
-                  office@dropsofsoul.com
-                </a>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <Phone className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm uppercase tracking-wide text-foreground/70">Phone</h3>
+                  <a href="tel:+436703538025" className="text-foreground hover:text-primary transition-colors">
+                    +43 (0)670 353 8025
+                  </a>
+                </div>
+              </div>
+              
+              <div className="flex items-start space-x-4">
+                <div className="bg-primary/10 p-2 rounded-full">
+                  <MapPin className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-medium text-sm uppercase tracking-wide text-foreground/70">Address</h3>
+                  <p className="text-foreground">BrigittaPlatz 9</p>
+                </div>
               </div>
             </div>
             
-            <div className="flex items-start space-x-4">
-              <div className="bg-primary/10 p-2 rounded-full">
-                <Phone className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-medium text-sm uppercase tracking-wide text-foreground/70">Phone</h3>
-                <a href="tel:+436703538025" className="text-foreground hover:text-primary transition-colors">
-                  +43 (0)670 353 8025
-                </a>
-              </div>
-            </div>
+            <Separator />
             
-            <div className="flex items-start space-x-4">
-              <div className="bg-primary/10 p-2 rounded-full">
-                <MapPin className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h3 className="font-medium text-sm uppercase tracking-wide text-foreground/70">Address</h3>
-                <p className="text-foreground">BrigittaPlatz 9</p>
-              </div>
+            <div className="text-center text-sm text-muted-foreground">
+              <p>We'll be happy to help you with any questions.</p>
             </div>
           </div>
-          
-          <Separator />
-          
-          <div className="text-center text-sm text-muted-foreground">
-            <p>We'll be happy to help you with any questions.</p>
-          </div>
-        </div>
-      </SheetContent>
+        </SheetContent>
+      </Sheet>
     </>
   );
 };
