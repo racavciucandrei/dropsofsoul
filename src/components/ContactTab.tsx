@@ -21,7 +21,7 @@ const ContactTab = () => {
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "flex flex-col items-center py-16 px-1 rounded-l-lg shadow-lg",
+          "flex flex-col items-center py-16 px-0.5 rounded-l-lg shadow-lg",
           "bg-primary/90 backdrop-blur-sm text-primary-foreground",
           "transform transition-transform hover:translate-x-[-5px]"
         )}>
