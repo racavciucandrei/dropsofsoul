@@ -21,7 +21,7 @@ const ContactTab = () => {
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "flex flex-col items-center py-16 px-0.5 rounded-l-lg shadow-lg",
+          "flex flex-col items-center py-16 px-[2px] rounded-l-lg shadow-lg", // Changed from px-0.5 to px-[2px] for even thinner tab
           "bg-primary/90 backdrop-blur-sm text-primary-foreground",
           "transform transition-transform hover:translate-x-[-5px]"
         )}>
