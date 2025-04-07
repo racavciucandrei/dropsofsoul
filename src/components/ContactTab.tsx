@@ -21,11 +21,11 @@ const ContactTab = () => {
         onClick={() => setOpen(true)}
       >
         <div className={cn(
-          "flex flex-col items-center py-16 px-[2px] rounded-l-lg shadow-lg", // Changed from px-0.5 to px-[2px] for even thinner tab
-          "bg-primary/90 backdrop-blur-sm text-primary-foreground",
-          "transform transition-transform hover:translate-x-[-5px]"
+          "flex flex-col items-center py-14 px-0 rounded-l-md shadow-lg", // Dramatically reduced width, shorter height
+          "bg-primary backdrop-blur-sm text-primary-foreground",
+          "transform transition-transform hover:translate-x-[-3px]"
         )}>
-          <span className="font-medium -rotate-90 whitespace-nowrap tracking-wide text-xs font-serif">Contact@</span>
+          <span className="font-medium -rotate-90 whitespace-nowrap tracking-wide text-[10px] font-serif">Contact</span>
         </div>
       </div>
 
