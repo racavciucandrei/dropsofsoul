@@ -76,10 +76,10 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Logo watermark overlay - with background color that blends with the logo */}
+      {/* Logo watermark overlay - removed borders and blended with background */}
       <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none">
         <div className={cn(
-          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500 bg-gradient-to-r from-amber-900/10 via-amber-800/5 to-amber-900/10",
+          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500",
           isLightOn ? "opacity-35" : "opacity-10"
         )}>
           <img 
