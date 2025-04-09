@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -23,14 +22,12 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <img 
-                src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-                alt="Drops of Soul Logo" 
-                className={cn(
-                  "h-10 w-auto transition-opacity duration-300",
-                  location.pathname === '/' ? 'opacity-100' : 'opacity-90 hover:opacity-100'
-                )} 
-              />
+              <span className={cn(
+                "text-lg md:text-xl font-bold transition-opacity duration-300",
+                location.pathname === '/' ? 'opacity-100' : 'opacity-90 hover:opacity-100'
+              )}>
+                Drops of Soul
+              </span>
             </Link>
           </div>
           
@@ -133,7 +130,6 @@ const Navbar = () => {
           <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center px-4">
               <div className="flex-shrink-0">
-                {/* Mobile auth items */}
                 <div className="flex flex-col space-y-2">
                   <Button asChild variant="outline" className="w-full">
                     <Link to="/auth" onClick={() => setIsOpen(false)}>Sign In</Link>
