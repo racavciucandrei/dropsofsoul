@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -23,7 +24,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <span className={cn(
-                "text-lg md:text-xl font-bold transition-opacity duration-300",
+                "text-lg md:text-xl font-bold font-serif tracking-tight transition-opacity duration-300 company-name",
                 location.pathname === '/' ? 'opacity-100' : 'opacity-90 hover:opacity-100'
               )}>
                 Drops of Soul
@@ -52,14 +53,14 @@ const Navbar = () => {
         </div>
 
         {/* Full width navigation row */}
-        <div className="hidden md:block border-t border-slate-200/50 dark:border-slate-800/50">
+        <div className="hidden md:block">
           <div className="flex justify-center h-12">
             <div className="flex space-x-8">
               <Link
                 to="/"
                 className={`inline-flex items-center px-1 pt-1 border-b-2 ${
                   location.pathname === '/'
-                    ? 'border-blue-500 dark:border-blue-400 text-gray-900 dark:text-gray-100'
+                    ? 'border-primary dark:border-primary text-gray-900 dark:text-gray-100'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 } text-sm font-medium`}
               >
@@ -69,7 +70,7 @@ const Navbar = () => {
                 to="/shop"
                 className={`inline-flex items-center px-1 pt-1 border-b-2 ${
                   location.pathname === '/shop'
-                    ? 'border-blue-500 dark:border-blue-400 text-gray-900 dark:text-gray-100'
+                    ? 'border-primary dark:border-primary text-gray-900 dark:text-gray-100'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 } text-sm font-medium`}
               >
@@ -79,7 +80,7 @@ const Navbar = () => {
                 to="/about"
                 className={`inline-flex items-center px-1 pt-1 border-b-2 ${
                   location.pathname === '/about'
-                    ? 'border-blue-500 dark:border-blue-400 text-gray-900 dark:text-gray-100'
+                    ? 'border-primary dark:border-primary text-gray-900 dark:text-gray-100'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
                 } text-sm font-medium`}
               >
@@ -97,7 +98,7 @@ const Navbar = () => {
             to="/"
             className={`block pl-3 pr-4 py-2 border-l-4 ${
               location.pathname === '/'
-                ? 'bg-blue-50 dark:bg-slate-800 border-blue-500 dark:border-blue-400 text-blue-700 dark:text-blue-400'
+                ? 'bg-primary/10 dark:bg-primary/10 border-primary dark:border-primary text-primary dark:text-primary'
                 : 'border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
             } text-base font-medium`}
             onClick={() => setIsOpen(false)}
@@ -108,7 +109,7 @@ const Navbar = () => {
             to="/shop"
             className={`block pl-3 pr-4 py-2 border-l-4 ${
               location.pathname === '/shop'
-                ? 'bg-blue-50 dark:bg-slate-800 border-blue-500 dark:border-blue-400 text-blue-700 dark:text-blue-400'
+                ? 'bg-primary/10 dark:bg-primary/10 border-primary dark:border-primary text-primary dark:text-primary'
                 : 'border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
             } text-base font-medium`}
             onClick={() => setIsOpen(false)}
@@ -119,7 +120,7 @@ const Navbar = () => {
             to="/about"
             className={`block pl-3 pr-4 py-2 border-l-4 ${
               location.pathname === '/about'
-                ? 'bg-blue-50 dark:bg-slate-800 border-blue-500 dark:border-blue-400 text-blue-700 dark:text-blue-400'
+                ? 'bg-primary/10 dark:bg-primary/10 border-primary dark:border-primary text-primary dark:text-primary'
                 : 'border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
             } text-base font-medium`}
             onClick={() => setIsOpen(false)}

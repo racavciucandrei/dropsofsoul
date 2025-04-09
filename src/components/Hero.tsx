@@ -76,10 +76,10 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Logo watermark overlay - restored this element */}
+      {/* Logo watermark overlay - with background color that blends with the logo */}
       <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none">
         <div className={cn(
-          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500",
+          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500 bg-gradient-to-r from-amber-900/10 via-amber-800/5 to-amber-900/10",
           isLightOn ? "opacity-35" : "opacity-10"
         )}>
           <img 
@@ -97,8 +97,6 @@ const Hero = () => {
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
-            {/* Removed the foreground logo element */}
-            
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 backdrop-blur-sm text-primary-foreground/90 rounded-full">
                 Craft Cocktail Essentials
