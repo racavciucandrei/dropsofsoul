@@ -76,28 +76,13 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Logo watermark overlay - this is the main change */}
-      <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none">
-        <div className={cn(
-          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500",
-          isLightOn ? "opacity-35" : "opacity-10"
-        )}>
-          <img 
-            src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-            alt="Drops of Soul Logo - Watermark"
-            className={cn(
-              "w-full h-full object-contain mix-blend-overlay",
-              isLightOn ? "filter-none" : "brightness-150"
-            )}
-          />
-        </div>
-      </div>
+      {/* Removed the logo watermark overlay that was causing duplication */}
       
       {/* Content */}
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
-            {/* Logo - Foreground version */}
+            {/* Logo - Foreground version - This is the only logo now */}
             <div className="flex justify-center mb-8 relative">
               <img 
                 src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
