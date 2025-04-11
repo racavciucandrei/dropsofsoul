@@ -28,10 +28,12 @@ const categoryData = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen overflow-hidden">
-      <Hero />
+    <div className="min-h-screen overflow-hidden" style={{ marginTop: 0, marginBottom: 0 }}>
+      <div style={{ marginTop: 0, marginBottom: 0, border: 'none' }}>
+        <Hero />
+      </div>
       
-      <section className="py-20 content-visibility hide-in-dark mt-0">
+      <section className="py-20 content-visibility hide-in-dark" style={{ marginTop: 0, border: 'none' }}>
         <div className="container-custom">
           <div className="text-center mb-16">
             <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
@@ -60,7 +62,7 @@ const Index = () => {
         </div>
       </section>
       
-      <div className="content-visibility hide-in-dark">
+      <div className="content-visibility hide-in-dark" style={{ border: 'none', marginTop: 0 }}>
         <FeaturedProducts />
         <About />
       </div>

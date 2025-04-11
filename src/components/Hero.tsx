@@ -53,7 +53,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center overflow-hidden">
+    <section className="relative min-h-screen w-full flex items-center overflow-hidden" style={{ marginTop: 0, marginBottom: 0 }}>
       {/* Background Slideshow */}
       <div className={cn(
         "absolute inset-0 z-0 transition-opacity duration-500",
@@ -68,20 +68,40 @@ const Hero = () => {
             )}
             style={{
               backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
+              borderTop: 'none',
+              borderBottom: 'none',
             }}
           >
-            {/* Using a gradient overlay that blends naturally with no visible lines */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40" />
+            {/* Using a smooth gradient overlay without any hard edges */}
+            <div 
+              className="absolute inset-0" 
+              style={{
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%)',
+                border: 'none',
+                marginTop: 0,
+                marginBottom: 0
+              }}
+            />
           </div>
         ))}
       </div>
       
-      {/* Logo watermark overlay - with no borders or edges */}
-      <div className="absolute inset-0 z-1 pointer-events-none overflow-hidden">
-        <div className={cn(
-          "w-full h-full flex items-center justify-center transition-opacity duration-500",
-          isLightOn ? "opacity-35" : "opacity-10"
-        )}>
+      {/* Logo watermark overlay - ensuring no borders or edges */}
+      <div 
+        className="absolute inset-0 z-1 pointer-events-none"
+        style={{ 
+          overflow: 'hidden', 
+          border: 'none',
+          outline: 'none'
+        }}
+      >
+        <div 
+          className={cn(
+            "w-full h-full flex items-center justify-center transition-opacity duration-500",
+            isLightOn ? "opacity-35" : "opacity-10"
+          )}
+          style={{ border: 'none', outline: 'none' }}
+        >
           <img 
             src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
             alt="Drops of Soul Logo - Watermark"
@@ -92,7 +112,10 @@ const Hero = () => {
             style={{ 
               border: 'none', 
               outline: 'none',
-              boxShadow: 'none'
+              boxShadow: 'none',
+              backgroundColor: 'transparent',
+              margin: 0,
+              padding: 0
             }}
           />
         </div>
