@@ -122,3 +122,23 @@ body:has(.dark-mode) .company-logo-container img {
   box-shadow: none !important;
   background: transparent !important;
 }
+
+/* Fix for hero section - remove any possible border or line */
+section.relative.min-h-screen:before,
+section.relative.min-h-screen:after {
+  display: none !important;
+}
+
+/* Ensure no gray border on hero sections */
+section.relative.min-h-screen {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-clip: padding-box !important;
+}
+
+/* Remove any potential borders from background slides */
+.bg-cover.bg-center {
+  border: none !important;
+  outline: none !important;
+}

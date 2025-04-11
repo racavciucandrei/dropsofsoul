@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
@@ -69,13 +70,13 @@ const Hero = () => {
               backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
             }}
           >
-            {/* Maintaining the original overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
+            {/* Using a gradient overlay that blends naturally with no visible lines */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40" />
           </div>
         ))}
       </div>
       
-      {/* Logo watermark overlay - completely removing borders and using a different approach */}
+      {/* Logo watermark overlay - with no borders or edges */}
       <div className="absolute inset-0 z-1 pointer-events-none overflow-hidden">
         <div className={cn(
           "w-full h-full flex items-center justify-center transition-opacity duration-500",
@@ -88,7 +89,11 @@ const Hero = () => {
               "max-w-full max-h-full object-contain mix-blend-overlay",
               isLightOn ? "filter-none" : "brightness-150"
             )}
-            style={{ border: 'none', outline: 'none' }}
+            style={{ 
+              border: 'none', 
+              outline: 'none',
+              boxShadow: 'none'
+            }}
           />
         </div>
       </div>
