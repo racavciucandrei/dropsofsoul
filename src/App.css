@@ -114,3 +114,11 @@ body:has(.dark-mode) .company-logo-container img {
   background: radial-gradient(circle at center, var(--from-color, rgba(155, 135, 245, 0.3)), var(--to-color, transparent) 70%);
 }
 
+/* Remove any borders or outlines from the logo watermark to prevent grey lines */
+.absolute img, 
+.mix-blend-overlay {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
