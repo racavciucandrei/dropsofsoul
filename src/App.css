@@ -114,32 +114,41 @@ body:has(.dark-mode) .company-logo-container img {
   background: radial-gradient(circle at center, var(--from-color, rgba(155, 135, 245, 0.3)), var(--to-color, transparent) 70%);
 }
 
-/* Remove any borders or outlines from the logo watermark to prevent grey lines */
+/* Ensure no border, outline, or box-shadow on hero elements */
+.hero-section,
+.hero-section *,
+.hero-container,
+.hero-container *,
+section.relative.min-h-screen,
+section.relative.min-h-screen *,
 .absolute img, 
 .mix-blend-overlay {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
-  background: transparent !important;
-}
-
-/* Fix for hero section - remove any possible border or line */
-section.relative.min-h-screen:before,
-section.relative.min-h-screen:after {
-  display: none !important;
-}
-
-/* Ensure no gray border on hero sections */
-section.relative.min-h-screen {
-  border: none !important;
-  box-shadow: none !important;
-  outline: none !important;
   background-clip: padding-box !important;
 }
 
-/* Remove any potential borders from background slides */
+/* Fix for background images */
 .bg-cover.bg-center {
   border: none !important;
   outline: none !important;
+  box-shadow: none !important;
+  transition: opacity 0.8s ease;
 }
 
+/* Fix seams between sections */
+section + section,
+section + div,
+div + section {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+
+/* Remove all borders from specific containers */
+body, #root, main, section, .container-custom, .relative {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}

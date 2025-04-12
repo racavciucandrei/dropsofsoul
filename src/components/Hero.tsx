@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
 
-// Use original image paths but have fallbacks ready
 const images = [
   '/assets/hero-1.jpg',
   '/assets/hero-2.jpg',
@@ -54,28 +53,14 @@ const Hero = () => {
 
   return (
     <section 
-      className="relative min-h-screen w-full flex items-center overflow-hidden" 
-      style={{ 
-        marginTop: 0, 
-        marginBottom: 0, 
-        border: 'none', 
-        boxShadow: 'none',
-        backgroundImage: 'none',
-        outline: 'none'
-      }}
+      className="relative min-h-screen w-full flex items-center overflow-hidden bg-black" 
     >
       {/* Background Slideshow */}
       <div 
         className={cn(
           "absolute inset-0 z-0 transition-opacity duration-500",
-          isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
+          isLightOn ? "opacity-100" : "opacity-5"
         )}
-        style={{ 
-          border: 'none', 
-          outline: 'none', 
-          boxShadow: 'none',
-          backgroundImage: 'none'
-        }}
       >
         {images.map((src, index) => (
           <div
@@ -86,68 +71,38 @@ const Hero = () => {
             )}
             style={{
               backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
-              borderTop: 'none',
-              borderBottom: 'none',
-              borderLeft: 'none',
-              borderRight: 'none',
-              border: 'none',
-              outline: 'none',
-              boxShadow: 'none'
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
             }}
           >
             <div 
               className="absolute inset-0" 
               style={{
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%)',
-                border: 'none',
-                outline: 'none',
-                boxShadow: 'none',
-                marginTop: 0,
-                marginBottom: 0
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%)'
               }}
             />
           </div>
         ))}
       </div>
       
-      {/* Logo watermark overlay - using flat color without gradients */}
-      <div 
-        className="absolute inset-0 z-1 pointer-events-none"
-        style={{ 
-          overflow: 'hidden', 
-          border: 'none',
-          outline: 'none',
-          boxShadow: 'none',
-          backgroundImage: 'none'
-        }}
-      >
+      {/* Logo watermark overlay */}
+      <div className="absolute inset-0 z-1 pointer-events-none flex items-center justify-center">
         <div 
           className={cn(
             "w-full h-full flex items-center justify-center transition-opacity duration-500",
             isLightOn ? "opacity-35" : "opacity-10"
           )}
-          style={{ 
-            border: 'none', 
-            outline: 'none',
-            boxShadow: 'none',
-            backgroundImage: 'none'
-          }}
         >
           <img 
             src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
             alt="Drops of Soul Logo - Watermark"
             className={cn(
-              "max-w-full max-h-full object-contain mix-blend-overlay",
+              "w-1/2 h-auto object-contain mix-blend-overlay",
               isLightOn ? "filter-none" : "brightness-150"
             )}
             style={{ 
-              border: 'none', 
-              outline: 'none',
-              boxShadow: 'none',
-              backgroundColor: 'transparent',
-              backgroundImage: 'none',
-              margin: 0,
-              padding: 0
+              maxWidth: '500px',
+              maxHeight: '500px'
             }}
           />
         </div>
