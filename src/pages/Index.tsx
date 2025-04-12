@@ -28,12 +28,38 @@ const categoryData = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen overflow-hidden" style={{ marginTop: 0, marginBottom: 0 }}>
-      <div style={{ marginTop: 0, marginBottom: 0, border: 'none' }}>
+    <div 
+      className="min-h-screen overflow-hidden" 
+      style={{ 
+        marginTop: 0, 
+        marginBottom: 0, 
+        border: 'none', 
+        outline: 'none', 
+        boxShadow: 'none'
+      }}
+    >
+      <div 
+        style={{ 
+          marginTop: 0, 
+          marginBottom: 0, 
+          border: 'none', 
+          outline: 'none', 
+          boxShadow: 'none',
+          padding: 0
+        }}
+      >
         <Hero />
       </div>
       
-      <section className="py-20 content-visibility hide-in-dark" style={{ marginTop: 0, border: 'none' }}>
+      <section 
+        className="py-20 content-visibility hide-in-dark" 
+        style={{ 
+          marginTop: 0, 
+          border: 'none', 
+          outline: 'none', 
+          boxShadow: 'none'
+        }}
+      >
         <div className="container-custom">
           <div className="text-center mb-16">
             <span className="inline-block px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 text-primary rounded-full mb-4">
@@ -62,7 +88,15 @@ const Index = () => {
         </div>
       </section>
       
-      <div className="content-visibility hide-in-dark" style={{ border: 'none', marginTop: 0 }}>
+      <div 
+        className="content-visibility hide-in-dark" 
+        style={{ 
+          border: 'none', 
+          marginTop: 0, 
+          outline: 'none', 
+          boxShadow: 'none'
+        }}
+      >
         <FeaturedProducts />
         <About />
       </div>

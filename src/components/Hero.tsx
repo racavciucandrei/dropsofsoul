@@ -53,12 +53,30 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center overflow-hidden" style={{ marginTop: 0, marginBottom: 0 }}>
+    <section 
+      className="relative min-h-screen w-full flex items-center overflow-hidden" 
+      style={{ 
+        marginTop: 0, 
+        marginBottom: 0, 
+        border: 'none', 
+        boxShadow: 'none',
+        backgroundImage: 'none',
+        outline: 'none'
+      }}
+    >
       {/* Background Slideshow */}
-      <div className={cn(
-        "absolute inset-0 z-0 transition-opacity duration-500",
-        isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
-      )}>
+      <div 
+        className={cn(
+          "absolute inset-0 z-0 transition-opacity duration-500",
+          isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
+        )}
+        style={{ 
+          border: 'none', 
+          outline: 'none', 
+          boxShadow: 'none',
+          backgroundImage: 'none'
+        }}
+      >
         {images.map((src, index) => (
           <div
             key={index}
@@ -70,14 +88,20 @@ const Hero = () => {
               backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
               borderTop: 'none',
               borderBottom: 'none',
+              borderLeft: 'none',
+              borderRight: 'none',
+              border: 'none',
+              outline: 'none',
+              boxShadow: 'none'
             }}
           >
-            {/* Using a smooth gradient overlay without any hard edges */}
             <div 
               className="absolute inset-0" 
               style={{
                 background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%)',
                 border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
                 marginTop: 0,
                 marginBottom: 0
               }}
@@ -86,13 +110,15 @@ const Hero = () => {
         ))}
       </div>
       
-      {/* Logo watermark overlay - ensuring no borders or edges */}
+      {/* Logo watermark overlay - using flat color without gradients */}
       <div 
         className="absolute inset-0 z-1 pointer-events-none"
         style={{ 
           overflow: 'hidden', 
           border: 'none',
-          outline: 'none'
+          outline: 'none',
+          boxShadow: 'none',
+          backgroundImage: 'none'
         }}
       >
         <div 
@@ -100,7 +126,12 @@ const Hero = () => {
             "w-full h-full flex items-center justify-center transition-opacity duration-500",
             isLightOn ? "opacity-35" : "opacity-10"
           )}
-          style={{ border: 'none', outline: 'none' }}
+          style={{ 
+            border: 'none', 
+            outline: 'none',
+            boxShadow: 'none',
+            backgroundImage: 'none'
+          }}
         >
           <img 
             src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
@@ -114,6 +145,7 @@ const Hero = () => {
               outline: 'none',
               boxShadow: 'none',
               backgroundColor: 'transparent',
+              backgroundImage: 'none',
               margin: 0,
               padding: 0
             }}
