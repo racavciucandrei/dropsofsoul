@@ -28,8 +28,8 @@ const categoryData = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="bg-black" style={{ borderBottom: 'none', margin: 0, padding: 0, overflow: 'hidden' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'black', margin: 0, padding: 0 }}>
+      <div style={{ backgroundColor: 'black', margin: 0, padding: 0, overflow: 'hidden' }}>
         <Hero />
       </div>
       

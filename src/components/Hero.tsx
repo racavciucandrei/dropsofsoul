@@ -22,31 +22,48 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center overflow-hidden bg-black">
-      {/* Solid background to ensure no transparent gaps */}
+    <section 
+      className="relative min-h-screen w-full flex items-center bg-black"
+      style={{ 
+        backgroundColor: 'black',
+        margin: 0,
+        padding: 0,
+        border: 'none',
+        boxShadow: 'none',
+        overflow: 'hidden'
+      }}
+    >
+      {/* Solid background layer */}
       <div className="absolute inset-0 bg-black" style={{ zIndex: 0 }}></div>
       
-      {/* Logo watermark with improved positioning and styling */}
+      {/* Logo watermark with fixed styling */}
       <div 
         className={cn(
           "absolute inset-0 flex items-center justify-center",
           isLightOn ? "opacity-25" : "opacity-10"
         )}
-        style={{ zIndex: 1 }}
+        style={{ 
+          zIndex: 1,
+          pointerEvents: 'none'
+        }}
       >
         <img 
           src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-          alt="Drops of Soul Logo - Watermark"
-          className={cn(
-            "max-w-[80%] max-h-[80%] object-contain mix-blend-overlay",
-            isLightOn ? "filter-none" : "brightness-150"
-          )}
-          style={{ maxWidth: "80%", maxHeight: "80%" }}
+          alt="Drops of Soul Logo"
+          style={{ 
+            maxWidth: "80%", 
+            maxHeight: "80%", 
+            mixBlendMode: "overlay",
+            filter: isLightOn ? "none" : "brightness(150)"
+          }}
         />
       </div>
       
       {/* Content */}
-      <div className="hide-in-dark container-custom relative pt-28 pb-16" style={{ zIndex: 10 }}>
+      <div 
+        className="hide-in-dark container relative z-10 pt-28 pb-16"
+        style={{ zIndex: 10, maxWidth: "1280px", margin: "0 auto" }}
+      >
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6">
             <div className="inline-block">
