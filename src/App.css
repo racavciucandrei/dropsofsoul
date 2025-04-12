@@ -109,55 +109,50 @@ body:has(.dark-mode) .company-logo-container img {
   }
 }
 
-/* Purple radial gradient for light effect */
-.bg-radial-gradient {
-  background: radial-gradient(circle at center, var(--from-color, rgba(255, 191, 36, 0.3)), var(--to-color, transparent) 70%);
-}
-
-/* Fixed styles to eliminate all border issues */
-section, 
-div, 
-.relative, 
-.absolute, 
-.inset-0, 
-.container-custom,
-.bg-cover,
-.bg-center {
+/* Remove ALL borders, box shadows, and outlines from any element */
+* {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Background fixes */
+.bg-black {
+  background-color: #000 !important;
+}
+
+/* Remove overflow to prevent scrollbars */
+body, #root, main, section, div {
+  overflow: visible;
+}
+
+/* Ensure parent containers have solid backgrounds */
+body, #root, main {
+  background-color: #000;
 }
 
 /* Fix for background elements */
-.bg-black {
+div[class*="bg-"] {
+  background-color: black !important;
+}
+
+/* Fix for hero section background */
+section.relative.min-h-screen {
   background-color: #000 !important;
-  border: none !important;
-  outline: none !important;
 }
 
-/* Fix for hero section specifically */
-.flex.items-center.overflow-hidden,
-.flex.items-center.overflow-hidden * {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+/* Remove any margin/padding that might cause gaps */
+body, #root, main, section, div {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* Logo watermark styles */
+/* Restore padding for content that needs it */
+.container-custom, .py-20, .px-4, .px-6, .px-8 {
+  padding: 1rem !important;
+}
+
+/* Special rule to ensure the logo watermark is properly displayed */
 .mix-blend-overlay {
   mix-blend-mode: overlay;
-}
-
-/* Ensure solid background with no gaps */
-body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-#root, 
-main, 
-.min-h-screen, 
-.bg-background {
-  overflow: hidden;
 }

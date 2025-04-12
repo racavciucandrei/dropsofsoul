@@ -6,9 +6,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
 
-// Hardcoded fallback images that we know exist in case the other images fail to load
-const fallbackImage = '/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png';
-
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { isLightOn } = useLight();
@@ -25,31 +22,31 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+    <section className="relative min-h-screen w-full flex items-center overflow-hidden bg-black">
       {/* Solid background to ensure no transparent gaps */}
-      <div className="absolute inset-0 bg-black z-0"></div>
+      <div className="absolute inset-0 bg-black" style={{ zIndex: 0 }}></div>
       
-      {/* Logo watermark as background with improved positioning and styling */}
+      {/* Logo watermark with improved positioning and styling */}
       <div 
         className={cn(
-          "absolute inset-0 z-1 flex items-center justify-center",
+          "absolute inset-0 flex items-center justify-center",
           isLightOn ? "opacity-25" : "opacity-10"
         )}
+        style={{ zIndex: 1 }}
       >
-        <div className="w-full h-full flex items-center justify-center">
-          <img 
-            src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-            alt="Drops of Soul Logo - Watermark"
-            className={cn(
-              "max-w-[80%] max-h-[80%] object-contain mix-blend-overlay",
-              isLightOn ? "filter-none" : "brightness-150"
-            )}
-          />
-        </div>
+        <img 
+          src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
+          alt="Drops of Soul Logo - Watermark"
+          className={cn(
+            "max-w-[80%] max-h-[80%] object-contain mix-blend-overlay",
+            isLightOn ? "filter-none" : "brightness-150"
+          )}
+          style={{ maxWidth: "80%", maxHeight: "80%" }}
+        />
       </div>
       
       {/* Content */}
-      <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
+      <div className="hide-in-dark container-custom relative pt-28 pb-16" style={{ zIndex: 10 }}>
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6">
             <div className="inline-block">
@@ -112,7 +109,13 @@ const Hero = () => {
       
       {/* Light effect when light is on */}
       {isLightOn && (
-        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/20 to-transparent pointer-events-none z-5"></div>
+        <div 
+          className="absolute inset-0 pointer-events-none" 
+          style={{ 
+            zIndex: 5,
+            background: "radial-gradient(circle at center, rgba(255, 191, 36, 0.2), transparent 70%)"
+          }}
+        ></div>
       )}
     </section>
   );
