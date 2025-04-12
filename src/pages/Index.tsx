@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Hero from '@/components/Hero';
 import ProductCategory from '@/components/ProductCategory';
@@ -28,7 +27,7 @@ const categoryData = [
 
 const Index = () => {
   return (
-    <div className="min-h-screen overflow-hidden bg-background">
+    <div className="min-h-screen bg-background">
       <div className="bg-black">
         <Hero />
       </div>

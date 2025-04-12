@@ -6,104 +6,44 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
 
-const images = [
-  '/assets/hero-1.jpg',
-  '/assets/hero-2.jpg',
-  '/assets/hero-3.jpg',
-];
-
-const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
+// Hardcoded fallback images that we know exist in case the other images fail to load
+const fallbackImage = '/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png';
 
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const { isLightOn } = useLight();
   
   useEffect(() => {
-    // Preload all images and track which ones have loaded
-    const imageObjects = images.map((src, index) => {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => {
-        setLoadedImages(prev => {
-          const newState = [...prev];
-          newState[index] = true;
-          return newState;
-        });
-      };
-      img.onerror = () => {
-        console.error(`Failed to load hero image: ${src}`);
-      };
-      return img;
-    });
-    
     // Set up slideshow timer
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      setCurrentImageIndex((prev) => (prev === 0 ? 1 : 0));
     }, 6000);
     
     return () => {
       clearInterval(interval);
-      imageObjects.forEach(img => {
-        img.onload = null;
-        img.onerror = null;
-      });
     };
   }, []);
 
   return (
-    <section 
-      className="relative min-h-screen w-full flex items-center overflow-hidden bg-black" 
-    >
-      {/* Background Slideshow */}
+    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black">
+      {/* Solid background to ensure no transparent gaps */}
+      <div className="absolute inset-0 bg-black z-0"></div>
+      
+      {/* Logo watermark as background with improved positioning and styling */}
       <div 
         className={cn(
-          "absolute inset-0 z-0 transition-opacity duration-500",
-          isLightOn ? "opacity-100" : "opacity-5"
+          "absolute inset-0 z-1 flex items-center justify-center",
+          isLightOn ? "opacity-25" : "opacity-10"
         )}
       >
-        {images.map((src, index) => (
-          <div
-            key={index}
-            className={cn(
-              "absolute inset-0 bg-cover bg-center transition-opacity duration-1000",
-              index === currentImageIndex ? "opacity-100" : "opacity-0"
-            )}
-            style={{
-              backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center'
-            }}
-          >
-            <div 
-              className="absolute inset-0" 
-              style={{
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%)'
-              }}
-            />
-          </div>
-        ))}
-      </div>
-      
-      {/* Logo watermark overlay */}
-      <div className="absolute inset-0 z-1 pointer-events-none flex items-center justify-center">
-        <div 
-          className={cn(
-            "w-full h-full flex items-center justify-center transition-opacity duration-500",
-            isLightOn ? "opacity-35" : "opacity-10"
-          )}
-        >
+        <div className="w-full h-full flex items-center justify-center">
           <img 
             src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
             alt="Drops of Soul Logo - Watermark"
             className={cn(
-              "w-1/2 h-auto object-contain mix-blend-overlay",
+              "max-w-[80%] max-h-[80%] object-contain mix-blend-overlay",
               isLightOn ? "filter-none" : "brightness-150"
             )}
-            style={{ 
-              maxWidth: '500px',
-              maxHeight: '500px'
-            }}
           />
         </div>
       </div>
@@ -111,7 +51,7 @@ const Hero = () => {
       {/* Content */}
       <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
+          <div className="space-y-6">
             <div className="inline-block">
               <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 backdrop-blur-sm text-primary-foreground/90 rounded-full">
                 Craft Cocktail Essentials
@@ -154,7 +94,7 @@ const Hero = () => {
         
         {/* Navigation Dots */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-          {images.map((_, index) => (
+          {[0, 1].map((index) => (
             <button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
@@ -172,7 +112,7 @@ const Hero = () => {
       
       {/* Light effect when light is on */}
       {isLightOn && (
-        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/30 to-transparent pointer-events-none"></div>
+        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/20 to-transparent pointer-events-none z-5"></div>
       )}
     </section>
   );

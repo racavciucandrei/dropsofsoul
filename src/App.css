@@ -111,44 +111,53 @@ body:has(.dark-mode) .company-logo-container img {
 
 /* Purple radial gradient for light effect */
 .bg-radial-gradient {
-  background: radial-gradient(circle at center, var(--from-color, rgba(155, 135, 245, 0.3)), var(--to-color, transparent) 70%);
+  background: radial-gradient(circle at center, var(--from-color, rgba(255, 191, 36, 0.3)), var(--to-color, transparent) 70%);
 }
 
-/* Ensure no border, outline, or box-shadow on hero elements */
-.hero-section,
-.hero-section *,
-.hero-container,
-.hero-container *,
-section.relative.min-h-screen,
-section.relative.min-h-screen *,
-.absolute img, 
+/* Fixed styles to eliminate all border issues */
+section, 
+div, 
+.relative, 
+.absolute, 
+.inset-0, 
+.container-custom,
+.bg-cover,
+.bg-center {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Fix for background elements */
+.bg-black {
+  background-color: #000 !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Fix for hero section specifically */
+.flex.items-center.overflow-hidden,
+.flex.items-center.overflow-hidden * {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Logo watermark styles */
 .mix-blend-overlay {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  background-clip: padding-box !important;
+  mix-blend-mode: overlay;
 }
 
-/* Fix for background images */
-.bg-cover.bg-center {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  transition: opacity 0.8s ease;
+/* Ensure solid background with no gaps */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-/* Fix seams between sections */
-section + section,
-section + div,
-div + section {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-  border-top: none !important;
-}
-
-/* Remove all borders from specific containers */
-body, #root, main, section, .container-custom, .relative {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+#root, 
+main, 
+.min-h-screen, 
+.bg-background {
+  overflow: hidden;
 }
