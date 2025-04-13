@@ -2,8 +2,44 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0;
+  padding: 2rem;
   text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
 }
 
 /* Custom transition duration for ultra-fast light switch response */
@@ -73,22 +109,8 @@ body:has(.dark-mode) .company-logo-container img {
   }
 }
 
-/* Remove borders, box shadows, and outlines from specific elements when needed */
-.no-borders {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
+/* Purple radial gradient for light effect */
+.bg-radial-gradient {
+  background: radial-gradient(circle at center, var(--from-color, rgba(155, 135, 245, 0.3)), var(--to-color, transparent) 70%);
 }
 
-/* Hero-specific styles */
-section.relative.min-h-screen {
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  overflow: hidden !important;
-}
-
-/* Special rule to ensure the logo watermark is properly displayed */
-.mix-blend-overlay {
-  mix-blend-mode: overlay !important;
-}

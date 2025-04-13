@@ -29,9 +29,7 @@ const categoryData = [
 const Index = () => {
   return (
     <div className="min-h-screen">
-      <div className="overflow-hidden">
-        <Hero />
-      </div>
+      <Hero />
       
       <section className="py-20 content-visibility hide-in-dark">
         <div className="container-custom">

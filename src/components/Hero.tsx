@@ -6,48 +6,99 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useLight } from '@/context/LightProvider';
 
+// Use original image paths but have fallbacks ready
+const images = [
+  '/assets/hero-1.jpg',
+  '/assets/hero-2.jpg',
+  '/assets/hero-3.jpg',
+];
+
+const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMiIgeT0iMiIgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBzdHlsZT0iZmlsbDojZGVkYmQ4O3N0cm9rZTojOWU4ZjgzO3N0cm9rZS13aWR0aDoyIi8+PC9zdmc+';
+
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
   const { isLightOn } = useLight();
   
   useEffect(() => {
+    // Preload all images and track which ones have loaded
+    const imageObjects = images.map((src, index) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => {
+        setLoadedImages(prev => {
+          const newState = [...prev];
+          newState[index] = true;
+          return newState;
+        });
+      };
+      img.onerror = () => {
+        console.error(`Failed to load hero image: ${src}`);
+      };
+      return img;
+    });
+    
     // Set up slideshow timer
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev === 0 ? 1 : 0));
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }, 6000);
     
     return () => {
       clearInterval(interval);
+      imageObjects.forEach(img => {
+        img.onload = null;
+        img.onerror = null;
+      });
     };
   }, []);
 
   return (
-    <section 
-      className="relative min-h-screen w-full flex items-center"
-      style={{ 
-        backgroundColor: '#222',
-        backgroundImage: 'url("/lovable-uploads/eff100d0-154a-4af2-a101-8e16e1a2d684.png")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        margin: 0,
-        padding: 0,
-        border: 'none',
-        boxShadow: 'none',
-        overflow: 'hidden'
-      }}
-    >
-      {/* Overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }}></div>
+    <section className="relative min-h-screen w-full flex items-center overflow-hidden">
+      {/* Background Slideshow */}
+      <div className={cn(
+        "absolute inset-0 z-0 transition-opacity duration-500",
+        isLightOn ? "opacity-100" : "opacity-5" // Darker when lights are off
+      )}>
+        {images.map((src, index) => (
+          <div
+            key={index}
+            className={cn(
+              "absolute inset-0 bg-cover bg-center transition-opacity duration-1000",
+              index === currentImageIndex ? "opacity-100" : "opacity-0"
+            )}
+            style={{
+              backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
+            }}
+          >
+            {/* Using a purple-tinted overlay instead of black */}
+            <div className="absolute inset-0 bg-gradient-to-b from-[#9b87f5]/30 via-[#7E69AB]/20 to-[#9b87f5]/30" />
+          </div>
+        ))}
+      </div>
+      
+      {/* Logo watermark overlay - completely transparent background, no borders */}
+      <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none">
+        <div className={cn(
+          "w-full max-w-4xl h-full max-h-full transition-opacity duration-500",
+          isLightOn ? "opacity-35" : "opacity-10"
+        )}>
+          <img 
+            src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
+            alt="Drops of Soul Logo - Watermark"
+            className={cn(
+              "w-full h-full object-contain mix-blend-overlay",
+              isLightOn ? "filter-none" : "brightness-150"
+            )}
+          />
+        </div>
+      </div>
       
       {/* Content */}
-      <div 
-        className="container relative z-10 pt-28 pb-16 text-center"
-        style={{ zIndex: 10, maxWidth: "1280px", margin: "0 auto" }}
-      >
+      <div className="hide-in-dark container-custom relative z-10 pt-28 pb-16">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="space-y-6">
+          <div className="space-y-6 animate-slideDownFade [animation-delay:300ms]">
             <div className="inline-block">
-              <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-amber-700/80 backdrop-blur-sm text-white rounded-full">
+              <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 backdrop-blur-sm text-primary-foreground/90 rounded-full">
                 Craft Cocktail Essentials
               </span>
             </div>
@@ -64,7 +115,7 @@ const Hero = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="text-base rounded-full transition-all duration-500 hover:translate-y-[-2px] hover:shadow-lg group bg-amber-700 hover:bg-amber-600"
+                className="text-base rounded-full transition-all duration-500 hover:translate-y-[-2px] hover:shadow-lg group"
               >
                 <Link to="/products">
                   Explore Our Collection
@@ -88,7 +139,7 @@ const Hero = () => {
         
         {/* Navigation Dots */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-2">
-          {[0, 1].map((index) => (
+          {images.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
@@ -104,15 +155,9 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Light effect when light is on */}
+      {/* Light effect when light is on - with a hint of purple */}
       {isLightOn && (
-        <div 
-          className="absolute inset-0 pointer-events-none" 
-          style={{ 
-            zIndex: 5,
-            background: "radial-gradient(circle at center, rgba(255, 191, 36, 0.2), transparent 70%)"
-          }}
-        ></div>
+        <div className="light-source absolute inset-0 bg-radial-gradient from-[#9b87f5]/20 to-transparent pointer-events-none"></div>
       )}
     </section>
   );
