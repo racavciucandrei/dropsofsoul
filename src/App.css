@@ -1,5 +1,9 @@
+/**
+ * Drops of Soul - WordPress Compatible Styles
+ * These styles are designed to work both in React and WordPress environments
+ */
 
-#root {
+.drops-of-soul-react-app {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -85,7 +89,12 @@ body:has(.dark-mode) .company-logo-container img {
   filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.8));
 }
 
-/* Ensure logo fits properly */
+/* WordPress Specific Overrides */
+.wp-block-drops-of-soul {
+  overflow: visible !important;
+}
+
+/* Ensure logo fits properly even in WordPress environment */
 .hero-logo {
   max-width: 300px;
   margin: 0 auto 2rem;
@@ -98,7 +107,7 @@ body:has(.dark-mode) .company-logo-container img {
   width: auto;
 }
 
-/* Make sure the About page looks good on all screens */
+/* Responsive styles for WordPress integration */
 @media (max-width: 768px) {
   .hero-logo {
     max-width: 200px;
@@ -106,5 +115,9 @@ body:has(.dark-mode) .company-logo-container img {
   
   .nav-logo {
     max-height: 40px;
+  }
+  
+  .drops-of-soul-react-app {
+    padding: 1rem;
   }
 }
