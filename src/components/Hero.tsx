@@ -70,13 +70,13 @@ const Hero = () => {
               backgroundImage: `url(${loadedImages[index] ? src : placeholderImage})`,
             }}
           >
-            {/* Using a purple-tinted overlay instead of black */}
-            <div className="absolute inset-0 bg-gradient-to-b from-[#9b87f5]/30 via-[#7E69AB]/20 to-[#9b87f5]/30" />
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
           </div>
         ))}
       </div>
       
-      {/* Logo watermark overlay - completely transparent background, no borders */}
+      {/* Logo watermark overlay - removed borders and blended with background */}
       <div className="absolute inset-0 z-1 flex items-center justify-center pointer-events-none">
         <div className={cn(
           "w-full max-w-4xl h-full max-h-full transition-opacity duration-500",
@@ -155,9 +155,9 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* Light effect when light is on - with a hint of purple */}
+      {/* Light effect when light is on */}
       {isLightOn && (
-        <div className="light-source absolute inset-0 bg-radial-gradient from-[#9b87f5]/20 to-transparent pointer-events-none"></div>
+        <div className="light-source absolute inset-0 bg-radial-gradient from-amber-400/30 to-transparent pointer-events-none"></div>
       )}
     </section>
   );
