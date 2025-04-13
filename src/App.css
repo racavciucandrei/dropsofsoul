@@ -73,21 +73,15 @@ body:has(.dark-mode) .company-logo-container img {
   }
 }
 
-/* Remove ALL borders, box shadows, and outlines from any element */
-* {
+/* Remove borders, box shadows, and outlines from specific elements when needed */
+.no-borders {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
 }
 
-/* Force black background for specific sections */
-body, #root, main, .bg-black, section.relative.min-h-screen {
-  background-color: #000000 !important;
-}
-
 /* Hero-specific styles */
 section.relative.min-h-screen {
-  background-color: #000000 !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
@@ -97,32 +91,4 @@ section.relative.min-h-screen {
 /* Special rule to ensure the logo watermark is properly displayed */
 .mix-blend-overlay {
   mix-blend-mode: overlay !important;
-}
-
-/* Hero container */
-.hero-container {
-  position: relative;
-  background-color: #000000;
-  min-height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-/* Logo watermark */
-.logo-watermark {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.logo-watermark img {
-  max-width: 80%;
-  max-height: 80%;
-  mix-blend-mode: overlay;
 }

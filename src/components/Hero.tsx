@@ -23,9 +23,12 @@ const Hero = () => {
 
   return (
     <section 
-      className="relative min-h-screen w-full flex items-center bg-black"
+      className="relative min-h-screen w-full flex items-center"
       style={{ 
-        backgroundColor: 'black',
+        backgroundColor: '#222',
+        backgroundImage: 'url("/lovable-uploads/eff100d0-154a-4af2-a101-8e16e1a2d684.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         margin: 0,
         padding: 0,
         border: 'none',
@@ -33,41 +36,18 @@ const Hero = () => {
         overflow: 'hidden'
       }}
     >
-      {/* Solid background layer */}
-      <div className="absolute inset-0 bg-black" style={{ zIndex: 0 }}></div>
-      
-      {/* Logo watermark with fixed styling */}
-      <div 
-        className={cn(
-          "absolute inset-0 flex items-center justify-center",
-          isLightOn ? "opacity-25" : "opacity-10"
-        )}
-        style={{ 
-          zIndex: 1,
-          pointerEvents: 'none'
-        }}
-      >
-        <img 
-          src="/lovable-uploads/3a9d82f1-4dc8-466f-aaf3-84e39ef161b9.png" 
-          alt="Drops of Soul Logo"
-          style={{ 
-            maxWidth: "80%", 
-            maxHeight: "80%", 
-            mixBlendMode: "overlay",
-            filter: isLightOn ? "none" : "brightness(150)"
-          }}
-        />
-      </div>
+      {/* Overlay to ensure text readability */}
+      <div className="absolute inset-0 bg-black/30" style={{ zIndex: 1 }}></div>
       
       {/* Content */}
       <div 
-        className="hide-in-dark container relative z-10 pt-28 pb-16"
+        className="container relative z-10 pt-28 pb-16 text-center"
         style={{ zIndex: 10, maxWidth: "1280px", margin: "0 auto" }}
       >
         <div className="max-w-3xl mx-auto text-center">
           <div className="space-y-6">
             <div className="inline-block">
-              <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-primary/10 backdrop-blur-sm text-primary-foreground/90 rounded-full">
+              <span className="px-3 py-1 text-xs font-medium tracking-wider uppercase bg-amber-700/80 backdrop-blur-sm text-white rounded-full">
                 Craft Cocktail Essentials
               </span>
             </div>
@@ -84,7 +64,7 @@ const Hero = () => {
               <Button 
                 asChild 
                 size="lg" 
-                className="text-base rounded-full transition-all duration-500 hover:translate-y-[-2px] hover:shadow-lg group"
+                className="text-base rounded-full transition-all duration-500 hover:translate-y-[-2px] hover:shadow-lg group bg-amber-700 hover:bg-amber-600"
               >
                 <Link to="/products">
                   Explore Our Collection
