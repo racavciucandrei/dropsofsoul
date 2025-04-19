@@ -37,4 +37,3 @@ function drops_of_soul_enqueue_scripts() {
     ));
 }
 add_action('wp_enqueue_scripts', 'drops_of_soul_enqueue_scripts');
-
