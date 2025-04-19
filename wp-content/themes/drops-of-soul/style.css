@@ -1,0 +1,15 @@
+
+/*
+Theme Name: Drops of Soul
+Theme URI: https://dropsofsoul.com
+Description: A beautiful theme for artisanal cocktail ingredients
+Version: 1.0
+Author: Drops of Soul
+Author URI: https://dropsofsoul.com
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: drops-of-soul
+*/
+
+/* Import theme styles */
+@import url('dist/css/main.css');
